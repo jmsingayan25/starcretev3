@@ -2,6 +2,26 @@
 	function phpAlert($msg) {
 	    echo '<script type="text/javascript">alert("' . $msg . '")</script>';
 	}
+
+	function getPurchaseOrderAggDetails($db, $id){
+
+		$sql = "SELECT *
+				FROM purchase_order_aggregates
+				WHERE purchase_order_aggregates_id = '$id'";
+
+		$result = mysqli_query($db, $sql);
+		$row = mysqli_fetch_assoc($result);
+
+		$agg['item_no'] = $row['item_no'];
+		$agg['quantity'] = $row['quantity'];
+		$agg['received'] = $row['received'];
+		$agg['price'] = $row['price'];
+		$agg['supplier_name'] = $row['supplier_name'];
+		$agg['date_po_aggregates'] = $row['date_po_aggregates'];
+		$agg['purchase_order_aggregates_no'] = $row['purchase_order_aggregates_no'];
+
+		return $agg;
+	}
 /* List of miscellaneous functions */
 	// function getSiteContactInfo($db, $)
 

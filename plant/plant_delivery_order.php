@@ -573,7 +573,7 @@
                         </div>
                     </td>
                     <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
-                    <td><strong><?php echo number_format((float)$row['quantity'])." pcs"; ?></strong></td>
+                    <td><strong><?php echo number_format($row['quantity'])." pcs"; ?></strong></td>
                     <td><strong><?php echo $row['site_name']; ?></strong></td>
                     <td><strong><?php echo $row['site_address']; ?></strong></td>
                     <td>
@@ -702,7 +702,7 @@
                                                     <label>Quantity</label>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <strong><?php echo $row['quantity']." pcs"; ?></strong>
+                                                    <strong><?php echo number_format($row['quantity'])." pcs"; ?></strong>
                                                 </div>
                                             </div>
                                         </div>
@@ -953,7 +953,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4>
                         </div>
                     </td>
                     <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
-                    <td><strong><?php echo number_format((float)$row['quantity'])." pcs"; ?></strong></td>
+                    <td><strong><?php echo number_format($row['quantity'])." pcs"; ?></strong></td>
                     <td><strong><?php echo $row['site_name']; ?></strong></td>
                     <td><strong><?php echo $row['site_address']; ?></strong></td>
                     <td>
@@ -1081,7 +1081,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4>
                                                     <label>Quantity</label>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <strong><?php echo $row['quantity']." pcs"; ?></strong>
+                                                    <strong><?php echo number_format($row['quantity'])." pcs"; ?></strong>
                                                 </div>
                                             </div>
                                         </div>

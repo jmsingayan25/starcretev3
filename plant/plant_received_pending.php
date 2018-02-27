@@ -564,7 +564,13 @@
                     <td><strong><?php echo number_format($row['received']) . " " . $row['truck']; ?></strong></td>
                     <td><strong><?php echo $row['supplier_name']; ?></strong></td>
                     <td><strong><?php echo $row['date_po_aggregates']; ?></strong></td>
-                    <td><strong>Pending</strong></td>
+                    <!-- <td><strong>Pending</strong></td> -->
+                    <td>
+                        <form action="plant_received_pending_issue.php" method="post">
+                            <input type="hidden" name="post_purchase_order_aggregates_id" value="<?php echo $row['purchase_order_aggregates_id'] ?>">
+                            <button class="btn btn-success btn-md">Issue DR No.</button>
+                        </form>
+                    </td>
                 </tr>
 
 <?php

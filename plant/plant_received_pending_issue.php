@@ -12,6 +12,10 @@
         header("location: ../login.php");
     }
 
+    if(isset($_REQUEST['post_purchase_order_aggregates_id'])){
+        $_SESSION['post_purchase_order_aggregates_id'] = $_REQUEST['post_purchase_order_aggregates_id'];
+    }
+
     if(!isset($_GET['page']) || $_GET['page'] == ''){
         $_GET['page'] = 0;
     }
@@ -44,6 +48,15 @@
     $position = $user['position'];
     // $limit = 20; //how many items to show per page
     $search_plant = $office;
+    $po_aggregates_id = $_SESSION['post_purchase_order_aggregates_id'];
+
+    $agg = getPurchaseOrderAggDetails($db, $po_aggregates_id);
+    $item = $agg['item_no'];
+    $quantity = $agg['quantity'];
+    $price = $agg['price'];
+    $date = $agg['date_po_aggregates'];
+    $supplier = $agg['supplier_name'];
+    $purchase_order_aggregates_no = $agg['purchase_order_aggregates_no'];
 
 ?>
 <html lang="en">
@@ -118,8 +131,74 @@
     <script src="js/charts.js"></script>
     <script src="js/jquery.slimscroll.min.js"></script>
 
+<script>
+    
+    $(function() {
+        
+        // var $form = $( "#form" );
+        // var $input = $form.find( "#quantity" );
+
+        // $input.on( "keyup", function( event ) {
+
+        var $form = $( "#form" );
+        var $input = $form.find( "#volume" );
+
+        $form.on( "keyup", "#volume", function( event ) {
+            
+            
+            // When user select text in the document, also abort.
+            var selection = window.getSelection().toString();
+            if ( selection !== '' ) {
+                return;
+            }
+            
+            // When the arrow keys are pressed, abort.
+            if ( $.inArray( event.keyCode, [38,40,37,39] ) !== -1 ) {
+                return;
+            }
+            
+            
+            var $this = $( this );
+            
+            // Get the value.
+            var input = $this.val();
+            
+            var input = input.replace(/[\D\s\._\-]+/g, "");
+                    input = input ? parseInt( input, 10 ) : 0;
+
+                    $this.val( function() {
+                        return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
+                    } );
+        } );      
+    });
+
+    function compareValues(input) {
+        
+        var number = input.replace(",","");
+        number = Number(number);
+        var balance = Number(document.getElementById('hidden_quantity').value);
+        var submit = document.getElementById('submit');
+        // var letters = /^[0-9a-zA-Z]+$/; 
+
+        setTimeout(function () {
+            if(number > balance || number <= 0){
+                submit.disabled = true;
+                // a.style.display = "block";
+            }else{
+                submit.disabled = false;
+                // a.style.display = "none";
+            }
+        }, 0);
+        // alert(ordered);
+    }
+</script>
+<style>
+.page_links a{
+    color: inherit;
+}
+</style>
 </head>
-<body>
+<body onload="compareValues('');">
 <!-- container section start -->
     <section id="container" class="">
         <header class="header dark-bg">
@@ -222,7 +301,8 @@
                         <!-- <h3 class="page-header"><i class="icon_document"></i><a href="plant_purchase_order.php"> Purchase Order</a></h3> -->
                         <ol class="breadcrumb">
                             <li><i class="fa fa-building"></i>Received</li>
-                            <li><i class="icon_document"></i><a href="plant_received.php" style="color: blue;">Pending Deliveries</a></li>                          
+                            <li><i class="icon_document"></i><a href="plant_received_pending.php">Pending Deliveries</a></li>            
+                            <li><i class="icon_document"></i><a href="plant_received_pending_issue.php" style="color: blue;"> Issue DR. No.</a></li>              
                         </ol>
                     </div>
                 </div>
@@ -232,28 +312,59 @@
                         <div class="col-md-6 col-md-offset-3">
                             <section class="panel">
                                 <header class="panel-heading">
-                                Issue
+                                Form
                                 </header>
                                 <div class="panel-body">
+                                    <input type="hidden" id="hidden_quantity" value="<?php echo $quantity; ?>">
                                     <div class="form-group">
                                         <label for="po_no" class="col-md-3 control-label">P.O. No.</label>
                                         <div class="col-md-6">
                                             <!-- <input type="text" name="update_delivery_receipt_no" value="<?php echo $delivery_row['po_no_delivery'] ?>" class="form-control" readonly> -->
-                                            <p class="help-block"><?php echo "123456"; ?></p>
+                                            <p class="help-block"><?php echo $purchase_order_aggregates_no; ?></p>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="item_no" class="col-md-3 control-label">Item</label>
                                         <div class="col-md-6">
                                             <!-- <input type="text" name="update_delivery_receipt_no" value="<?php echo $delivery_row['po_no_delivery'] ?>" class="form-control" readonly> -->
-                                            <p class="help-block"><?php echo "Diesel"; ?></p>
+                                            <p class="help-block"><?php echo $item; ?></p>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="quantity" class="col-md-3 control-label">Received quantity (liter)</label>
+                                        <label for="dr_no" class="col-md-3 control-label">Delivery No.</label>
                                         <div class="col-md-6">
-                                            <input type="text" name="quantity" class="form-control">
-                                            
+                                            <input type="text" name="dr_no" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="volume" class="col-md-3 control-label">
+                                            Received quantity (<?php 
+                                                        if(getUnit($db, $item) == 'm3'){
+                                                            echo "m&sup3;";
+                                                        }else{
+                                                            echo getUnit($db, $item);
+                                                        }
+                            
+                                                        if(getTruck($db, $item) == 'liter'){
+                                                            echo "";
+                                                        }else{
+                                                            echo " per ". getTruck($db, $item); 
+                                                        } 
+                                                        ?>)</label>
+                                        <div class="col-md-6">
+                                            <input type="text" id="volume" name="volume" class="form-control" onkeyup="compareValues(this.value);">
+                                            <span class="help-block">
+                                                Balance: 
+                                                <?php echo number_format($quantity) . " "; 
+                            
+                                                    if(getTruck($db, $item) == 'liter'){
+                                                        echo "";
+                                                    }else{
+                                                        echo getTruck($db, $item); 
+                                                    } 
+                                                ?>
+                                                    
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -264,7 +375,15 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div class="col-md-10 col-md-offset-2">
+                                        <label for="supplier_name" class="col-md-3 control-label">Supplier Name</label>
+                                        <div class="col-md-6">
+                                            <!-- <input type="text" name="truck_no" class="form-control"> -->
+                                            <p class="help-block"><?php echo $supplier; ?></p>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-4 col-md-offset-2">
                                             <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary">
                                             <a href="plant_delivery_order.php" class="btn btn-warning">Cancel</a>
                                         </div>
@@ -290,3 +409,124 @@
     </section>
 </body>
 </html>
+<?php 
+
+    if(isset($_POST['submit'])){
+
+        $dr_no = mysqli_real_escape_string($db, $_POST['dr_no']);
+        $truck_no = mysqli_real_escape_string($db, $_POST['truck_no']);
+
+        if($item == 'Diesel'){
+            $balance = mysqli_real_escape_string($db, $_POST['volume']);
+        }else{
+            $balance = 1;
+        }
+        $volume = mysqli_real_escape_string($db, $_POST['volume']);
+        $datetime = date("Y-m-d H:i:s");
+
+        $query_received = "INSERT INTO received(po_aggregates_no_received, item_no, delivery_no_received, truck_no, volume, office, supplier_name, date_po_aggregates, remarks)
+                            VALUES ('$purchase_order_aggregates_no','$item','$dr_no','$truck_no','$volume','$office','$supplier','$datetime','Received')";
+
+        if($item == 'Diesel'){
+            if(getPurchaseAggQuantity($db, $purchase_order_aggregates_no, $item, $office, $po_aggregates_id) > 0){
+                $po_aggregates_query = "UPDATE purchase_order_aggregates 
+                                        SET received = received + '$balance', quantity = quantity - $balance
+                                        WHERE purchase_order_aggregates_id = '".$po_aggregates_id."'";
+                echo $po_aggregates_query . "<br>";
+                // mysqli_query($db, $po_aggregates_query);
+            }
+
+            if(getPurchaseAggQuantity($db, $purchase_order_aggregates_no, $item, $office, $po_aggregates_id) == 0){
+                $success = "UPDATE purchase_order_aggregates 
+                            SET remarks = 'Success'
+                            WHERE item_no = '$item' 
+                            AND office = '$office'
+                            AND purchase_order_aggregates_no = '$purchase_order_aggregates_no' 
+                            AND purchase_order_aggregates_id = '".$po_aggregates_id."'";
+                echo $success . "<br>";
+                // mysqli_query($db, $success);
+            }
+
+            $diesel_query = "SELECT item_no FROM item_stock WHERE item_no = '$item' AND office = '$office'";
+            if(mysqli_num_rows($result) > 0){
+                $stock = "UPDATE item_stock SET stock = stock + '$balance', last_update = '$datetime' 
+                            WHERE item_no = '$item' AND office = '$office'";
+            }else{
+                $stock = "INSERT INTO item_stock(item_no, stock, office, last_update) 
+                            VALUES('$item','$balance','$office','$datetime')";
+            }
+            // mysqli_query($db, $stock);
+
+            $insert_diesel = "INSERT INTO diesel(office, quantity_in, balance, truck_no, operator, delivery_date)
+                                VALUES('$office','$balance','".getStock($db, $item, $office)."','$truck_no','$supplier','$datetime')";
+
+            $history_query = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) 
+                        VALUES('Received','Received ','$item','".ucfirst($office)." received $balance ".getTruck($db, $item)." of $item from $supplier with P.O no. $purchase_order_aggregates_no and DR. no. $dr_no','$datetime','$office')";
+
+            echo $stock . "<br>";
+            echo $query_received . "<br>";
+            echo $insert_diesel . "<br>";
+            echo $history_query . "<br>";
+
+            // if(mysqli_query($db, $query_received) && mysqli_query($db, $insert_diesel) && mysqli_query($db, $history_query)){
+            //     phpAlert("Item received successfully!!");
+            //     echo "<meta http-equiv='refresh' content='0'>";
+            // }else{
+            //     phpAlert("Something went wrong!!");
+            // }
+        }else{
+
+            $po_aggregates_query = "UPDATE purchase_order_aggregates 
+                                    SET received = received + '$balance', quantity = quantity - '$balance' 
+                                    WHERE purchase_order_aggregates_id = '$po_aggregates_id'
+                                    AND office = '$office'";
+            // mysqli_query($db, $po_aggregates_query);
+
+            if(getPurchaseAggQuantity($db, $purchase_order_aggregates_no, $item, $office, $po_aggregates_id) == 0){
+                $po_aggregates_status = "UPDATE purchase_order_aggregates 
+                                        SET remarks = 'Success'
+                                        WHERE item_no = '$item' 
+                                        AND purchase_order_aggregates_no = '$purchase_order_aggregates_no'
+                                        AND purchase_order_aggregates_id = '$po_aggregates_id'
+                                        AND office = '$office'";
+                                        echo $po_aggregates_status;
+                // mysqli_query($db, $po_aggregates_status);
+            }
+
+            if($item == 'Cement'){
+
+                $sql = "SELECT item_no, stock FROM item_stock
+                        WHERE item_no = 'Cement' AND office = '$office'";
+                $cement = $volume * 40;
+                $result = mysqli_query($db, $sql);
+                if(mysqli_num_rows($result) > 0){
+                    $stock_update = "UPDATE item_stock SET stock = stock + '$cement', last_update = '$datetime' 
+                                        WHERE item_no = 'Cement' AND office = '$office'";
+                }else{
+                    $stock_update = "INSERT INTO item_stock(item_no, stock, office, last_update) 
+                                    VALUES('Cement','$cement','$office','$datetime')";
+                }
+                echo $stock_update;
+                // mysqli_query($db, $stock_update);   
+            }
+
+            $history_query = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) 
+                            VALUES('Received','Received DR No.','$item','".ucfirst($office)." received $balance ".getTruck($db, $item)." of $item from $supplier with P.O no. $purchase_order_aggregates_no and DR. no. $dr_no','$datetime','$office')";
+
+            echo $query_received ."<br>";                
+            echo $po_aggregates_query ."<br>";
+            echo $stock_update ."<br>";
+            echo $history_query ."<br>";
+
+
+            // if(mysqli_query($db, $query_received) && mysqli_query($db, $history_query)){
+            //     phpAlert("Item received successfully!!");
+            //     echo "<meta http-equiv='refresh' content='0'>";
+            // }else{
+            //     phpAlert("Something went wrong!!");
+            // }
+        }
+    }
+
+
+?>
