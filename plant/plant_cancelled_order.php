@@ -539,7 +539,7 @@
             $pagination.= "</ul></div>\n"; 
         }
 
-        $query = "SELECT o.purchase_id, o.purchase_order_no, o.item_no, o.quantity, o.delivered, o.backload, o.balance, o.cancelled, o.office, o.remarks, l.unit, s.site_name, s.site_address, GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name ASC SEPARATOR ', ') as site_contact_name, DATE_FORMAT(o.date_purchase,'%m/%d/%y') as date_purchase, DATE_FORMAT(o.date_cancelled,'%m/%d/%y') as date_cancelled1, o.psi 
+        $query = "SELECT o.purchase_id, o.purchase_order_no, o.item_no, o.quantity, o.delivered, o.backload, o.balance, o.cancelled, o.office, o.remarks, l.unit, s.site_name, s.site_address, GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name ASC SEPARATOR ', ') as site_contact_name, DATE_FORMAT(o.date_purchase,'%m/%d/%y') as date_purchase, DATE_FORMAT(o.date_cancelled,'%m/%d/%y') as date_cancelled, o.psi 
                     FROM purchase_order o, batch_list l, site_contact_person p, site s, purchase_order_contact c
                     ".$string." ".$string_date."
                     AND o.purchase_id = c.purchase_id
@@ -602,7 +602,7 @@
 ?>
                     </td>
                     <td><strong><?php echo $row['date_purchase']; ?></strong></td>
-                    <td><strong><?php echo $row['date_cancelled1']; ?></strong></td>
+                    <td><strong><?php echo $row['date_cancelled']; ?></strong></td>
                 </tr>
 <?php
             $hash++;
@@ -753,7 +753,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
             $pagination.= "</ul></div>\n"; 
         }
 
-        $query = "SELECT o.purchase_id, o.purchase_order_no, o.item_no, o.quantity, o.delivered, o.backload, o.balance, o.cancelled, o.office, o.remarks, l.unit, s.site_name, s.site_address, GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name ASC SEPARATOR ', ') as site_contact_name, DATE_FORMAT(o.date_purchase,'%m/%d/%y') as date_purchase, DATE_FORMAT(o.date_cancelled,'%m/%d/%y') as date_cancelled1, o.psi 
+        $query = "SELECT o.purchase_id, o.purchase_order_no, o.item_no, o.quantity, o.delivered, o.backload, o.balance, o.cancelled, o.office, o.remarks, l.unit, s.site_name, s.site_address, GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name ASC SEPARATOR ', ') as site_contact_name, DATE_FORMAT(o.date_purchase,'%m/%d/%y') as date_purchase, DATE_FORMAT(o.date_cancelled,'%m/%d/%y') as date_cancelled, o.psi 
                     FROM purchase_order o, batch_list l, site_contact_person p, site s, purchase_order_contact c
                     ".$string." ".$string_date."
                     AND o.purchase_id = c.purchase_id
@@ -816,7 +816,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
 ?>
                     </td>
                     <td><strong><?php echo $row['date_purchase']; ?></strong></td>
-                    <td><strong><?php echo $row['date_cancelled1']; ?></strong></td>
+                    <td><strong><?php echo $row['date_cancelled']; ?></strong></td>
                 </tr>
 <?php
                 $hash++;

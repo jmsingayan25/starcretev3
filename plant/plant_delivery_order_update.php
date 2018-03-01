@@ -241,7 +241,15 @@
 									<div class="form-group">
 										<label for="item_no" class="col-md-3 control-label">Current Item</label>
 										<div class="col-md-6">
-											<input type="text" name="item_no" value="<?php echo $delivery_row['item_no']; ?>" class="form-control" readonly>
+											<input type="hidden" name="item_no" value="<?php echo $delivery_row['item_no']; ?>">
+											<input type="text" name="item_no_display" 
+												value="<?php 
+													if($delivery_row['psi'] != ''){
+														echo $delivery_row['item_no'] . " (" . $delivery_row['psi'] . ")";
+													}else{
+														echo $delivery_row['item_no'];
+													}
+													?>" class="form-control" disabled>
 										</div>
 									</div>
 									<div class="form-group">

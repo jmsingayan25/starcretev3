@@ -179,6 +179,27 @@
 		// alert(ordered);
 	}
 
+
+	function existDRNo(value){
+
+		var array_dr_no = <?php echo json_encode($array); ?>;
+		var number = Number(value);
+		var submit = document.getElementById('submit');
+		var block = document.getElementById('dr_warning');
+		var input = document.getElementById('dr_no');
+
+		if(array_dr_no.indexOf(value) >= 0){
+			// submit.disabled = true;
+			block.style.display = "block";
+			input.style.borderColor = "red";
+
+		}else{
+			// submit.disabled = false;
+			block.style.display = "none";
+			input.style.borderColor = '';
+		}
+	}
+
 </script>
 <style>
 .page_links a{
@@ -320,7 +341,15 @@
 									<div class="form-group">
 										<label for="dr_no" class="col-md-3 control-label">DR No.<span class="required" style="color: red;">*</span></label>
 										<div class="col-md-6">
-											<input type="text" id="dr_no" name="dr_no" class="form-control" autocomplete="off" required>
+											<input type="text" id="dr_no" name="dr_no" class="form-control" onblur="existDRNo(this.value);" autocomplete="off" required>
+											<!-- <p class="help-block" id="dr_warning" style="display: none;">DR No. already exist</p> -->
+											<!-- <div class="isa_warning" id="dr_warning" style="color: #9F6000; background-color: #FEEFB3; display: none;">
+								     			<i class="fa fa-warning"></i>
+								     				DR No. already exist
+											</div> -->
+											<div id="dr_warning" style="display: none; color: red;">
+										    	<strong>Warning!</strong> DR No. already exist
+											</div>
 										</div>
 									</div>
 									<div class="form-group">
@@ -385,12 +414,17 @@
 		$datetime = date("Y/m/d H:i:s");
 		$plant = ucfirst($purchase_row['office']);
 
+		if($psi != ""){
+			$ext = "($psi PSI)";
+		}else{
+			$ext = "";
+		}
 
 		$delivery_insert = "INSERT INTO delivery(delivery_receipt_no, item_no, psi, quantity, site_id, gate_pass, po_no_delivery, date_delivery, office, remarks, fk_po_id) 
 							VALUES('$delivery_no','$item_no', '$psi','$quantity','$site_id','$gate_pass_no','$po_no','$datetime','$office','On Delivery','$purchase_id')";
 
 		$history_query = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) 
-		 					VALUES('Delivery','Issued DR No.','Issued DR No. $delivery_no with P.O. No. $po_no and ".$_POST['quantity']." pcs of $item_no ($psi PSI) and ready to deliver to $site_name','$datetime','$office')";
+		 					VALUES('Delivery','Issued DR No.','Issued DR No. $delivery_no with P.O. No. $po_no and ".$_POST['quantity']." pcs of $item_no $ext and ready to deliver to $site_name','$datetime','$office')";
 
 		$purchase_order_update = "UPDATE purchase_order SET balance = balance - '$quantity'
 									WHERE purchase_id = '$purchase_id'";
@@ -402,7 +436,7 @@
 		if(!in_array($delivery_no, $array)){
 			// echo "NOT EXISTS";
 			if(mysqli_query($db, $delivery_insert) && mysqli_query($db, $history_query) && mysqli_query($db, $purchase_order_update)){
-				echo "<script> alert('Delivery No. $delivery_no issued successfully!! Transaction can be viewed on Delivery Report Page');
+				echo "<script> alert('DR No. $delivery_no issued successfully. Transaction can be viewed on Delivery Report Page');
 					window.location.href='plant_delivery_order.php'
 					</script>";
 			}else{

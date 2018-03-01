@@ -55,7 +55,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>On Delivery - Delivery Order</title>
+    <title>Existing P.O. - Delivery Order</title>
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -613,7 +613,7 @@
 					<td>
 						<form action="plant_delivery_issue_form.php" method="post">
 							<input type="hidden" name="post_delivery_purchase_id" value="<?php echo $row['purchase_id']; ?>">
-								<input type="submit" value="Issue DR No." class="btn btn-success btn-xs" style="margin-bottom: 5px;">
+							<input type="submit" value="Issue DR No." class="btn btn-sm btn-block" style="background-color: #388e3c; color: white; margin-bottom: 5px; font-weight: bold;">
 						</form>
 					</td>
 				</tr>
@@ -836,7 +836,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
 					<td>
 						<form action="plant_delivery_issue_form.php" method="post">
 							<input type="hidden" name="post_delivery_purchase_id" value="<?php echo $row['purchase_id']; ?>">
-								<input type="submit" value="Issue DR No." class="btn btn-success btn-xs" style="margin-bottom: 5px;">
+							<input type="submit" value="Issue DR No." class="btn btn-sm btn-block" style="background-color: #388e3c; color: white; margin-bottom: 5px; font-weight: bold;">
 						</form>
 					</td>
 				</tr>

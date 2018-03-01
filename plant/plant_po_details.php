@@ -322,8 +322,8 @@
                     <div class="col-md-10">
                         <!-- <h3 class="page-header"><i class="fa fa-laptop"></i> P.O. No. <?php echo $po_no_delivery; ?></h3> -->
                         <ol class="breadcrumb">
-                            <li><i class="fa fa-home"></i><a href="plant_delivery_order.php">Delivery Order</a></li>
-                            <li><i class="fa fa-laptop"></i>Details</li>                          
+                            <li><i class="fa fa-building"></i><a href="plant_delivery_order.php">Delivery Order</a></li>
+                            <li><i class="icon_document"></i>Details</li>                          
                         </ol>
                     </div>
                 </div>
@@ -349,18 +349,23 @@
                                                 
 <?php
 
-    $balance_sql = "SELECT item_no, SUM(balance) as balance 
+    $balance_sql = "SELECT item_no, SUM(balance) as balance, psi
             FROM purchase_order 
             WHERE purchase_order_no = '$po_no_delivery'
-            AND cancelled = 0
-            GROUP BY item_no";
+            -- AND cancelled = 0
+            GROUP BY purchase_id";
 
     $result_sql = mysqli_query($db, $balance_sql);
 
     if(mysqli_num_rows($result_sql) > 0){
 
         while ($balance_sql_row = mysqli_fetch_assoc($result_sql)) {
-            echo $balance_sql_row['item_no'] . ": ". number_format($balance_sql_row['balance']) . " pcs <br>";
+            if($balance_sql_row['psi'] != ''){
+                $ext = " (" . $balance_sql_row['psi'] . " PSI) ";
+            }else{
+                $ext = "";
+            }
+            echo $balance_sql_row['item_no'] . $ext . ": ". number_format($balance_sql_row['balance']) . " pcs <br>";
         }  
     }
     
@@ -431,9 +436,6 @@
    
 ?>                                               
                                                     </th>
-                                                    <th colspan="3">
-                                                        <button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
-                                                    </th>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -441,13 +443,20 @@
                                 </section>
                             </div>
                         </div>  
-                    </div>
-                    <div class="col-md-9">
                         <div class="row">
                             <div class="col-md-12">
+                                <section class="panel">
+                                <header class="panel-heading">
+                                    Order Details
+                                </header>
                                 <div class="table-responsive filterable">
                                     <table class="table table-striped table-bordered">
                                         <thead>
+                                            <tr class="filterable">
+                                                <th colspan="8">
+                                                    <button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
+                                                </th>
+                                            </tr>
                                             <tr class="filters">
                                                 <th class="col-md-1">P.O. No.</th>
                                                 <th class="col-md-1"><input type="text" class="form-control" placeholder="DR No." disabled></th>
@@ -525,9 +534,13 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                </section>
                             </div>
                         </div>
                     </div>
+<!--                     <div class="col-md-9">
+                        
+                    </div> -->
                     <div class="col-md-3">
                         <section class="panel">
                             <header class="panel-heading">
@@ -557,7 +570,8 @@
                     ORDER BY c.site_contact_name";
                     // echo $contact_sql;
     $contact_sql_result = mysqli_query($db, $contact_sql);
-    while ($contact_sql_row = mysqli_fetch_assoc($contact_sql_result)) {
+    if(mysqli_num_rows($contact_sql_result) > 0){
+        while ($contact_sql_row = mysqli_fetch_assoc($contact_sql_result)) {
 ?>
                                         <tr>
                                             <td>
@@ -565,9 +579,9 @@
                                             </td>
 <?php
     
-        $no_sql = "SELECT GROUP_CONCAT(site_contact_no SEPARATOR ', ') as site_contact_no 
-                        FROM site_contact_number
-                        WHERE site_contact_person_id = '".$contact_sql_row['site_contact_id']."'";
+            $no_sql = "SELECT GROUP_CONCAT(site_contact_no SEPARATOR ', ') as site_contact_no 
+                            FROM site_contact_number
+                            WHERE site_contact_person_id = '".$contact_sql_row['site_contact_id']."'";
 
             $no_sql_result = mysqli_query($db, $no_sql);
             while ($no_sql_row = mysqli_fetch_assoc($no_sql_result)) {
@@ -577,6 +591,55 @@
                                             </td>
                                         </tr>
 <?php
+            }
+        }
+    }else{
+?>
+                                        <!-- <tr>
+                                            <td colspan="2" style='min-height: 100%; background: white; text-align:center; vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4>
+                                            </td>
+                                        </tr>   -->    
+
+<?php
+
+        $contact_sql = "SELECT DISTINCT p.site_contact_id, c.site_contact_name
+                        FROM purchase_order_contact p, purchase_order d, site_contact_person c
+                        WHERE d.purchase_id = p.purchase_id
+                        AND p.site_contact_id = c.site_contact_person_id
+                        AND purchase_order_no = '$po_no_delivery'
+                        ORDER BY c.site_contact_name";
+                        // echo $contact_sql;
+        $contact_sql_result = mysqli_query($db, $contact_sql);
+        if(mysqli_num_rows($contact_sql_result) > 0){
+            while ($contact_sql_row = mysqli_fetch_assoc($contact_sql_result)) {
+?>
+                                        <tr>
+                                            <td>
+                                                <strong><?php echo $contact_sql_row['site_contact_name']; ?></strong>
+                                            </td>
+<?php
+    
+                $no_sql = "SELECT GROUP_CONCAT(site_contact_no SEPARATOR ', ') as site_contact_no 
+                                FROM site_contact_number
+                                WHERE site_contact_person_id = '".$contact_sql_row['site_contact_id']."'";
+
+                $no_sql_result = mysqli_query($db, $no_sql);
+                while ($no_sql_row = mysqli_fetch_assoc($no_sql_result)) {
+?> 
+                                            <td>
+                                                <strong><?php echo $no_sql_row['site_contact_no']; ?></strong>
+                                            </td>
+                                        </tr>
+<?php
+                }
+            }                                
+        }else{
+?>
+                                        <tr>
+                                            <td colspan="2" style='min-height: 100%; background: white; text-align:center; vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4>
+                                            </td>
+                                        </tr>    
+<?php            
         }
     }
 ?>    

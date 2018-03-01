@@ -550,7 +550,7 @@
                     AND d.site_id = s.site_id ".$string_ext."
                     AND remarks = 'On Delivery'
                     GROUP BY delivery_id 
-                    ORDER BY date_delivery DESC
+                    ORDER BY delivery_id DESC
                     LIMIT $start, $limit";
         // echo $query;
         $result = mysqli_query($db, $query);
@@ -612,7 +612,7 @@
                     <td><strong><?php echo $row['date_delivery']; ?></strong></td>
                     <td>
                         <form action="plant_delivery_order.php" method="post">
-                            <button type="button" id="update" name="update" value="<?php echo $row['delivery_id']; ?>" class="btn btn-warning btn-xs" style="margin-bottom: 5px;" data-toggle='modal' data-target='#deliveryOrderUpdateRow<?php echo $hash; ?>'>Update</button>
+                            <button type="button" id="update" name="update" value="<?php echo $row['delivery_id']; ?>" class="btn btn-sm btn-block" style="background-color: #ffa000; color: white; margin-bottom: 3px;" data-toggle='modal' data-target='#deliveryOrderUpdateRow<?php echo $hash; ?>'><span class="fa fa-edit"></span> <strong>Update</strong></button>
 
                             <div class="modal fade" id="deliveryOrderUpdateRow<?php echo $hash;?>" role="dialog">
                                 <div class="modal-dialog modal-sm">
@@ -645,7 +645,7 @@
                                 </div>
                             </div>
                         </form>
-                        <button type="submit" class='btn btn-xs btn-success' style="margin-bottom: 3px; width: 85px;" data-toggle='modal' data-target='#deliveryModal<?php echo $hash; ?>'>Delivered</button>
+                        <button type="submit" class='btn btn-sm btn-block' style="margin-bottom: 3px; width: 85px; background-color: #388e3c; color: white;" data-toggle='modal' data-target='#deliveryModal<?php echo $hash; ?>'><span class="fa fa-check"></span> <strong>Delivered</strong></button>
                         
                         <form action="plant_delivery_order.php" method="post">
                         <div class="modal fade" id="deliveryModal<?php echo $hash;?>" role="dialog">
@@ -749,14 +749,14 @@
                                                     <strong><?php echo $row['site_contact_name']; ?></strong>
                                                 </div>
                                             </div>
-                                            <div class="row">
+                                           <!--  <div class="row">
                                                 <div class="col-md-6">
                                                     <label>Contact No.</label>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <!-- <strong><?php echo $row['site_contact_no']; ?></strong> -->
+                                                    <strong><?php echo $row['site_contact_no']; ?></strong>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>                  
                                     </div>
                                     <div class="modal-footer">
@@ -768,7 +768,7 @@
                         </div>
                         </form>
                         <form action="plant_delivery_order.php" method="post">
-                        	<button type="submit" id="returned" name="returned" value="<?php echo $row['delivery_id']?>" class='btn btn-xs btn-danger' onclick="return confirm('Confirm DR No. <?php echo $row['delivery_receipt_no']; ?> as backload delivery?')" style=" width: 85px;" >Backload</button>
+                        	<button type="submit" id="returned" name="returned" value="<?php echo $row['delivery_id']?>" class='btn btn-sm btn-block' onclick="return confirm('Confirm DR No. <?php echo $row['delivery_receipt_no']; ?> as backload delivery?')" style="background-color: #d32f2f; color: white; width: 85px;" ><span class="fa fa-close"></span> <strong>Backload</strong></button>
                         </form>
                 	</td>                 
                 </tr>
@@ -930,7 +930,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4>
                     AND d.site_id = s.site_id ".$string_ext."
                     AND remarks = 'On Delivery'
                     GROUP BY delivery_id 
-                    ORDER BY date_delivery DESC
+                    ORDER BY delivery_id DESC
                     LIMIT $start, $limit";
         // echo $query;
         $result = mysqli_query($db, $query);
@@ -991,7 +991,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4>
                     <td><strong><?php echo $row['date_delivery']; ?></strong></td>
                     <td>
                         <form action="plant_delivery_order.php" method="post">
-                            <button type="button" id="update" name="update" value="<?php echo $row['delivery_id']; ?>" class="btn btn-warning btn-xs" style="margin-bottom: 5px;" data-toggle='modal' data-target='#deliveryOrderUpdateRow<?php echo $hash; ?>'>Update</button>
+                            <button type="button" id="update" name="update" value="<?php echo $row['delivery_id']; ?>" class="btn btn-sm btn-block" style="background-color: #ffa000; color: white; margin-bottom: 3px;" data-toggle='modal' data-target='#deliveryOrderUpdateRow<?php echo $hash; ?>'><span class="fa fa-edit"></span> <strong>Update</strong></button>
 
                             <div class="modal fade" id="deliveryOrderUpdateRow<?php echo $hash;?>" role="dialog">
                                 <div class="modal-dialog modal-sm">
@@ -1024,7 +1024,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4>
                                 </div>
                             </div>
                         </form>
-                        <button type="submit" class='btn btn-xs btn-success' style="margin-bottom: 3px; width: 85px;" data-toggle='modal' data-target='#deliveryModal<?php echo $hash; ?>'>Delivered</button>
+                        <button type="submit" class='btn btn-sm btn-block' style="margin-bottom: 3px; width: 85px; background-color: #388e3c; color: white;" data-toggle='modal' data-target='#deliveryModal<?php echo $hash; ?>'><span class="fa fa-check"></span> <strong>Delivered</strong></button>
                         
                         <form action="plant_delivery_order.php" method="post">
                         <div class="modal fade" id="deliveryModal<?php echo $hash;?>" role="dialog">
@@ -1128,14 +1128,14 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4>
                                                     <strong><?php echo $row['site_contact_name']; ?></strong>
                                                 </div>
                                             </div>
-                                            <div class="row">
+                                           <!--  <div class="row">
                                                 <div class="col-md-6">
                                                     <label>Contact No.</label>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <!-- <strong><?php echo $row['site_contact_no']; ?></strong> -->
+                                                    <strong><?php echo $row['site_contact_no']; ?></strong>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>                  
                                     </div>
                                     <div class="modal-footer">
@@ -1147,7 +1147,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4>
                         </div>
                         </form>
                         <form action="plant_delivery_order.php" method="post">
-                        	<button type="submit" id="returned" name="returned" value="<?php echo $row['delivery_id']?>" class='btn btn-xs btn-danger' onclick="return confirm('Confirm DR No. <?php echo $row['delivery_receipt_no']; ?> as backload delivery?')" style=" width: 85px;" >Backload</button>
+                        	<button type="submit" id="returned" name="returned" value="<?php echo $row['delivery_id']?>" class='btn btn-sm btn-block' onclick="return confirm('Confirm DR No. <?php echo $row['delivery_receipt_no']; ?> as backload delivery?')" style="background-color: #d32f2f; color: white; width: 85px;" ><span class="fa fa-close"></span> <strong>Backload</strong></button>
                         </form>
                 	</td>                 
                 </tr>
@@ -1245,7 +1245,7 @@ if(isset($_POST['delivered'])){
 		mysqli_query($db, $purchase_order_count_update);
 		
 		$history_query = "INSERT INTO history(table_report,transaction_type,item_no,detail,history_date,office)
-							VALUES('Delivery','Delivered Order','$row_item_no','".ucfirst($row_office)." delivered DR No. $row_delivery_receipt_no with P.O. No. $row_po_no_delivery and ".number_format($row_quantity)." pcs of $row_item_no ($row_psi PSI) to $row_site_name','$datetime','$row_office')";
+							VALUES('Delivery','Delivered Order','$row_item_no','Delivered DR No. $row_delivery_receipt_no with P.O. No. $row_po_no_delivery and ".number_format($row_quantity)." pcs of $row_item_no ($row_psi PSI) to $row_site_name','$datetime','$row_office')";
 
 		$batch_prod_stock = "INSERT INTO batch_prod_stock(item_no, delivered, office, date_production)
 								VALUES('$row_item_no','$row_quantity','$row_office','$datetime')";
