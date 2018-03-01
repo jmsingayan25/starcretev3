@@ -350,8 +350,8 @@ session_start();
                         <li><i class="fa fa-building"></i><?php echo $plant; ?></li>
                         <li><i class="icon_document"></i><a href="delivery_order.php?office=<?php echo $search_plant ?>" style="color: blue;">On Delivery Order <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $search_plant); ?></span></a></li>
                         <li><i class="fa fa-info-circle"></i><a href="delivery_issue.php?office=<?php echo $search_plant ?>">Existing P.O. <span class='badge'><?php echo countPendingPo($db, $search_plant); ?></span></a></li>
-                        <li><i class="fa fa-truck"><a href="delivery_success.php?office=<?php echo $search_plant ?>"></i>Delivered</a></li>
-                        <li><i class="fa fa-reply"><a href="delivery_backload.php?office=<?php echo $search_plant ?>"></i>Backload</a></li>			  	
+                        <li><i class="fa fa-truck"></i><a href="delivery_success.php?office=<?php echo $search_plant ?>">Delivered</a></li>
+                        <li><i class="fa fa-reply"></i><a href="delivery_backload.php?office=<?php echo $search_plant ?>">Backload</a></li>			  	
                     </ol>
                 </div>
             </div>
@@ -365,8 +365,7 @@ session_start();
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="start_date">Start Date:</label><input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">
-                                        </div>
-                                        
+                                        </div> 
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">

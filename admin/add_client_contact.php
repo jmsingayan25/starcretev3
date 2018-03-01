@@ -223,11 +223,11 @@
 	            <!--overview start-->
 	            <div class="row">
 	                <div class="col-lg-12">
-	                    <h3 class="page-header">Client New Contact</h3>
+	                    <!-- <h3 class="page-header">Client New Contact</h3> -->
 	                    <ol class="breadcrumb">
 	                        <li><i class="fa fa-address-book"></i><a href="clients.php" style="color: inherit;">Clients</a></li>
 	                        <li><i class="fa fa-building"></i><?php echo $client_name; ?></li>
-	                        <!-- <li><i class="icon_document"></i>New Contact Person</li>						  	 -->
+	                        <li><i class="icon_document"></i><a href="add_client_contact.php" style="color: blue;">New Contact Person</a></li>						  	
 	                    </ol>
 	                </div>
 	            </div>
@@ -265,13 +265,62 @@
 									</section>
 								</div>
 							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<section class="panel">
+										<header class="panel-heading">
+											List of Contacts
+										</header>
+										<div class="panel-body"> 
+<?php
+
+    $name_sql = "SELECT DISTINCT client_contact_id, client_contact_name
+                    FROM client_contact_person
+                    WHERE client_id = '$client_id'";
+
+    $name_sql_result = mysqli_query($db, $name_sql);
+    while ($row_name_sql = mysqli_fetch_assoc($name_sql_result)) {
+        
+        $no_sql = "SELECT GROUP_CONCAT(DISTINCT client_contact_no SEPARATOR ', ') as client_contact_no
+                    FROM client_contact_number
+                    WHERE client_contact_id = '".$row_name_sql['client_contact_id']."'";
+
+        $no_sql_result = mysqli_query($db, $no_sql);
+        while ($row_no_sql = mysqli_fetch_assoc($no_sql_result)) {
+            
+            $row_name_sql['client_contact_no'] = $row_no_sql['client_contact_no'];
+?>
+                                                <!-- <tr style="border: none;">
+                                                    <td style="border: none;">
+                                                        <strong><?php echo $row_name_sql['client_contact_name'] . "<br> (" . $row_name_sql['client_contact_no'] . ")"; ?></strong>
+                                                    </td>
+                                                </tr> -->
+                                                <div class="form-group">
+	                                                <div class="row" style="margin-bottom: 2px;">
+	                                                    <div class="col-md-6 col-md-offset-1">
+	                                                        <strong><?php echo $row_name_sql['client_contact_name']; ?></strong>
+	                                                    </div>
+	                                                    <div class="col-md-5">
+	                                                    	<strong><?php echo $row_name_sql['client_contact_no']; ?></strong>
+	                                                    </div>
+	                                                </div>
+                                                </div>
+<?php
+        }
+    }
+
+?>  
+										</div>
+									</section>
+								</div>
+							</div>
 						</div>
 						<div class="col-md-6">
 	            			<div class="row">
 								<div class="col-md-12">
 									<section class="panel">
 										<header class="panel-heading">
-										Client Contact
+										New Contact Details
 										</header>
 										<div class="panel-body">
 											<div class="row">

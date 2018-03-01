@@ -233,8 +233,8 @@
 	                    <ol class="breadcrumb">
 	                        <li><i class="fa fa-address-book"></i><a href="clients.php">Client</a></li>
 	                        <li><i class="fa fa-building"></i><a href="client_sites.php"><?php echo $client_name; ?></a></li>
-<!-- 	                        <li><a href="client_sites.php"><i class="icon_document_alt"></i>Sites</a></li>
-	                        <li><i class="icon_document_alt"></i>Form</li> -->						  	
+	                        <!-- <li><a href="client_sites.php"><i class="icon_document_alt"></i>Sites</a></li> -->
+	                        <li><i class="icon_document"></i><a href="add_site.php" style="color: blue;">New Site</a></li>						  	
 	                    </ol>
 	                </div>
 	            </div>

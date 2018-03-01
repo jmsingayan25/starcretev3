@@ -234,8 +234,8 @@
 	                    <ol class="breadcrumb">
 	                        <li><i class="fa fa-address-book"></i><a href="clients.php">Clients</a></li>
 	                        <li><i class="fa fa-building"></i><a href="client_sites.php"><?php echo $client_name; ?></a></li>
-	                        <li><i class="icon_document"></i><?php echo $site_name; ?></li>
-	                        <!-- <li><i class="icon_document"></i>New Contact Person</li>						  	 -->
+	                        <li><i class="fa fa-building"></i><?php echo $site_name; ?></li>
+	                        <li><i class="icon_document"></i><a href="add_site_contact.php" style="color: blue;">New Contact Person</a></li>						  	
 	                    </ol>
 	                </div>
 	            </div>
@@ -273,13 +273,57 @@
 									</section>
 								</div>
 							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<section class="panel">
+										<header class="panel-heading">
+											List of Contacts
+										</header>
+										<div class="panel-body">
+<?php
+
+    $name_sql = "SELECT DISTINCT site_contact_person_id, site_contact_name
+                    FROM site_contact_person
+                    WHERE site_id = '$site_id'";
+
+    $name_sql_result = mysqli_query($db, $name_sql);
+    while ($row_name_sql = mysqli_fetch_assoc($name_sql_result)) {
+        
+        $no_sql = "SELECT GROUP_CONCAT(DISTINCT site_contact_no SEPARATOR ', ') as site_contact_no
+                    FROM site_contact_number
+                    WHERE site_contact_person_id = '".$row_name_sql['site_contact_person_id']."'";
+
+        $no_sql_result = mysqli_query($db, $no_sql);
+        while ($row_no_sql = mysqli_fetch_assoc($no_sql_result)) {
+            
+            $row_name_sql['site_contact_no'] = $row_no_sql['site_contact_no'];
+?>
+												<div class="form-group">
+	                                                <div class="row" style="margin-bottom: 2px;">
+	                                                    <div class="col-md-6 col-md-offset-1">
+	                                                        <strong><?php echo $row_name_sql['site_contact_name']; ?></strong>
+	                                                    </div>
+	                                                    <div class="col-md-5">
+	                                                    	<strong><?php echo $row_name_sql['site_contact_no']; ?></strong>
+	                                                    </div>
+	                                                </div>
+                                                </div>
+<?php
+        }
+    }
+
+?>  
+										</div>
+									</section>
+								</div>
+							</div>
 						</div>
 						<div class="col-md-6">
 	            			<div class="row">
 								<div class="col-md-12">
 									<section class="panel">
 										<header class="panel-heading">
-										Site Contact
+										New Contact Details
 										</header>
 										<div class="panel-body">
 											<div class="row">

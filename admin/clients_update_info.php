@@ -218,11 +218,12 @@
             <!--overview start-->
             <div class="row">
                 <div class="col-md-12 page_links">
-                    <h3 class="page-header">Client Update Details</h3>
+                    <!-- <h3 class="page-header">Client Update Details</h3> -->
                     <ol class="breadcrumb">
                         <!-- <li><i class="fa fa-home"></i>Home</li> -->
                         <li><i class="fa fa-address-book"></i><a href="clients.php">Clients</a></li>
                         <li><i class="fa fa-building"></i><?php echo $client_name; ?></li>
+                        <li><i class="icon_document"></i><a href="clients_update_info.php" style="color: blue;">Update Info</a></li>
                         <!-- <li><i class="fa fa-file-text"></i><a href="clients_update_info.php" style="color: inherit;">Update Info</a></li>                             -->
                     </ol>
                 </div>
@@ -294,7 +295,7 @@
     	$hash = 1;
     	while ($sql_row = mysqli_fetch_assoc($sql_result)) {
 ?>
-										<tr id="row<?php echo $hash; ?>" style="text-align: center;">
+										<tr id="row<?php echo $hash; ?>" style="text-align: center; vertical-align: top;">
 											<td class="col-md-6">
 												<input type="hidden" name="contact_id[]" value="<?php echo $sql_row['client_contact_id']; ?>">
 												<!-- <div class="form-group"> -->
@@ -373,13 +374,15 @@
 		$count = 0;
 		$update_client_name = mysqli_real_escape_string($db, $_POST['update_client_name']);
 		$update_address = mysqli_real_escape_string($db, $_POST['update_client_address']);
-        $contact_id = $_POST['contact_id'];
+        
        
         $update_client_info = "UPDATE client SET client_name = '$update_client_name', address = '$update_address' WHERE client_id = '$client_id'";
         // echo $update_client_info."<br>";
         mysqli_query($db, $update_client_info);
 
-        // if(isset($update_contact_no)){
+        if(isset($_POST['contact_id'])){
+
+            $contact_id = $_POST['contact_id'];
 
             $update_contact_name = $_POST['update_contact_name'];
             $update_contact_no = $_POST['update_contact_no'];
@@ -434,6 +437,12 @@
                         window.location.href='clients.php'
                     </script>";
             }
+        }else{
+            echo "<script> 
+                    alert('Data updated successfully...');
+                    window.location.href='clients.php'
+                </script>";
+        }
         
 		
 		

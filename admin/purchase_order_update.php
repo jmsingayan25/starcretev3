@@ -452,13 +452,14 @@ session_start();
 		// echo $history;
 		
 		// echo "<script> alert('Purchase Order No. succesfully updated')</script>";
-		if(mysqli_query($db, $sql_update) && mysqli_query($db, $update_quantity_balance) && mysqli_query($db, $delivery_update) && mysqli_query($db, $history)){
-			if(isset($history)){
+		if(mysqli_query($db, $sql_update) && mysqli_query($db, $update_quantity_balance) && mysqli_query($db, $delivery_update)){
+			if(mysqli_query($db, $history)){
 				echo "<script>alert('P.O. No. $update_purchase_order_no details has been updated'); window.location.href='purchase_order.php'</script>";
 				unset($_SESSION['post_purchase_id']);
 				// echo $history;
 			}else{
-				echo "<script> alert('No changes has been made');window.location.href='purchase_order.php'</script>";
+				// echo "<script> alert('No changes has been made');window.location.href='purchase_order.php'</script>";
+                echo "<script>alert('P.O. No. $update_purchase_order_no details has been updated'); window.location.href='purchase_order.php'</script>";
 				unset($_SESSION['post_purchase_id']);
 			}
 		}else{

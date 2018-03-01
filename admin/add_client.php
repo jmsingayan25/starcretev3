@@ -216,7 +216,7 @@
 	            <!--overview start-->
 	            <div class="row">
 	                <div class="col-lg-12">
-	                    <h3 class="page-header">New Client</h3>
+	                    <!-- <h3 class="page-header">New Client</h3> -->
 	                    <ol class="breadcrumb">
 	                        <!-- <li><i class="fa fa-building"></i>Home</a></li> -->
 	                        <li><i class="fa fa-address-book"></i><a href="clients.php" style="color: inherit;">Clients</a></li>						  	

@@ -363,7 +363,7 @@ session_start();
     $balance_sql = "SELECT item_no, SUM(balance) as balance 
                     FROM purchase_order 
                     WHERE purchase_order_no = '$po_no_delivery'
-                    AND cancelled = 0
+                    AND balance != 0
                     GROUP BY item_no";
 
     $result_sql = mysqli_query($db, $balance_sql);
@@ -458,32 +458,29 @@ session_start();
                         </div>
                         <div class="row">
                             <div class="col-md-12">
+                                <header class="panel-heading">
+                                    Order Details
+                                </header>
                                 <section class="panel">
                                     <div class="table-responsive filterable">
                                         <table class="table table-striped table-bordered">
                                             <thead>
-                                                <!-- <tr>
-                                                    <th colspan="2">Item Balance</th>
-                                                    <th colspan="2">Delivered</th>
-                                                    <th colspan="1">On Delivery</th>
-                                                    <th colspan="1">Backloaded</th>
-                                                    <th colspan="3"></th>
-                                                </tr> -->
                                                 <tr class="filterable">
-                                                    <th colspan="8">
+                                                    <th colspan="9">
                                                         <button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
                                                     </th>
                                                 </tr>
                                                 <tr class="filters">
-                                                    <th class="col-md-1" style="vertical-align: top;">P.O. No.</th>
-                                                    <th class="col-md-1" style="vertical-align: top;"><input type="text" class="form-control" placeholder="DR No." disabled></th>
-                                                    <th class="col-md-1" style="vertical-align: top;"><input type="text" class="form-control" placeholder="Item" disabled></th>
-                                                    <th class="col-md-1" style="vertical-align: top;">Quantity</th>
-                                                    <th class="col-md-2" style="vertical-align: top;"><input type="text" class="form-control" placeholder="Site Name" disabled></th>
-                                                    <th class="col-md-2" style="vertical-align: top;"><input type="text" class="form-control" placeholder="Address" disabled></th>
-                                                    <!-- <th class="col-md-1" style="vertical-align: top;">Contact</th> -->
-                                                    <th class="col-md-1" style="vertical-align: top;">Date Transaction</th>
-                                                    <th class="col-md-1" style="vertical-align: top;">Status</th>
+                                                    <th class="col-md-1">#</th>
+                                                    <th class="col-md-1">P.O. No.</th>
+                                                    <th class="col-md-1"><input type="text" class="form-control" placeholder="DR No." disabled></th>
+                                                    <th class="col-md-1"><input type="text" class="form-control" placeholder="Item" disabled></th>
+                                                    <th class="col-md-1">Quantity</th>
+                                                    <th class="col-md-2"><input type="text" class="form-control" placeholder="Site Name" disabled></th>
+                                                    <th class="col-md-2"><input type="text" class="form-control" placeholder="Address" disabled></th>
+                                                    <!-- <th class="col-md-1">Contact</th> -->
+                                                    <th class="col-md-1">Date Transaction</th>
+                                                    <th class="col-md-1">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -500,6 +497,7 @@ session_start();
             ORDER BY date_delivery DESC";
     $result = mysqli_query($db, $sql);
     if(mysqli_num_rows($result) > 0){
+        $hash = 1;
         while ($row = mysqli_fetch_assoc($result)) {
 
             if($row['psi'] != ""){
@@ -510,6 +508,7 @@ session_start();
     
 ?>
                                     <tr>
+                                        <td><?php echo $hash; ?></td>
                                         <td><strong><?php echo $row['po_no_delivery']; ?></strong></td>
                                         <td><strong><?php echo $row['delivery_receipt_no']; ?></strong></td>
                                         <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
@@ -534,11 +533,12 @@ session_start();
 ?>
                                     </tr>
 <?php
+            $hash++;
         }
     }else{
 ?>
                                     <tr>
-                                        <td colspan="10" style='min-height: 100%; background: white; text-align:center; vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4>
+                                        <td colspan="8" style='min-height: 100%; background: white; text-align:center; vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4>
                                         </td>
                                     </tr>
 <?php
@@ -568,8 +568,6 @@ session_start();
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        
-
 <?php
 
     $contact_sql = "SELECT DISTINCT p.site_contact_id, c.site_contact_name
@@ -580,7 +578,8 @@ session_start();
                     ORDER BY c.site_contact_name";
                     // echo $contact_sql;
     $contact_sql_result = mysqli_query($db, $contact_sql);
-    while ($contact_sql_row = mysqli_fetch_assoc($contact_sql_result)) {
+    if(mysqli_num_rows($contact_sql_result) > 0){
+        while ($contact_sql_row = mysqli_fetch_assoc($contact_sql_result)) {
 ?>
                                         <tr>
                                             <td>
@@ -588,7 +587,7 @@ session_start();
                                             </td>
 <?php
     
-        $no_sql = "SELECT GROUP_CONCAT(site_contact_no SEPARATOR ', ') as site_contact_no 
+            $no_sql = "SELECT GROUP_CONCAT(site_contact_no SEPARATOR ', ') as site_contact_no 
                         FROM site_contact_number
                         WHERE site_contact_person_id = '".$contact_sql_row['site_contact_id']."'";
 
@@ -600,6 +599,54 @@ session_start();
                                             </td>
                                         </tr>
 <?php
+            }
+        }
+    }else{
+?>
+                                        <!-- <tr>
+                                            <td colspan="2" style='min-height: 100%; background: white; text-align:center; vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4>
+                                            </td>
+                                        </tr> -->
+<?php
+
+        $contact_sql = "SELECT DISTINCT p.site_contact_id, c.site_contact_name
+                    FROM purchase_order_contact p, purchase_order d, site_contact_person c
+                    WHERE d.purchase_id = p.purchase_id
+                    AND p.site_contact_id = c.site_contact_person_id
+                    AND purchase_order_no = '$po_no_delivery'
+                    ORDER BY c.site_contact_name";
+                    // echo $contact_sql;
+        $contact_sql_result = mysqli_query($db, $contact_sql);
+        if(mysqli_num_rows($contact_sql_result) > 0){
+            while ($contact_sql_row = mysqli_fetch_assoc($contact_sql_result)) {
+?>
+                                        <tr>
+                                            <td>
+                                                <strong><?php echo $contact_sql_row['site_contact_name']; ?></strong>
+                                            </td>
+<?php
+    
+                $no_sql = "SELECT GROUP_CONCAT(site_contact_no SEPARATOR ', ') as site_contact_no 
+                            FROM site_contact_number
+                            WHERE site_contact_person_id = '".$contact_sql_row['site_contact_id']."'";
+
+                $no_sql_result = mysqli_query($db, $no_sql);
+                while ($no_sql_row = mysqli_fetch_assoc($no_sql_result)) {
+?> 
+                                            <td>
+                                                <strong><?php echo $no_sql_row['site_contact_no']; ?></strong>
+                                            </td>
+                                        </tr>
+<?php
+                }
+            }
+        }else{
+?>
+                                        <tr>
+                                            <td colspan="2" style='min-height: 100%; background: white; text-align:center; vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4>
+                                            </td>
+                                        </tr>
+<?php            
         }
     }
 ?>    

@@ -225,9 +225,9 @@
                     <!-- <h3 class="page-header"><i class="fa fa-laptop"></i> <?php echo $site_name; ?></h3> -->
                     <ol class="breadcrumb">
                         <!-- <li><i class="fa fa-home"></i>Home</li> -->
-                        <li><i class="fa fa-address-book"></i>Clients</li>
-                        <li><i class="fa fa-building"></i><a href="clients.php"><?php echo $client_name;  ?></a></li>
-                        <li><i class="fa fa-address-card"></i><a href="client_sites.php"><?php echo $site_name; ?></a></li>
+                        <li><i class="fa fa-address-book"></i><a href="clients.php">Clients</a></li>
+                        <li><i class="fa fa-building"></i><a href="client_sites.php"><?php echo $client_name; ?></a></li>
+                        <li><i class="fa fa-building"></i><?php echo $site_name; ?></li>
                         <li><i class="fa fa-file-text"></i><a href="client_sites_update_info.php" style="color: blue;">Update Info</a></li>                            
                     </ol>
                 </div>
@@ -294,7 +294,7 @@
         $hash = 1;
         while ($sql_row = mysqli_fetch_assoc($result_sql_contact)) {
 ?>
-                                        <tr id="row<?php echo $hash; ?>" style="text-align: center;">
+                                        <tr id="row<?php echo $hash; ?>" style="text-align: center; vertical-align: top;">
                                             <td class="col-md-6">
                                                 <input type="hidden" name="contact_person_id[]" value="<?php echo $sql_row['site_contact_person_id']; ?>">
                                                 <!-- <div class="form-group"> -->
@@ -400,49 +400,57 @@
         $count = 0;
         $update_site_name = mysqli_real_escape_string($db, $_POST['update_site_name']);
         $update_site_address = mysqli_real_escape_string($db, $_POST['update_site_address']);
-        $contact_person_id = $_POST['contact_person_id'];
-
+        
         $update_site = "UPDATE site 
                          SET site_name = '$update_site_name', site_address = '$update_site_address'
                          WHERE site_id = '$site_id'";
 
         mysqli_query($db, $update_site);
 
-        $update_contact_name = $_POST['update_contact_name'];
-        $update_contact_no = $_POST['update_contact_no'];
-        $contact_encode = json_encode($array_contact);
-        $contact_decode = json_decode($contact_encode);
+        if(isset($_POST['contact_person_id'])){
 
-        // echo $contact_encode;
+            $contact_person_id = $_POST['contact_person_id'];
+            $update_contact_name = $_POST['update_contact_name'];
+            $update_contact_no = $_POST['update_contact_no'];
+            $contact_encode = json_encode($array_contact);
+            $contact_decode = json_decode($contact_encode);
 
-        if(count($contact_decode->contact) > 0){
+            // echo $contact_encode;
 
-            for ($i=0; $i < count($contact_decode->contact); $i++) { 
+            if(count($contact_decode->contact) > 0){
 
-                $site_contact_id = $contact_decode->contact[$i]->site->site_contact_id;
-                $site_contact_no_id = $contact_decode->contact[$i]->site->contact_no_id;
+                for ($i=0; $i < count($contact_decode->contact); $i++) { 
 
-                $update_contact_info = "UPDATE site_contact_number 
-                                        SET site_contact_no = '$update_contact_no[$i]' 
-                                        WHERE site_contact_person_id = '$site_contact_id'
-                                        AND site_contact_no_id = '$site_contact_no_id'";
+                    $site_contact_id = $contact_decode->contact[$i]->site->site_contact_id;
+                    $site_contact_no_id = $contact_decode->contact[$i]->site->contact_no_id;
 
-                // echo $update_contact_info."<br>";
-                mysqli_query($db, $update_contact_info); 
-                $count++;   
-            }
+                    $update_contact_info = "UPDATE site_contact_number 
+                                            SET site_contact_no = '$update_contact_no[$i]' 
+                                            WHERE site_contact_person_id = '$site_contact_id'
+                                            AND site_contact_no_id = '$site_contact_no_id'";
 
-            for ($j=0; $j < count($contact_person_id); $j++) { 
-                    
-                $update_name = "UPDATE site_contact_person 
-                                SET site_contact_name = '$update_contact_name[$j]'
-                                WHERE site_contact_person_id = '$contact_person_id[$j]'";
+                    // echo $update_contact_info."<br>";
+                    mysqli_query($db, $update_contact_info); 
+                    $count++;   
+                }
 
-                // echo $update_name."<br>";
-                mysqli_query($db, $update_name);
-            }
+                for ($j=0; $j < count($contact_person_id); $j++) { 
+                        
+                    $update_name = "UPDATE site_contact_person 
+                                    SET site_contact_name = '$update_contact_name[$j]'
+                                    WHERE site_contact_person_id = '$contact_person_id[$j]'";
 
-            if($count == count($contact_decode->contact)){
+                    // echo $update_name."<br>";
+                    mysqli_query($db, $update_name);
+                }
+
+                if($count == count($contact_decode->contact)){
+                    echo "<script> 
+                            alert('Data updated successfully...');
+                            window.location.href='clients_sites.php' 
+                        </script>";
+                }
+            }else{
                 echo "<script> 
                         alert('Data updated successfully...');
                         window.location.href='clients_sites.php'
@@ -480,7 +488,7 @@
                 echo "<meta http-equiv='refresh' content='0'>";
             }
 
-            echo $delete_contact_person."<br>";
+            // echo $delete_contact_person."<br>";
         }
     }
 

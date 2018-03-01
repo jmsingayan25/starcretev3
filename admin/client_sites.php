@@ -347,12 +347,12 @@
             <!--overview start-->
             <div class="row">
                 <div class="col-md-12 page_links">
-                    <h3 class="page-header">Client Sites</h3>
+                    <!-- <h3 class="page-header">Client Sites</h3> -->
                     <!-- <h3 class="page-header"><i class="fa fa-address-book"></i> <?php echo $client_name; ?> Sites</h3> -->
                     <ol class="breadcrumb">
                         <li><i class="fa fa-address-book"></i><a href="clients.php">Clients</a></li>
                         <li><i class="fa fa-building"></i><?php echo $client_name; ?></li>    
-                        <!-- <li><i class="fa fa-address-card"></i><a href="client_sites.php" style="color: blue;">Sites</a></li>                          -->
+                        <li><i class="fa fa-address-card"></i><a href="client_sites.php" style="color: blue;">Sites</a></li>                         
                     </ol>
                 </div>
             </div>
@@ -397,8 +397,8 @@
                                     </tr> -->
                                     <tr class="filters">
                                         <th class="col-md-4"><input type="text" class="form-control" placeholder="Site Name" disabled></th>
-                                        <th class="col-md-3"><input type="text" class="form-control" placeholder="Address" disabled></th>
-                                        <th class="col-md-4">Contacts</th>
+                                        <th class="col-md-4"><input type="text" class="form-control" placeholder="Address" disabled></th>
+                                        <th class="col-md-3">Contacts</th>
                                         <th class="col-md-1"></th>
                                     </tr>
                                 </thead>
@@ -548,9 +548,17 @@
             
             $row_name_sql['site_contact_no'] = $row_no_sql['site_contact_no'];
 ?>
-                                                <div class="row" style="margin-bottom: 2px;">
-                                                    <div class="col-md-12">
-                                                        <strong><?php echo $row_name_sql['site_contact_name'] . "<br> (" . $row_name_sql['site_contact_no'] . ")"; ?></strong>
+                                                <div class="form-group">
+                                                    <div class="row" style="margin-bottom: 2px;">
+                                                        <div class="col-md-6">
+                                                            <strong><?php echo $row_name_sql['site_contact_name']; ?></strong>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <strong>-</strong>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <strong><?php echo $row_name_sql['site_contact_no']; ?></strong>
+                                                        </div>
                                                     </div>
                                                 </div>
 <?php
@@ -561,26 +569,26 @@
                                             </td>
                                             <td>
                                                 <div class="row" style="margin-bottom: 2px;">
-                                                    <div class="col-md-1">
+                                                    <div class="col-md-12">
                                                         <form action="add_site_contact.php" method="post">
                                                             <input type="hidden" name="post_site_id" value="<?php echo $row['site_id']; ?>">
                                                             <input type="hidden" name="post_client_name" value="<?php echo $client_name; ?>">
                                                             <!-- <div class="tooltips" data-original-title="Add Contact">
                                                                 <button class="btn btn-primary btn-xs"><span class="fa fa-plus-square"></span></button>
                                                             </div> -->
-                                                            <button class="btn btn-primary btn-xs">Add Contact</button>
+                                                            <button class="btn btn-sm btn-block" style="background-color: #1976d2; color: white;"><span class="fa fa-plus"></span> <strong>Add Contact</strong></button>
                                                         </form>
                                                     </div>
                                                 </div>
                                                 <div class="row" style="margin-bottom: 2px;">
-                                                    <div class="col-md-1">
+                                                    <div class="col-md-12">
                                                         <form action="client_sites_update_info.php" method="post">
                                                             <input type="hidden" name="post_site_id" value="<?php echo $row['site_id']; ?>">
                                                             <input type="hidden" name="post_client_name" value="<?php echo $client_name; ?>">
                                                             <!-- <div class="tooltips" data-original-title="Edit">
                                                                 <button class="btn btn-danger btn-xs" style="margin-bottom: 5px;"><span class="fa fa-edit"></span></button>
                                                             </div> -->
-                                                            <button class="btn btn-warning btn-xs">Edit</button>
+                                                            <button class="btn btn-sm btn-block" style="background-color: #ffa000; color: white;"><span class="fa fa-edit"></span> <strong>Edit</strong></button>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -738,7 +746,7 @@
     $name_sql_result = mysqli_query($db, $name_sql);
     while ($row_name_sql = mysqli_fetch_assoc($name_sql_result)) {
         
-        $no_sql = "SELECT GROUP_CONCAT(DISTINCT site_contact_no SEPARATOR ', ') as site_contact_no
+        $no_sql = "SELECT GROUP_CONCAT(DISTINCT site_contact_no SEPARATOR ' ') as site_contact_no
                     FROM site_contact_number
                     WHERE site_contact_person_id = '".$row_name_sql['site_contact_person_id']."'";
 
@@ -747,9 +755,17 @@
             
             $row_name_sql['site_contact_no'] = $row_no_sql['site_contact_no'];
 ?>
-                                                <div class="row" style="margin-bottom: 2px;">
-                                                    <div class="col-md-12">
-                                                        <strong><?php echo $row_name_sql['site_contact_name'] . "<br> (" . $row_name_sql['site_contact_no'] . ")"; ?></strong>
+                                                <div class="form-group">
+                                                    <div class="row" style="margin-bottom: 2px;">
+                                                        <div class="col-md-6">
+                                                            <strong><?php echo $row_name_sql['site_contact_name']; ?></strong>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <strong>-</strong>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <strong><?php echo $row_name_sql['site_contact_no']; ?></strong>
+                                                        </div>
                                                     </div>
                                                 </div>
 <?php
@@ -760,26 +776,26 @@
                                             </td>
                                             <td>
                                                 <div class="row" style="margin-bottom: 2px;">
-                                                    <div class="col-md-1">
+                                                    <div class="col-md-12">
                                                         <form action="add_site_contact.php" method="post">
                                                             <input type="hidden" name="post_site_id" value="<?php echo $row['site_id']; ?>">
                                                             <input type="hidden" name="post_client_name" value="<?php echo $client_name; ?>">
                                                             <!-- <div class="tooltips" data-original-title="Add Contact">
                                                                 <button class="btn btn-primary btn-xs"><span class="fa fa-plus-square"></span></button>
                                                             </div> -->
-                                                            <button class="btn btn-primary btn-xs">Add Contact</button>
+                                                            <button class="btn btn-sm btn-block" style="background-color: #1976d2; color: white;"><span class="fa fa-plus"></span> <strong>Add Contact</strong></button>
                                                         </form>
                                                     </div>
                                                 </div>
                                                 <div class="row" style="margin-bottom: 2px;">
-                                                    <div class="col-md-1">
+                                                    <div class="col-md-12">
                                                         <form action="client_sites_update_info.php" method="post">
                                                             <input type="hidden" name="post_site_id" value="<?php echo $row['site_id']; ?>">
                                                             <input type="hidden" name="post_client_name" value="<?php echo $client_name; ?>">
                                                             <!-- <div class="tooltips" data-original-title="Edit">
                                                                 <button class="btn btn-danger btn-xs" style="margin-bottom: 5px;"><span class="fa fa-edit"></span></button>
                                                             </div> -->
-                                                            <button class="btn btn-warning btn-xs">Edit</button>
+                                                            <button class="btn btn-sm btn-block" style="background-color: #ffa000; color: white;"><span class="fa fa-edit"></span> <strong>Edit</strong></button>
                                                         </form>
                                                     </div>
                                                 </div>

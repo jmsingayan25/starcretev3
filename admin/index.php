@@ -423,6 +423,7 @@
                                     <thead>
                                         <tr class="filterable">
                                             <th colspan="3">
+                                                <p style="float: left;">Plant: <?php echo ucfirst($_GET['radioOffice']); ?></p>
                                                 <button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
                                             </th>
                                             <!-- <th colspan="3">

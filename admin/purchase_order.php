@@ -628,7 +628,7 @@ session_start();
                     <td><strong><?php echo $row['date_purchase']; ?></strong></td>
                     <td>
                         <form action="purchase_order.php" method="post">
-                            <button type="button" class="btn btn-warning btn-xs" style="margin-bottom: 5px;" data-toggle='modal' data-target='#purchaseOrderUpdateRow<?php echo $hash; ?>'>Update Info</button>
+                            <button type="button" class="btn btn-sm btn-block" style="margin-bottom: 5px; background-color: #ffa000; color: white;" data-toggle='modal' data-target='#purchaseOrderUpdateRow<?php echo $hash; ?>'><span class="fa fa-edit"></span> <strong>Update</strong></button>
 
                             <div class="modal fade" id="purchaseOrderUpdateRow<?php echo $hash;?>" role="dialog">
                                 <div class="modal-dialog modal-sm">
@@ -662,7 +662,8 @@ session_start();
                             </div>
                         </form>
                         <form action="purchase_order.php" method="post">
-                            <button type="button" id="cancel" name="cancel" value="<?php echo $row['purchase_id']; ?>" class="btn btn-danger btn-xs" data-toggle='modal' data-target='#purchaseOrderRow<?php echo $hash; ?>'>Cancel Order?</button>
+                            <button type="submit" id="cancel" name="cancel" value="<?php echo $row['purchase_id']; ?>" class="btn btn-sm btn-block" style="background-color: #d32f2f; color: white;" onclick="return confirm('Proceed cancelling item <?php echo $row['item_no'] . " " . $row['psi']; ?> under P.O. No. <?php echo $row['purchase_order_no']; ?>?')"; ><span class="fa fa-close"></span> <strong>Cancel Order</strong></button>
+                            <!-- <button type="button" id="cancel" name="cancel" value="<?php echo $row['purchase_id']; ?>" class="btn btn-warning btn-sm btn-block" data-toggle='modal' data-target='#purchaseOrderRow<?php echo $hash; ?>'><span class="fa fa-close"></span> Cancel Order</button>
 
                             <div class="modal fade" id="purchaseOrderRow<?php echo $hash;?>" role="dialog">
                                 <div class="modal-dialog modal-sm">
@@ -693,7 +694,7 @@ session_start();
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </form>                              
                     </td>
                 </tr>
@@ -913,7 +914,7 @@ vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4></td>
                     <td><strong><?php echo $row['date_purchase']; ?></strong></td>
                     <td>
                         <form action="purchase_order.php" method="post">
-                            <button type="button" class="btn btn-warning btn-xs" style="margin-bottom: 5px;" data-toggle='modal' data-target='#purchaseOrderUpdateRow<?php echo $hash; ?>'>Update Info</button>
+                            <button type="button" class="btn btn-sm btn-block" style="margin-bottom: 5px; background-color: #ffa000; color: white;" data-toggle='modal' data-target='#purchaseOrderUpdateRow<?php echo $hash; ?>'><span class="fa fa-edit"></span> <strong>Update</strong></button>
 
                             <div class="modal fade" id="purchaseOrderUpdateRow<?php echo $hash;?>" role="dialog">
                                 <div class="modal-dialog modal-sm">
@@ -947,7 +948,10 @@ vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4></td>
                             </div>
                         </form>
                         <form action="purchase_order.php" method="post">
-                            <button type="button" id="cancel" name="cancel" value="<?php echo $row['purchase_id']; ?>" class="btn btn-danger btn-xs" data-toggle='modal' data-target='#purchaseOrderRow<?php echo $hash; ?>'>Cancel Order?</button>
+                            <button type="submit" id="cancel" name="cancel" value="<?php echo $row['purchase_id']; ?>" class="btn btn-sm btn-block" style="background-color: #d32f2f; color: white;" onclick="return confirm('Proceed cancelling item <?php echo $row['item_no'] . " " . $row['psi']; ?> under P.O. No. <?php echo $row['purchase_order_no']; ?>?')"; ><span class="fa fa-close"></span> <strong>Cancel Order</strong></button>
+                            <!-- <button type="submit" id="returned" name="returned" value="<?php echo $row['delivery_id']?>" class='btn btn-xs btn-danger' onclick="return confirm('Confirm DR No. <?php echo $row['delivery_receipt_no']; ?> as backload delivery?')" style=" width: 85px;" >Backload</button> -->
+
+                            <!-- <button type="button" id="cancel" name="cancel" value="<?php echo $row['purchase_id']; ?>" class="btn btn-warning btn-sm btn-block" data-toggle='modal' data-target='#purchaseOrderRow<?php echo $hash; ?>'><span class="fa fa-close"></span> Cancel Order</button>
 
                             <div class="modal fade" id="purchaseOrderRow<?php echo $hash;?>" role="dialog">
                                 <div class="modal-dialog modal-sm">
@@ -978,7 +982,7 @@ vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4></td>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </form>
                     </td>
                 </tr>
@@ -1042,18 +1046,18 @@ vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4></td>
 </html>
 <?php
 
-    if(isset($_POST['confirm'])){
+    if(isset($_POST['cancel'])){
 
-        $username = mysqli_real_escape_string($db, $_SESSION['login_user']);
-        $password = mysqli_real_escape_string($db, $_POST['confirm_password']);
+        // $username = mysqli_real_escape_string($db, $_SESSION['login_user']);
+        // $password = mysqli_real_escape_string($db, $_POST['confirm_password']);
 
-        $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+        // $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
 
-        $result = mysqli_query($db, $sql);
+        // $result = mysqli_query($db, $sql);
 
-        if(mysqli_num_rows($result) > 0){
+        // if(mysqli_num_rows($result) > 0){
 
-            $purchase_id = $_POST['confirm'];
+            $purchase_id = $_POST['cancel'];
 
             $sql = "SELECT *, s.site_name, c.client_name 
                     FROM purchase_order p, site s, client c 
@@ -1065,11 +1069,17 @@ vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4></td>
 
             $po_no = $row['purchase_order_no'];
             $item_no = $row['item_no'];
-            $psi = "(" . $row['psi'] . " PSI)";
+            // $psi = "(" . $row['psi'] . " PSI)";
             $client = $row['client_name'];
             $datetime = date("Y-m-d H:i:s");
             $plant = $row['office'];
             $balance = $row['balance'];
+
+            if($row['psi'] != ""){
+                $psi = "(" . $row['psi'] . " PSI)";
+            }else{
+                $psi = "";
+            }
 
             $update = "UPDATE purchase_order 
                         SET cancelled = cancelled + '$balance', balance = 0, remarks = 'Cancelled', date_cancelled = '$datetime'
@@ -1078,18 +1088,18 @@ vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4></td>
             $history = "INSERT INTO history(table_report,transaction_type,item_no,detail,history_date,office) 
                         VALUES('Purchase Order','Cancelled P.O. No.','$item_no','P.O. No. $po_no with balance of ".number_format($balance)." pcs of $item_no $psi order by $client has been cancelled','$datetime','$plant')";
 
-            echo $update;
-            echo $history;
-            // if(mysqli_query($db, $history) && mysqli_query($db, $update)){
-            //     phpAlert("P.O. No. $po_no with item $item_no has been cancelled!!!");
-            //     echo "<meta http-equiv='refresh' content='0'>";
-            // }else{
-            //     phpAlert('Something went wrong!!!');
-            // }
-        }else{
-            phpAlert("Invalid password. Try again.");
-            echo "<meta http-equiv='refresh' content='0'>";
-        }
+            // echo $update;
+            // echo $history;
+            if(mysqli_query($db, $history) && mysqli_query($db, $update)){
+                phpAlert("P.O. No. $po_no with item $item_no has been cancelled!!!");
+                echo "<meta http-equiv='refresh' content='0'>";
+            }else{
+                phpAlert('Something went wrong!!!');
+            }
+        // }else{
+        //     phpAlert("Invalid password. Try again.");
+        //     echo "<meta http-equiv='refresh' content='0'>";
+        // }
     }else if(isset($_POST['update'])){
 
         $username = mysqli_real_escape_string($db, $_SESSION['login_user']);
