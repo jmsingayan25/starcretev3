@@ -376,7 +376,7 @@
                                 <div class="pull-right" style="margin-top: 5px; margin-right: 5px;">
                                      <form action="add_site.php" method="post">
                                             <input type="hidden" name="post_client_id" value="<?php echo $client_id; ?>">
-                                            <button type="submit" class="btn btn-info"><span class="fa fa-plus"></span> Add Site</button>
+                                            <button type="submit" class="btn btn-info" style="font-weight: bold;"><span class="fa fa-plus"></span> Add Site</button>
                                     </form>
                                 </div>
                             </div>
@@ -588,7 +588,7 @@
                                                             <!-- <div class="tooltips" data-original-title="Edit">
                                                                 <button class="btn btn-danger btn-xs" style="margin-bottom: 5px;"><span class="fa fa-edit"></span></button>
                                                             </div> -->
-                                                            <button class="btn btn-sm btn-block" style="background-color: #ffa000; color: white;"><span class="fa fa-edit"></span> <strong>Edit</strong></button>
+                                                            <button class="btn btn-sm btn-block" style="background-color: #ffa000; color: white;"><span class="fa fa-edit"></span> <strong>Update</strong></button>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -795,7 +795,7 @@
                                                             <!-- <div class="tooltips" data-original-title="Edit">
                                                                 <button class="btn btn-danger btn-xs" style="margin-bottom: 5px;"><span class="fa fa-edit"></span></button>
                                                             </div> -->
-                                                            <button class="btn btn-sm btn-block" style="background-color: #ffa000; color: white;"><span class="fa fa-edit"></span> <strong>Edit</strong></button>
+                                                            <button class="btn btn-sm btn-block" style="background-color: #ffa000; color: white;"><span class="fa fa-edit"></span> <strong>Update</strong></button>
                                                         </form>
                                                     </div>
                                                 </div>

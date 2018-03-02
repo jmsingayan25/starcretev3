@@ -253,9 +253,9 @@
 								</div>
 								<div class="form-group">
 									<div class="col-md-offset-8 col-md-4">
-										<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary">
+										<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" style="font-weight: bold;">
 										<!-- <a href="delivery_transaction.php" class="btn btn-warning">Cancel</a> -->
-										<input type="reset" name="reset" id="reset" value="Reset" class="btn btn-warning">
+										<input type="reset" name="reset" id="reset" value="Reset" class="btn btn-default" style="font-weight: bold;">
 									</div>
 								</div>
 							</div>
@@ -297,10 +297,19 @@
 ?>
 										<tr id="row<?php echo $hash; ?>" style="text-align: center; vertical-align: top;">
 											<td class="col-md-6">
-												<input type="hidden" name="contact_id[]" value="<?php echo $sql_row['client_contact_id']; ?>">
-												<!-- <div class="form-group"> -->
-													<input type="text" name="update_contact_name[]" class="form-control" autocomplete="off" value="<?php echo $sql_row['client_contact_name']; ?>" required>
-												<!-- </div> -->
+                                                <div class="row">
+                                                    <div class="col-md-12" style="margin-bottom: 5px;">
+                                                        <input type="hidden" name="contact_id[]" value="<?php echo $sql_row['client_contact_id']; ?>">
+                                                        <input type="text" name="update_contact_name[]" class="form-control" autocomplete="off" value="<?php echo $sql_row['client_contact_name']; ?>" required>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <!-- <input type="hidden" name="post_client_contact_id" value="<?php echo $sql_row['client_contact_id']; ?>"> -->
+                                                        <button type="submit" name="add_new_no" value="<?php echo $sql_row['client_contact_id']; ?>" class='btn btn-md' style="font-weight: bold; background-color: #1976d2; color: white;">Add New No.</button>
+                                                    </div>
+                                                </div>
+												
 											</td>
 											<td class="col-md-6">
 <?php
@@ -329,12 +338,10 @@
 														<form action="clients_update_info.php" method="post" onsubmit="return confirm('Remove contact no. <?php echo $sql_no_row['client_contact_no']; ?>?');">
 															<input type="hidden" name="hidden_contact_id" value="<?php echo $sql_row['client_contact_id']; ?>">
 															<input type="hidden" name="hidden_contact_no_id" value="<?php echo $sql_no_row['client_contact_no_id']; ?>">
-															<button type="submit" name="delete_id" class='btn btn-danger btn-md' autocomplete="off">Remove</button>
+															<button type="submit" name="delete_id" class='btn btn-danger btn-md' autocomplete="off" style="font-weight: bold;">Remove</button>
 														</form>
-														
 													</div>
-												</div>
-											
+												</div>											
 											<!-- 
 											<td class="col-md-1">
 												<div class="form-group">
@@ -347,6 +354,9 @@
 
 ?>
 											</td>
+                                            <!-- <td>
+                                                <button type="submit" name="delete_id" class='btn btn-md' autocomplete="off" style="font-weight: bold; background-color: #1976d2; color: white;">Add New No.</button>
+                                            </td> -->
 										</tr>
 <?php  
 			$hash++;  		
@@ -539,6 +549,13 @@
 		// 	phpAlert("Contact has been deleted...");
 		// 	echo "<meta http-equiv='refresh' content='0'>";
 		// }
-	}
+	}else if(isset($_POST['add_new_no'])){
+        
+        $client_contact_id = $_POST['add_new_no'];
+        // phpAlert($client_contact_id);
+        $_SESSION['post_client_contact_id'] = $client_contact_id;
+        header("location: add_client_contact_new_no.php");
+
+    }
 
 ?>

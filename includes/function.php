@@ -3,6 +3,22 @@
 	    echo '<script type="text/javascript">alert("' . $msg . '")</script>';
 	}
 
+	function getClientContactInfo($db, $id){
+
+		$sql = "SELECT *
+				FROM client_contact_person
+				WHERE client_contact_id = '$id'";
+
+		$result = mysqli_query($db, $sql);
+		$row = mysqli_fetch_assoc($result);
+
+		$person['client_contact_id'] = $row['client_contact_id'];
+		$person['client_contact_name'] = $row['client_contact_name'];
+		$person['client_id'] = $row['client_id'];
+
+		return $person;
+	}
+
 	function getPurchaseOrderAggDetails($db, $id){
 
 		$sql = "SELECT *

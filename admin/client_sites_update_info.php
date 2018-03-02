@@ -257,8 +257,8 @@
 								</div>
 								<div class="form-group">
 									<div class="col-md-offset-8 col-md-4">
-										<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary">
-										<input type="reset" name="reset" id="reset" value="Reset" class="btn btn-warning">
+										<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" style="font-weight: bold;">
+										<input type="reset" name="reset" id="reset" value="Reset" class="btn btn-default" style="font-weight: bold;">
 									</div>
 								</div>
 							</div>
@@ -327,7 +327,7 @@
                                                     <form action="client_sites_update_info.php" method="post" onsubmit="return confirm('Proceed?');">
                                                         <input type="hidden" name="hidden_contact_id" value="<?php echo $sql_row['site_contact_person_id']; ?>">
                                                         <input type="hidden" name="hidden_contact_no_id" value="<?php echo $sql_no_row['site_contact_no_id']; ?>">
-                                                        <button type="submit" name="delete_id" class='btn btn-danger btn-md' autocomplete="off">Remove</button>
+                                                        <button type="submit" name="delete_id" class='btn btn-danger btn-md' autocomplete="off" style="font-weight: bold;">Remove</button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -469,7 +469,7 @@
 
 
         $delete_contact_no = "DELETE FROM site_contact_number WHERE site_contact_no_id = '$site_contact_no_id'";
-        echo $delete_contact_no."<br>";
+        // echo $delete_contact_no."<br>";
         if(mysqli_query($db, $delete_contact_no)){
             phpAlert("Contact No. has been deleted...");
             echo "<meta http-equiv='refresh' content='0'>";

@@ -346,8 +346,8 @@ session_start();
 									</div>
 									<div class="form-group">
 										<div class="col-md-offset-8 col-md-4">
-											<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary">
-											<a href="purchase_order.php" class="btn btn-warning">Cancel</a>
+											<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" style="font-weight: bold;">
+											<a href="purchase_order.php" class="btn btn-default"><strong>Cancel</strong></a>
 										</div>
 									</div>
 								</form>

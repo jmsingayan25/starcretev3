@@ -358,7 +358,7 @@
                                         </span>
                                     </div>
                                     <div class="pull-right" style="margin-top: 5px; margin-right: 5px;">
-                                         <a href="add_client.php" class="btn btn-info"><span class="fa fa-plus"></span> Add Client</a>
+                                         <a href="add_client.php" class="btn btn-info"><span class="fa fa-plus"></span> <strong>Add Client</strong></a>
                                     </div>
                                 </div>
                             </form>
@@ -557,7 +557,7 @@
                                                 <div class="col-md-12">
                                                     <form action="clients_update_info.php" method="post">
                                                         <input type="hidden" name="post_client_id" value="<?php echo $row['client_id']; ?>">
-                                                        <button class="btn btn-sm btn-block" style="background-color: #ffa000; color: white;"><span class="fa fa-edit"></span> <strong>Edit</strong></button>
+                                                        <button class="btn btn-sm btn-block" style="background-color: #ffa000; color: white;"><span class="fa fa-edit"></span> <strong>Update</strong></button>
 
                                                         <!-- <div class="tooltips" data-original-title="Edit">
                                                             <button class="btn btn-danger btn-xs" style="margin-bottom: 5px;"><span class="fa fa-edit"></span></button>
@@ -764,7 +764,7 @@
                                                 <div class="col-md-12">
                                                     <form action="clients_update_info.php" method="post">
                                                         <input type="hidden" name="post_client_id" value="<?php echo $row['client_id']; ?>">
-                                                        <button class="btn btn-sm btn-block" style="background-color: #ffa000; color: white;"><span class="fa fa-edit"></span> <strong>Edit</strong></button>
+                                                        <button class="btn btn-sm btn-block" style="background-color: #ffa000; color: white;"><span class="fa fa-edit"></span> <strong>Update</strong></button>
 
                                                         <!-- <div class="tooltips" data-original-title="Edit">
                                                             <button class="btn btn-danger btn-xs" style="margin-bottom: 5px;"><span class="fa fa-edit"></span></button>

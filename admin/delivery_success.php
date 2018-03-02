@@ -626,7 +626,7 @@ session_start();
 ?>
                     </td>
                     <td><strong><?php echo $row['date_delivery1']; ?></strong></td>
-                    <td style="background-color: green; color: white"><strong><?php echo $row['remarks']; ?></strong></td>
+                    <td style="background-color: #388e3c; color: white"><strong><?php echo $row['remarks']; ?></strong></td>
                 </tr>
 <?php
             $hash++;
@@ -845,7 +845,7 @@ session_start();
 ?>
                     </td>
                     <td><strong><?php echo $row['date_delivery1']; ?></strong></td>
-                    <td style="background-color: green; color: white"><strong><?php echo $row['remarks']; ?></strong></td>
+                    <td style="background-color: #388e3c; color: white"><strong><?php echo $row['remarks']; ?></strong></td>
                 </tr>
 <?php
             $hash++;

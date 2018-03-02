@@ -115,7 +115,7 @@
 	function add_row(){
 		$rowno=$("#item_table tr").length;
 		$rowno=$rowno+1;
-		$("#item_table tr:last").after("<tr id='row"+$rowno+"' style='text-align: center;'><td class='col-md-4'><div class='form-group'><input type='type' name='contact_name[]' class='form-control' autocomplete='off' required></div></td><td class='col-md-4'><div class='form-group'><input type='type' name='contact_no[]' class='form-control' autocomplete='off' required></div></td><td class='col-md-4'><div class='form-group'><input type='button' value='Remove' class='btn btn-primary btn-md' onclick=delete_row('row"+$rowno+"')></div></td></tr>");
+		$("#item_table tr:last").after("<tr id='row"+$rowno+"' style='text-align: center;'><td class='col-md-4'><div class='form-group'><input type='type' name='contact_name[]' class='form-control' autocomplete='off' required></div></td><td class='col-md-4'><div class='form-group'><input type='type' name='contact_no[]' class='form-control' autocomplete='off' required></div></td><td class='col-md-4'><div class='form-group'><input type='button' value='Remove' class='btn btn-primary btn-md' onclick=delete_row('row"+$rowno+"') style='font-weight: bold;'></div></td></tr>");
 	}
 
 	function delete_row(rowno){
@@ -264,9 +264,9 @@
 											</div>
 											<div class="form-group">
 												<div class="col-md-offset-8 col-md-4">
-													<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary">
+													<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" style="font-weight: bold;">
 													<!-- <a href="delivery_transaction.php" class="btn btn-warning">Cancel</a> -->
-													<input type="reset" name="reset" id="reset" value="Reset" class="btn btn-warning">
+													<input type="reset" name="reset" id="reset" value="Reset" class="btn btn-default" style="font-weight: bold;">
 												</div>
 											</div>
 										</div>
@@ -352,7 +352,7 @@
 														</td>
 														<td class="col-md-4">
 															<div class="form-group">
-																<input type="button" onclick="add_row();" class='btn btn-primary btn-md' autocomplete="off" value="Add">
+																<input type="button" onclick="add_row();" class='btn btn-primary btn-md' autocomplete="off" value="Add" style="font-weight: bold;">
 															</div>
 														</td>
 													</tr>

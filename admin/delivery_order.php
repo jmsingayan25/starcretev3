@@ -630,7 +630,7 @@ session_start();
                     </td>
                     <td><strong><?php echo $row['gate_pass']; ?></strong></td>
                     <td><strong><?php echo $row['date_delivery']; ?></strong></td>
-                    <td style="background: #ffcc00;"><strong><?php echo $row['remarks']; ?></strong></td>      
+                    <td style="background: #ffa000; color: white;"><strong><?php echo $row['remarks']; ?></strong></td>      
                 </tr>
 <?php
             $hash++;
@@ -852,7 +852,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4>
                     </td>
                     <td><strong><?php echo $row['gate_pass']; ?></strong></td>
                     <td><strong><?php echo $row['date_delivery']; ?></strong></td>
-                    <td style="background: #ffcc00;"><strong><?php echo $row['remarks']; ?></strong></td>       
+                    <td style="background: #ffa000; color: white;"><strong><?php echo $row['remarks']; ?></strong></td>       
                 </tr>
 <?php
             $hash++;

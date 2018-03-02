@@ -161,7 +161,7 @@ session_start();
         foreach($result as $row){
         echo "<option value='" . $row['item_no'] . "'>" . $row['item_no'] . "</option>";
         }
-        ?></select></div></td><td class='col-md-1'><div class='form-group'><input type='text' id='psi' name='psi[]' class='form-control' autocomplete='off' placeholder='PSI'></div></td><td class='col-md-1'><div class='form-group'><input type='text' id='quantity' name='quantity[]' class='form-control' placeholder='Quantity' required></div></td><td class='col-md-1'><div class='form-group'><input type='button' value='Remove' class='btn btn-primary btn-md' onclick=delete_row('row"+$rowno+"')></div></td></tr>");
+        ?></select></div></td><td class='col-md-1'><div class='form-group'><input type='text' id='psi' name='psi[]' class='form-control' autocomplete='off' placeholder='PSI'></div></td><td class='col-md-1'><div class='form-group'><input type='text' id='quantity' name='quantity[]' class='form-control' placeholder='Quantity' required></div></td><td class='col-md-1'><div class='form-group'><input type='button' value='Remove' class='btn btn-primary btn-md' onclick=delete_row('row"+$rowno+"') style='font-weight: bold;'></div></td></tr>");
 	}
 
 	function delete_row(rowno){
@@ -451,9 +451,9 @@ session_start();
                                 </div>
 								<div class="form-group">
 									<div class="col-md-offset-8 col-md-4">
-										<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary">
+										<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" style="font-weight: bold;">
 										<!-- <a href="delivery_transaction.php" class="btn btn-warning">Cancel</a> -->
-										<input type="reset" name="reset" id="reset" value="Reset" onclick="window.location.reload(true);" class="btn btn-warning">
+										<input type="reset" name="reset" id="reset" value="Reset" onclick="window.location.reload(true);" class="btn btn-default" style="font-weight: bold;">
 									</div>
 								</div>
 							</div>
@@ -508,7 +508,7 @@ session_start();
 											</td>
 											<td class="col-md-1">
 												<div class="form-group">
-													<input type="button" onclick="add_row();" class='btn btn-primary btn-md' autocomplete="off" value="Add">
+													<input type="button" onclick="add_row();" class='btn btn-primary btn-md' autocomplete="off" value="Add" style="font-weight: bold;">
 												</div>
 											</td>
 										</tr>
