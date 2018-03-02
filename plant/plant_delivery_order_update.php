@@ -103,6 +103,46 @@
     <script src="js/charts.js"></script>
     <script src="js/jquery.slimscroll.min.js"></script>
 <script>
+
+	$(function() {
+        
+        // var $form = $( "#form" );
+        // var $input = $form.find( "#quantity" );
+
+        // $input.on( "keyup", function( event ) {
+
+	 	var $form = $( "#form" );
+        var $input = $form.find( "#update_quantity" );
+
+        $form.on( "keyup", "#update_quantity", function( event ) {
+            
+            
+            // When user select text in the document, also abort.
+            var selection = window.getSelection().toString();
+            if ( selection !== '' ) {
+                return;
+            }
+            
+            // When the arrow keys are pressed, abort.
+            if ( $.inArray( event.keyCode, [38,40,37,39] ) !== -1 ) {
+                return;
+            }
+            
+            
+            var $this = $( this );
+            
+            // Get the value.
+            var input = $this.val();
+            
+            var input = input.replace(/[\D\s\._\-]+/g, "");
+                    input = input ? parseInt( input, 10 ) : 0;
+
+                    $this.val( function() {
+                        return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
+                    } );
+        } );      
+    });
+
 </script>
 <style>
 .page_links a{
@@ -245,7 +285,7 @@
 											<input type="text" name="item_no_display" 
 												value="<?php 
 													if($delivery_row['psi'] != ''){
-														echo $delivery_row['item_no'] . " (" . $delivery_row['psi'] . ")";
+														echo $delivery_row['item_no'] . " (" . $delivery_row['psi'] . " PSI)";
 													}else{
 														echo $delivery_row['item_no'];
 													}
@@ -271,13 +311,13 @@
 									<div class="form-group">
 										<label for="update_quantity" class="col-md-3 control-label">Quantity</label>
 										<div class="col-md-6">
-											<input type="text" name="update_quantity" value="<?php echo str_replace(',','',$delivery_row['quantity']); ?>" class="form-control" onkeyup="compareValues(this.value)" required>
+											<input type="text" id="update_quantity" name="update_quantity" value="<?php echo number_format($delivery_row['quantity']); ?>" class="form-control" onkeyup="compareValues(this.value)" required>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="col-md-offset-2 col-md-10">
-											<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary">
-											<a href="plant_delivery_order.php" class="btn btn-warning">Cancel</a>
+											<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" style="font-weight: bold;">
+											<a href="plant_delivery_order.php" class="btn btn-default"><strong>Cancel</strong></a>
 										</div>
 									</div>
 								</form>
@@ -306,7 +346,7 @@
 	if(isset($_POST['submit'])){
 
 		$new_delivery_receipt_no = mysqli_real_escape_string($db, $_POST['update_delivery_receipt_no']);
-		$new_quantity = mysqli_real_escape_string($db, $_POST['update_quantity']);
+		$new_quantity = mysqli_real_escape_string($db, str_replace(',','',$_POST['update_quantity']));
 		$new_gate_pass = mysqli_real_escape_string($db, $_POST['update_gate_pass']);
 		
 		$datetime = date("Y/m/d H:i:s");

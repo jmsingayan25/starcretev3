@@ -353,7 +353,7 @@
             FROM purchase_order 
             WHERE purchase_order_no = '$po_no_delivery'
             -- AND cancelled = 0
-            GROUP BY purchase_id";
+            GROUP BY item_no";
 
     $result_sql = mysqli_query($db, $balance_sql);
 
