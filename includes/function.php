@@ -39,7 +39,21 @@
 		return $agg;
 	}
 /* List of miscellaneous functions */
-	// function getSiteContactInfo($db, $)
+	function getSiteContactInfo($db, $site_contact_id){
+
+		$sql = "SELECT *
+				FROM site_contact_person
+				WHERE site_contact_person_id = $site_contact_id";
+
+		$result = mysqli_query($db, $sql);
+		$row = mysqli_fetch_assoc($result);
+
+		$contact['site_contact_person_id'] = $row['site_contact_person_id'];
+		$contact['site_contact_name'] = $row['site_contact_name'];
+		$contact['site_id'] = $row['site_id'];
+
+		return $contact;
+	}
 
 	function getClientInfoBySiteId($db, $site_id){
 

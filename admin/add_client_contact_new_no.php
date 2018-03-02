@@ -247,7 +247,7 @@
 
 	            <form class="form-horizontal" role="form" action="add_client_contact_new_no.php" id="form" method="post" onsubmit="return confirm('Proceed?');">
 				<div class="row">
-					<div class="col-md-6">
+					<div class="col-md-5 col-md-offset-1">
 						<section class="panel">
 							<header class="panel-heading">
 								Contact Info
@@ -282,7 +282,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="col-md-offset-8 col-md-4">
+									<div class="col-md-offset-6 col-md-6">
 										<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" style="font-weight: bold;">
 										<!-- <a href="delivery_transaction.php" class="btn btn-warning">Cancel</a> -->
 										<input type="reset" name="reset" id="reset" value="Reset" class="btn btn-default" style="font-weight: bold;">
@@ -291,7 +291,7 @@
 							</div>
 						</section>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-5">
 						<section class="panel">
 							<header class="panel-heading">
 								New Contact Number
@@ -303,9 +303,7 @@
 											<td class="col-md-6">
 												<label for="contact_no">Number<span class="required" style="color: red;">*</span></label>
 											</td>
-											<td class="col-md-6">
-												<label for="button"></label>
-											</td>
+											
 										</tr>
 										<tr id="row1" style="text-align: center;">
 											<td class="col-md-6">

@@ -296,10 +296,18 @@
 ?>
                                         <tr id="row<?php echo $hash; ?>" style="text-align: center; vertical-align: top;">
                                             <td class="col-md-6">
-                                                <input type="hidden" name="contact_person_id[]" value="<?php echo $sql_row['site_contact_person_id']; ?>">
-                                                <!-- <div class="form-group"> -->
-                                                    <input type="text" name="update_contact_name[]" class="form-control" autocomplete="off" value="<?php echo $sql_row['site_contact_name']; ?>" required>
-                                                <!-- </div> -->
+                                                <div class="row" style="margin-bottom: 5px;">
+                                                    <div class="col-md-12">
+                                                        <input type="hidden" name="contact_person_id[]" value="<?php echo $sql_row['site_contact_person_id']; ?>">
+                                                        <input type="text" name="update_contact_name[]" class="form-control" autocomplete="off" value="<?php echo $sql_row['site_contact_name']; ?>" required>
+                                                    </div>
+                                                </div>
+                                                <div class="row" style="margin-bottom: 5px;">
+                                                    <div class="col-md-12">
+                                                        <button type="submit" name="add_new_no" value="<?php echo $sql_row['site_contact_person_id']; ?>" class='btn btn-md' style="font-weight: bold; background-color: #1976d2; color: white;">Add New No.</button>
+                                                    </div>
+                                                </div>
+                                                
                                             </td>
                                             <td class="col-md-6">
 <?php
@@ -490,6 +498,13 @@
 
             // echo $delete_contact_person."<br>";
         }
+    }else if(isset($_POST['add_new_no'])){
+        
+        $site_contact_id = $_POST['add_new_no'];
+        // phpAlert($client_contact_id);
+        $_SESSION['post_site_contact_id'] = $site_contact_id;
+        header("location: add_site_contact_new_no.php");
+
     }
 
 

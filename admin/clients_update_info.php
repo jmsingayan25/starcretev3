@@ -303,7 +303,7 @@
                                                         <input type="text" name="update_contact_name[]" class="form-control" autocomplete="off" value="<?php echo $sql_row['client_contact_name']; ?>" required>
                                                     </div>
                                                 </div>
-                                                <div class="row">
+                                                <div class="row" style="margin-bottom: 5px;">
                                                     <div class="col-md-12">
                                                         <!-- <input type="hidden" name="post_client_contact_id" value="<?php echo $sql_row['client_contact_id']; ?>"> -->
                                                         <button type="submit" name="add_new_no" value="<?php echo $sql_row['client_contact_id']; ?>" class='btn btn-md' style="font-weight: bold; background-color: #1976d2; color: white;">Add New No.</button>
