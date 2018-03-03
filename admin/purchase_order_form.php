@@ -161,7 +161,7 @@ session_start();
         foreach($result as $row){
         echo "<option value='" . $row['item_no'] . "'>" . $row['item_no'] . "</option>";
         }
-        ?></select></div></td><td class='col-md-1'><div class='form-group'><input type='text' id='psi' name='psi[]' class='form-control' autocomplete='off' placeholder='PSI'></div></td><td class='col-md-1'><div class='form-group'><input type='text' id='quantity' name='quantity[]' class='form-control' placeholder='Quantity' required></div></td><td class='col-md-1'><div class='form-group'><input type='button' value='Remove' class='btn btn-primary btn-md' onclick=delete_row('row"+$rowno+"') style='font-weight: bold;'></div></td></tr>");
+        ?></select></div></td><td class='col-md-1'><div class='form-group'><input type='text' id='psi' name='psi[]' class='form-control' autocomplete='off' placeholder='PSI'></div></td><td class='col-md-1'><div class='form-group'><input type='text' id='quantity' name='quantity[]' class='form-control' placeholder='Quantity' required></div></td><td class='col-md-1'><div class='form-group'><input type='button' value='Remove' class='btn btn-danger btn-md' onclick=delete_row('row"+$rowno+"') style='font-weight: bold;'></div></td></tr>");
 	}
 
 	function delete_row(rowno){

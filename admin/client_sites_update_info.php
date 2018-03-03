@@ -302,12 +302,6 @@
                                                         <input type="text" name="update_contact_name[]" class="form-control" autocomplete="off" value="<?php echo $sql_row['site_contact_name']; ?>" required>
                                                     </div>
                                                 </div>
-                                                <div class="row" style="margin-bottom: 5px;">
-                                                    <div class="col-md-12">
-                                                        <button type="submit" name="add_new_no" value="<?php echo $sql_row['site_contact_person_id']; ?>" class='btn btn-md' style="font-weight: bold; background-color: #1976d2; color: white;">Add New No.</button>
-                                                    </div>
-                                                </div>
-                                                
                                             </td>
                                             <td class="col-md-6">
 <?php
@@ -328,14 +322,14 @@
 ?>
                                             <div class="row" style="margin-bottom: 5px;">
                                                 <input type="hidden" name="site_contact_no_id[]" value="<?php echo $sql_no_row['site_contact_no_id']; ?>">
-                                                <div class="col-md-8">
+                                                <div class="col-md-7">
                                                     <input type="text" name="update_contact_no[]" class="form-control" autocomplete="off" value="<?php echo $sql_no_row['site_contact_no']; ?>" required>
                                                 </div>
-                                                <div class="col-md-1">
+                                                <div class="col-md-5">
                                                     <form action="client_sites_update_info.php" method="post" onsubmit="return confirm('Proceed?');">
                                                         <input type="hidden" name="hidden_contact_id" value="<?php echo $sql_row['site_contact_person_id']; ?>">
                                                         <input type="hidden" name="hidden_contact_no_id" value="<?php echo $sql_no_row['site_contact_no_id']; ?>">
-                                                        <button type="submit" name="delete_id" class='btn btn-danger btn-md' autocomplete="off" style="font-weight: bold;">Remove</button>
+                                                        <button type="submit" name="delete_id" class='btn btn-danger btn-sm btn-block' autocomplete="off" style="font-weight: bold;">Remove</button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -344,6 +338,11 @@
 <?php
     }
 ?>
+                                            <div class="row" style="margin-bottom: 5px;">
+                                                    <div class="col-md-5 col-md-offset-7">
+                                                        <button type="submit" name="add_new_no" value="<?php echo $sql_row['site_contact_person_id']; ?>" class='btn btn-sm btn-block' style="float: left; font-weight: bold; background-color: #1976d2; color: white;">Add New No.</button>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
 <?php

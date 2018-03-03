@@ -124,7 +124,7 @@
     function add_row(){
         $rowno=$("#item_table tr").length;
         $rowno=$rowno+1;
-        $("#item_table tr:last").after("<tr id='row"+$rowno+"' style='text-align: center;'><td class='col-md-6'><div class='form-group'><input type='type' name='contact_no[]' class='form-control' autocomplete='off' required></div></td><td class='col-md-6'><div class='form-group'><input type='button' value='Remove' class='btn btn-primary btn-md' onclick=delete_row('row"+$rowno+"') style='font-weight: bold;'></div></td></tr>");
+        $("#item_table tr:last").after("<tr id='row"+$rowno+"' style='text-align: center;'><td class='col-md-6'><div class='form-group'><input type='type' name='contact_no[]' class='form-control' autocomplete='off' required></div></td><td class='col-md-3'><div class='form-group'><input type='button' value='Remove' class='btn btn-danger btn-md' onclick=delete_row('row"+$rowno+"') style='font-weight: bold;'></div></td></tr>");
     }
 
     function delete_row(rowno){
@@ -316,7 +316,7 @@
                                                     <input type="text" name="contact_no[]" class="form-control" autocomplete="off" required>
                                                 </div>
                                             </td>
-                                            <td class="col-md-6">
+                                            <td class="col-md-3">
                                                 <div class="form-group">
                                                     <input type="button" onclick="add_row();" class='btn btn-primary btn-md' autocomplete="off" value="Add" style="font-weight: bold;">
                                                 </div>
@@ -353,7 +353,7 @@
 
         if($count == count($contact_no)){
             phpAlert("New contact no. added successfully.");
-            echo "<script>window.location.href='clients_sites_update_info.php'</script>";
+            echo "<script>window.location.href='client_sites_update_info.php'</script>";
             // header("location: clients_update_info.php");
         }
     }
