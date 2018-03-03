@@ -368,7 +368,7 @@
 									<div class="form-group">
 										<div class="col-md-offset-2 col-md-10">
 											<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" style="font-weight: bold;">
-											<a href="plant_delivery_issue.php" class="btn btn-default"><strong>Cancel</strong></a>
+											<a href="plant_delivery_issue.php" class="btn btn-warning"><strong>Cancel</strong></a>
 										</div>
 									</div>
 								</form>

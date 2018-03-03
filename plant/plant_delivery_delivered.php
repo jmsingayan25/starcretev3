@@ -614,7 +614,7 @@
 ?>
                     </td>
                     <td><strong><?php echo $row['date_delivery1']; ?></strong></td>
-					<td style="background-color: green; color: white"><strong><?php echo $row['remarks']; ?></strong></td>
+					<td style="color: green;"><strong><?php echo $row['remarks']; ?></strong></td>
 				</tr>
 <?php
 				$hash++;
@@ -835,7 +835,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
 ?>
                     </td>
                     <td><strong><?php echo $row['date_delivery1']; ?></strong></td>
-                    <td style="background-color: green; color: white"><strong><?php echo $row['remarks']; ?></strong></td>
+                    <td style="color: green;"><strong><?php echo $row['remarks']; ?></strong></td>
 				</tr>
 <?php
 				$hash++;

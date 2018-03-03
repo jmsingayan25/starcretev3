@@ -761,7 +761,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <input type="submit" id="delivered" name="delivered" value="Confirm" class="btn btn-primary">
-                                        <button type="button" class="btn" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn" data-dismiss="modal"><strong>Close</strong></button>
                                     </div>
                                 </div>
                             </div>
@@ -1140,7 +1140,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4>
                                     </div>
                                     <div class="modal-footer">
                                         <input type="submit" id="delivered" name="delivered" value="Confirm" class="btn btn-primary">
-                                        <button type="button" class="btn" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn" data-dismiss="modal"><strong>Close</strong></button>
                                     </div>
                                 </div>
                             </div>
