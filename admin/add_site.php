@@ -178,7 +178,7 @@
 	<!--                 <li class="sub-menu">                       
 	                    <a class="" href="form_validation.html">Form Validation</a>
 	                </li>   --> 
-	                <li>
+	                <li class="active">
 	                    <a class="" href="clients.php">
 	                        <i class="fa fa-address-book"></i>
 	                        <span>Clients</span>
@@ -292,8 +292,8 @@
 											<div class="form-group">
 												<div class="col-md-offset-8 col-md-4">
 													<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" style="font-weight: bold;">
-													<!-- <a href="delivery_transaction.php" class="btn btn-warning">Cancel</a> -->
-													<input type="reset" name="reset" id="reset" value="Reset" class="btn btn-default" style="font-weight: bold;">
+													<a href="client_sites.php" class="btn btn-warning"><strong>Cancel</strong></a>
+													<!-- <input type="reset" name="reset" id="reset" value="Reset" class="btn btn-default" style="font-weight: bold;"> -->
 												</div>
 											</div>
 										</div>

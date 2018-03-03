@@ -173,7 +173,7 @@
 	<!--                 <li class="sub-menu">                       
 	                    <a class="" href="form_validation.html">Form Validation</a>
 	                </li>   --> 
-	                <li>
+	                <li class="active">
 	                    <a class="" href="clients.php">
 	                        <i class="fa fa-address-book"></i>
 	                        <span>Clients</span>
@@ -257,8 +257,8 @@
 											<div class="form-group">
 												<div class="col-md-offset-8 col-md-4">
 													<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" style="font-weight: bold;">
-													<!-- <a href="delivery_transaction.php" class="btn btn-warning">Cancel</a> -->
-													<input type="reset" name="reset" id="reset" value="Reset" class="btn btn-default" style="font-weight: bold;">
+													<a href="clients.php" class="btn btn-warning"><strong>Cancel</strong></a>
+													<!-- <input type="reset" name="reset" id="reset" value="Reset" class="btn btn-default" style="font-weight: bold;"> -->
 												</div>
 											</div>
 										</div>
@@ -279,16 +279,17 @@
                     WHERE client_id = '$client_id'";
 
     $name_sql_result = mysqli_query($db, $name_sql);
-    while ($row_name_sql = mysqli_fetch_assoc($name_sql_result)) {
-        
-        $no_sql = "SELECT GROUP_CONCAT(DISTINCT client_contact_no SEPARATOR ', ') as client_contact_no
-                    FROM client_contact_number
-                    WHERE client_contact_id = '".$row_name_sql['client_contact_id']."'";
+    if(mysqli_num_rows($name_sql_result) > 0){
+	    while ($row_name_sql = mysqli_fetch_assoc($name_sql_result)) {
+	        
+	        $no_sql = "SELECT GROUP_CONCAT(DISTINCT client_contact_no SEPARATOR ', ') as client_contact_no
+	                    FROM client_contact_number
+	                    WHERE client_contact_id = '".$row_name_sql['client_contact_id']."'";
 
-        $no_sql_result = mysqli_query($db, $no_sql);
-        while ($row_no_sql = mysqli_fetch_assoc($no_sql_result)) {
-            
-            $row_name_sql['client_contact_no'] = $row_no_sql['client_contact_no'];
+	        $no_sql_result = mysqli_query($db, $no_sql);
+	        while ($row_no_sql = mysqli_fetch_assoc($no_sql_result)) {
+	            
+	            $row_name_sql['client_contact_no'] = $row_no_sql['client_contact_no'];
 ?>
                                                 <!-- <tr style="border: none;">
                                                     <td style="border: none;">
@@ -306,8 +307,18 @@
 	                                                </div>
                                                 </div>
 <?php
-        }
-    }
+	        }
+	    }
+	}else{
+?>
+												<div class="form-group">
+													<div class="row" style="text-align: center;">
+														<strong><h4>No data found</h4></strong>
+													</div>
+												</div>
+
+<?php
+	}
 
 ?>  
 										</div>

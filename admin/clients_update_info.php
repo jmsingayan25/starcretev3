@@ -254,8 +254,8 @@
 								<div class="form-group">
 									<div class="col-md-offset-8 col-md-4">
 										<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" style="font-weight: bold;">
-										<!-- <a href="delivery_transaction.php" class="btn btn-warning">Cancel</a> -->
-										<input type="reset" name="reset" id="reset" value="Reset" class="btn btn-default" style="font-weight: bold;">
+                                        <a href="clients.php" class="btn btn-warning"><strong>Cancel</strong></a>
+										<!-- <input type="reset" name="reset" id="reset" value="Reset" class="btn btn-default" style="font-weight: bold;"> -->
 									</div>
 								</div>
 							</div>
@@ -268,18 +268,7 @@
 							</header>
 							<div class="panel-body">
 								<div class="row">
-									<table id="item_table" align="center">
-										<tr>
-											<td class="col-md-4">
-												<label for="item_no">Name</label>
-											</td>
-											<td class="col-md-4">
-												<label for="quantity">Number</label>
-											</td>
-											<td class="col-md-4">
-												<!-- <label for="button"></label> -->
-											</td>
-										</tr>
+									<table id="item_table" align="center">									
 <?php
 
 	$sql_contacts = "SELECT client_contact_id, client_contact_name
@@ -293,6 +282,19 @@
     $array_contact = array();    
     if(mysqli_num_rows($sql_result) > 0){
     	$hash = 1;
+?>
+                                        <tr>
+                                            <td class="col-md-4">
+                                                <label for="item_no">Name</label>
+                                            </td>
+                                            <td class="col-md-4">
+                                                <label for="quantity">Number</label>
+                                            </td>
+                                            <td class="col-md-4">
+                                                <!-- <label for="button"></label> -->
+                                            </td>
+                                        </tr>
+<?php
     	while ($sql_row = mysqli_fetch_assoc($sql_result)) {
 ?>
 										<tr id="row<?php echo $hash; ?>" style="text-align: center; vertical-align: top;">
@@ -313,19 +315,19 @@
 											<td class="col-md-6">
 <?php
 
-	$sql_no = "SELECT client_contact_no_id, client_contact_no
-				FROM client_contact_number
-				WHERE client_contact_id = '".$sql_row['client_contact_id']."'";
-	$sql_no_result = mysqli_query($db, $sql_no);
+        	$sql_no = "SELECT client_contact_no_id, client_contact_no
+        				FROM client_contact_number
+        				WHERE client_contact_id = '".$sql_row['client_contact_id']."'";
+        	$sql_no_result = mysqli_query($db, $sql_no);
 
-	while ($sql_no_row = mysqli_fetch_assoc($sql_no_result)) {
+        	while ($sql_no_row = mysqli_fetch_assoc($sql_no_result)) {
 
-        $array_contact['contact'][] = array(
-                                        'client' => array(
-                                            'client_contact_id' => $sql_row['client_contact_id'], 
-                                            'contact_no_id' => $sql_no_row['client_contact_no_id']
-                                        )
-                                    );
+                $array_contact['contact'][] = array(
+                                                'client' => array(
+                                                    'client_contact_id' => $sql_row['client_contact_id'], 
+                                                    'contact_no_id' => $sql_no_row['client_contact_no_id']
+                                                )
+                                            );
         
 ?>
 												<div class="row" style="margin-bottom: 5px;">
@@ -349,7 +351,7 @@
 											</td> -->
 
 <?php
-	}
+	       }
 
 ?>
                                                 <div class="row" style="margin-bottom: 5px;">
@@ -362,6 +364,12 @@
 <?php  
 			$hash++;  		
     	}
+    }else{
+?>
+                                            <div class="row" style="text-align: center;">
+                                                <strong><h4>No data found</h4></strong>
+                                            </div>
+<?php
     }
 ?>										
 										
@@ -455,58 +463,6 @@
                 </script>";
         }
         
-		
-		
-
-		// if(count($update_contact_name) > 0){
-		// 	for ($i=0; $i < count($update_contact_name); $i++) { 
-
-  //               // for ($j=0; $j < count($contact_id); $j++) { 
-                    
-  //                   $update_name = "UPDATE client_contact_person 
-  //                               SET client_contact_name = '$update_contact_name[$i]'
-  //                               WHERE client_contact_id = '$contact_id[$i]'";
-
-  //                               echo $update_name."<br>";
-  //               // mysqli_query($db, $update_name);
-
-
-  //               // }
-				
-
-		// 		// $explode_id = explode(",", $hidden_contact_no_id[$i]);
-		// 		// $explode_no = explode(",", $update_contact_number[$i]);
-		// 		for ($j=0; $j < count($update_contact_number); $j++) { 
-						
-  //                       // for ($k=0; $k < ; $k++) { 
-                            
-  //                           $update_contact_info = "UPDATE client_contact_number 
-  //                                       SET client_contact_no = '$update_contact_number[$j]' 
-  //                                       WHERE client_contact_id = '$contact_id[$i]'
-  //                                       AND client_contact_no_id = '$contact_no_id[$j]'";
-
-  //                           echo $update_contact_info."<br>";
-  //                           // mysqli_query($db, $update_contact_info);         
-
-  //                       // }
-							
-		// 		}
-		// 		$count++;
-		// 	}
-		
-		// 	// if($count == count($update_contact_name)){
-		// 	// 	echo "<script> alert('Data updated successfully...');
-		// 	// 			window.location.href='clients.php'
-		// 	// 			</script>";
-		// 	// }
-		// }
-		// // else{
-		// // 	echo "<script> alert('Data updated successfully...');
-		// // 				window.location.href='clients.php'
-		// // 				</script>";
-		// // }
-		
-
 	}else if(isset($_POST['delete_id'])){
 
 		$client_contact_id = $_POST['hidden_contact_id'];

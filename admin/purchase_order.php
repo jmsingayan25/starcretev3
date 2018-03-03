@@ -663,38 +663,6 @@ session_start();
                         </form>
                         <form action="purchase_order.php" method="post">
                             <button type="submit" id="cancel" name="cancel" value="<?php echo $row['purchase_id']; ?>" class="btn btn-sm btn-block" style="background-color: #d32f2f; color: white;" onclick="return confirm('Proceed cancelling item <?php echo $row['item_no'] . " " . $row['psi']; ?> under P.O. No. <?php echo $row['purchase_order_no']; ?>?')"; ><span class="fa fa-close"></span> <strong>Cancel Order</strong></button>
-                            <!-- <button type="button" id="cancel" name="cancel" value="<?php echo $row['purchase_id']; ?>" class="btn btn-warning btn-sm btn-block" data-toggle='modal' data-target='#purchaseOrderRow<?php echo $hash; ?>'><span class="fa fa-close"></span> Cancel Order</button>
-
-                            <div class="modal fade" id="purchaseOrderRow<?php echo $hash;?>" role="dialog">
-                                <div class="modal-dialog modal-sm">
-
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <div class="row" style="text-align: center;">
-                                                <div class="col-md-12">
-                                                    <img src="images/starcrete.png" width="150" height="50">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-body" style="text-align: left;">
-                                            <h4 class="modal-title" style="text-align: center">Confirmation Login</h4>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="confirm_password">Password</label>
-                                                        <input type="password" name="confirm_password" class="form-control" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" name="confirm" id="confirm" value="<?php echo $row['purchase_id']; ?>" class="btn btn-primary">Submit</button>
-                                            <button type="button" class="btn" data-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
                         </form>                              
                     </td>
                 </tr>
@@ -949,40 +917,6 @@ vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4></td>
                         </form>
                         <form action="purchase_order.php" method="post">
                             <button type="submit" id="cancel" name="cancel" value="<?php echo $row['purchase_id']; ?>" class="btn btn-sm btn-block" style="background-color: #d32f2f; color: white;" onclick="return confirm('Proceed cancelling item <?php echo $row['item_no'] . " " . $row['psi']; ?> under P.O. No. <?php echo $row['purchase_order_no']; ?>?')"; ><span class="fa fa-close"></span> <strong>Cancel Order</strong></button>
-                            <!-- <button type="submit" id="returned" name="returned" value="<?php echo $row['delivery_id']?>" class='btn btn-xs btn-danger' onclick="return confirm('Confirm DR No. <?php echo $row['delivery_receipt_no']; ?> as backload delivery?')" style=" width: 85px;" >Backload</button> -->
-
-                            <!-- <button type="button" id="cancel" name="cancel" value="<?php echo $row['purchase_id']; ?>" class="btn btn-warning btn-sm btn-block" data-toggle='modal' data-target='#purchaseOrderRow<?php echo $hash; ?>'><span class="fa fa-close"></span> Cancel Order</button>
-
-                            <div class="modal fade" id="purchaseOrderRow<?php echo $hash;?>" role="dialog">
-                                <div class="modal-dialog modal-sm">
-
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <div class="row" style="text-align: center;">
-                                                <div class="col-md-12">
-                                                    <img src="images/starcrete.png" width="150" height="50">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-body" style="text-align: left;">
-                                            <h4 class="modal-title" style="text-align: center">Confirmation Login</h4>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="confirm_password">Password</label>
-                                                        <input type="password" name="confirm_password" class="form-control" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" name="confirm" id="confirm" value="<?php echo $row['purchase_id']; ?>" class="btn btn-primary">Submit</button>
-                                            <button type="button" class="btn" data-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
                         </form>
                     </td>
                 </tr>

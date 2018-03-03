@@ -258,7 +258,9 @@
 								<div class="form-group">
 									<div class="col-md-offset-8 col-md-4">
 										<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" style="font-weight: bold;">
-										<input type="reset" name="reset" id="reset" value="Reset" class="btn btn-default" style="font-weight: bold;">
+                                        <a href="client_sites.php" class="btn btn-warning"><strong>Cancel</strong></a>
+
+										<!-- <input type="reset" name="reset" id="reset" value="Reset" class="btn btn-default" style="font-weight: bold;"> -->
 									</div>
 								</div>
 							</div>
@@ -271,18 +273,7 @@
 							</header>
 							<div class="panel-body">
 								<div class="row">
-									<table id="item_table" align="center">
-										<tr>
-											<td class="col-md-4">
-												<label for="item_no">Name</label>
-											</td>
-											<td class="col-md-4">
-												<label for="quantity">Number</label>
-											</td>
-											<td class="col-md-4">
-												<!-- <label for="button"></label> -->
-											</td>
-										</tr>
+									<table id="item_table" align="center">								
 <?php
 
     $sql_contact = "SELECT site_contact_person_id, site_contact_name
@@ -292,6 +283,19 @@
     $result_sql_contact = mysqli_query($db, $sql_contact);
     if (mysqli_num_rows($result_sql_contact) > 0) {
         $hash = 1;
+?>
+                                        <tr>
+                                            <td class="col-md-4">
+                                                <label for="item_no">Name</label>
+                                            </td>
+                                            <td class="col-md-4">
+                                                <label for="quantity">Number</label>
+                                            </td>
+                                            <td class="col-md-4">
+                                                <!-- <label for="button"></label> -->
+                                            </td>
+                                        </tr>
+<?php
         while ($sql_row = mysqli_fetch_assoc($result_sql_contact)) {
 ?>
                                         <tr id="row<?php echo $hash; ?>" style="text-align: center; vertical-align: top;">
@@ -348,8 +352,14 @@
 <?php
             $hash++;
         }
+    }else{
+?>
+                                        <div class="row" style="text-align: center;">
+                                            <strong><h4>No data found</h4></strong>
+                                        </div>
     }
-
+<?php
+    }
 ?>
 									</table>
 								</div>

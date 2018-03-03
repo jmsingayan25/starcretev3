@@ -115,7 +115,7 @@
 	function add_row(){
 		$rowno=$("#item_table tr").length;
 		$rowno=$rowno+1;
-		$("#item_table tr:last").after("<tr id='row"+$rowno+"' style='text-align: center;'><td class='col-md-4'><div class='form-group'><input type='type' name='contact_name[]' class='form-control' autocomplete='off' required></div></td><td class='col-md-4'><div class='form-group'><input type='type' name='contact_no[]' class='form-control' autocomplete='off' required></div></td><td class='col-md-4'><div class='form-group'><input type='button' value='Remove' class='btn btn-primary btn-md' onclick=delete_row('row"+$rowno+"') style='font-weight: bold;'></div></td></tr>");
+		$("#item_table tr:last").after("<tr id='row"+$rowno+"' style='text-align: center;'><td class='col-md-4'><div class='form-group'><input type='type' name='contact_name[]' class='form-control' autocomplete='off' required></div></td><td class='col-md-4'><div class='form-group'><input type='type' name='contact_no[]' class='form-control' autocomplete='off' required></div></td><td class='col-md-4'><div class='form-group'><input type='button' value='Remove' class='btn btn-danger btn-md' onclick=delete_row('row"+$rowno+"') style='font-weight: bold;'></div></td></tr>");
 	}
 
 	function delete_row(rowno){
@@ -180,7 +180,7 @@
 	<!--                 <li class="sub-menu">                       
 	                    <a class="" href="form_validation.html">Form Validation</a>
 	                </li>   --> 
-	                <li>
+	                <li class="active">
 	                    <a class="" href="clients.php">
 	                        <i class="fa fa-address-book"></i>
 	                        <span>Clients</span>
@@ -265,8 +265,9 @@
 											<div class="form-group">
 												<div class="col-md-offset-8 col-md-4">
 													<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" style="font-weight: bold;">
-													<!-- <a href="delivery_transaction.php" class="btn btn-warning">Cancel</a> -->
-													<input type="reset" name="reset" id="reset" value="Reset" class="btn btn-default" style="font-weight: bold;">
+													<a href="client_sites.php" class="btn btn-warning"><strong>Cancel</strong></a>
+													
+													<!-- <input type="reset" name="reset" id="reset" value="Reset" class="btn btn-default" style="font-weight: bold;"> -->
 												</div>
 											</div>
 										</div>
@@ -287,31 +288,39 @@
                     WHERE site_id = '$site_id'";
 
     $name_sql_result = mysqli_query($db, $name_sql);
-    while ($row_name_sql = mysqli_fetch_assoc($name_sql_result)) {
-        
-        $no_sql = "SELECT GROUP_CONCAT(DISTINCT site_contact_no SEPARATOR ', ') as site_contact_no
-                    FROM site_contact_number
-                    WHERE site_contact_person_id = '".$row_name_sql['site_contact_person_id']."'";
+    if(mysqli_num_rows($name_sql_result) > 0){
 
-        $no_sql_result = mysqli_query($db, $no_sql);
-        while ($row_no_sql = mysqli_fetch_assoc($no_sql_result)) {
-            
-            $row_name_sql['site_contact_no'] = $row_no_sql['site_contact_no'];
+	    while ($row_name_sql = mysqli_fetch_assoc($name_sql_result)) {
+	        
+	        $no_sql = "SELECT GROUP_CONCAT(DISTINCT site_contact_no SEPARATOR ', ') as site_contact_no
+	                    FROM site_contact_number
+	                    WHERE site_contact_person_id = '".$row_name_sql['site_contact_person_id']."'";
+
+	        $no_sql_result = mysqli_query($db, $no_sql);
+	        while ($row_no_sql = mysqli_fetch_assoc($no_sql_result)) {
+	            
+	            $row_name_sql['site_contact_no'] = $row_no_sql['site_contact_no'];
 ?>
-												<div class="form-group">
-	                                                <div class="row" style="margin-bottom: 2px;">
-	                                                    <div class="col-md-6 col-md-offset-1">
-	                                                        <strong><?php echo $row_name_sql['site_contact_name']; ?></strong>
-	                                                    </div>
-	                                                    <div class="col-md-5">
-	                                                    	<strong><?php echo $row_name_sql['site_contact_no']; ?></strong>
-	                                                    </div>
-	                                                </div>
+											<div class="form-group">
+                                                <div class="row" style="margin-bottom: 2px;">
+                                                    <div class="col-md-6 col-md-offset-1">
+                                                        <strong><?php echo $row_name_sql['site_contact_name']; ?></strong>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                    	<strong><?php echo $row_name_sql['site_contact_no']; ?></strong>
+                                                    </div>
                                                 </div>
+                                            </div>
 <?php
-        }
+	        }
+	    }
+    }else{
+?>
+											<div class="row" style="text-align: center;">
+												<strong><h4>No data found</h4></strong>
+											</div>									
+<?php
     }
-
 ?>  
 										</div>
 									</section>

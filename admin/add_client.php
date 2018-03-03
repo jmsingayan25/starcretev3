@@ -250,7 +250,9 @@
 									<div class="form-group">
 										<div class="col-md-offset-8 col-md-4">
 											<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" style="font-weight: bold;">
-											<input type="reset" name="reset" id="reset" value="Reset" class="btn btn-default" style="font-weight: bold;">
+													<a href="clients.php" class="btn btn-warning"><strong>Cancel</strong></a>
+											
+											<!-- <input type="reset" name="reset" id="reset" value="Reset" class="btn btn-default" style="font-weight: bold;"> -->
 										</div>
 									</div>
 								</div>
