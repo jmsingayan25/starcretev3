@@ -615,7 +615,7 @@
                             <button type="button" id="update" name="update" value="<?php echo $row['delivery_id']; ?>" class="btn btn-sm btn-block" style="background-color: #ffa000; color: white; margin-bottom: 3px;" data-toggle='modal' data-target='#deliveryOrderUpdateRow<?php echo $hash; ?>'><span class="fa fa-edit"></span> <strong>Update</strong></button>
 
                             <div class="modal fade" id="deliveryOrderUpdateRow<?php echo $hash;?>" role="dialog">
-                                <div class="modal-dialog modal-sm">
+                                <div class="modal-dialog" style="max-width: 300px;">
 
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -626,7 +626,7 @@
                                             </div>
                                         </div>
                                         <div class="modal-body" style="text-align: left;">
-                                            <h4 class="modal-title" style="text-align: center">Confirmation Login</h4>
+                                            <h4 class="modal-title" style="text-align: center">Confirmation</h4>
                                             <hr>
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -994,7 +994,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4>
                             <button type="button" id="update" name="update" value="<?php echo $row['delivery_id']; ?>" class="btn btn-sm btn-block" style="background-color: #ffa000; color: white; margin-bottom: 3px;" data-toggle='modal' data-target='#deliveryOrderUpdateRow<?php echo $hash; ?>'><span class="fa fa-edit"></span> <strong>Update</strong></button>
 
                             <div class="modal fade" id="deliveryOrderUpdateRow<?php echo $hash;?>" role="dialog">
-                                <div class="modal-dialog modal-sm">
+                                <div class="modal-dialog" style="max-width: 300px;">
 
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -1005,7 +1005,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4>
                                             </div>
                                         </div>
                                         <div class="modal-body" style="text-align: left;">
-                                            <h4 class="modal-title" style="text-align: center">Confirmation Login</h4>
+                                            <h4 class="modal-title" style="text-align: center">Confirmation</h4>
                                             <hr>
                                             <div class="row">
                                                 <div class="col-md-12">
