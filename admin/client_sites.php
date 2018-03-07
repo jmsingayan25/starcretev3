@@ -404,422 +404,211 @@
                                 </thead>
                                 <tbody>
 <?php
-    
-    if(isset($_GET['search_site'])){
 
-        if($_GET['search'] == ''){
-            $search_word = "";
-        }else{
-            $search_word = $_GET['search'];
+    if($_GET['search'] == ''){
+        $search_word = "";
+    }else{
+        $search_word = $_GET['search'];
+    }
+
+    if($_GET['search'] != ''){
+        $string = " AND (site_name LIKE '%".$search_word."%' OR site_address LIKE '%".$search_word."%') ";
+    }else{
+        $string = "";
+    }
+
+    $sql = "SELECT * FROM site WHERE client_id = '$client_id'".$string;
+
+    $result = mysqli_query($db, $sql); 
+    $total = mysqli_num_rows($result);
+
+    $adjacents = 3;
+    $targetpage = "clients_sites.php"; //your file name
+    $page = $_GET['page'];
+
+    if($page){ 
+        $start = ($page - 1) * $limit; //first item to display on this page
+    }else{
+        $start = 0;
+    }
+
+    /* Setup page vars for display. */
+    if ($page == 0) $page = 1; //if no page var is given, default to 1.
+    $prev = $page - 1; //previous page is current page - 1
+    $next = $page + 1; //next page is current page + 1
+    $lastpage = ceil($total/$limit); //lastpage.
+    $lpm1 = $lastpage - 1; //last page minus 1
+
+    /* CREATE THE PAGINATION */
+    $counter = 0;
+    $pagination = "";
+    if($lastpage > 1){ 
+        $pagination .= "<div class='pagination1'> <ul class='pagination'>";
+        if ($page > $counter+1) {
+            $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$prev&search=$search_word\">Previous</a></li>"; 
         }
 
-        if($_GET['search'] != ''){
-            $string = " AND (site_name LIKE '%".$search_word."%' OR site_address LIKE '%".$search_word."%') ";
-        }else{
-            $string = "";
-        }
-
-        $sql = "SELECT * FROM site WHERE client_id = '$client_id'".$string;
-
-        $result = mysqli_query($db, $sql); 
-        $total = mysqli_num_rows($result);
-
-        $adjacents = 3;
-        $targetpage = "clients_sites.php"; //your file name
-        $page = $_GET['page'];
-
-        if($page){ 
-            $start = ($page - 1) * $limit; //first item to display on this page
-        }else{
-            $start = 0;
-        }
-
-        /* Setup page vars for display. */
-        if ($page == 0) $page = 1; //if no page var is given, default to 1.
-        $prev = $page - 1; //previous page is current page - 1
-        $next = $page + 1; //next page is current page + 1
-        $lastpage = ceil($total/$limit); //lastpage.
-        $lpm1 = $lastpage - 1; //last page minus 1
-
-        /* CREATE THE PAGINATION */
-        $counter = 0;
-        $pagination = "";
-        if($lastpage > 1){ 
-            $pagination .= "<div class='pagination1'> <ul class='pagination'>";
-            if ($page > $counter+1) {
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$prev&search=$search_word\">Previous</a></li>"; 
+        if ($lastpage < 7 + ($adjacents * 2)) { 
+            for ($counter = 1; $counter <= $lastpage; $counter++){
+                if ($counter == $page)
+                $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
+                else
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&search=$search_word\">$counter</a></li>"; 
             }
-
-            if ($lastpage < 7 + ($adjacents * 2)) { 
-                for ($counter = 1; $counter <= $lastpage; $counter++){
+        }
+        elseif($lastpage > 5 + ($adjacents * 2)){ //enough pages to hide some
+            //close to beginning; only hide later pages
+            if($page < 1 + ($adjacents * 2)) {
+                for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++){
+                    if ($counter == $page)
+                    $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
+                    else
+                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&search=$search_word\">$counter</a></li>"; 
+                }
+                $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&search=$search_word\">$lpm1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&search=$search_word\">$lastpage</a></li>"; 
+            }
+            //in middle; hide some front and some back
+            elseif($lastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2)){
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&search=$search_word\">1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&search=$search_word\">2</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
+                for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++){
+                    if ($counter == $page)
+                    $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
+                    else
+                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&search=$search_word\">$counter</a></li>"; 
+                }
+                $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&search=$search_word\">$lpm1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&search=$search_word\">$lastpage</a></li>"; 
+            }
+            //close to end; only hide early pages
+            else{
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&search=$search_word\">1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&search=$search_word\">2</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
+                for ($counter = $lastpage - (2 + ($adjacents * 2)); $counter <= $lastpage; $counter++){
                     if ($counter == $page)
                     $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
                     else
                     $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&search=$search_word\">$counter</a></li>"; 
                 }
             }
-            elseif($lastpage > 5 + ($adjacents * 2)){ //enough pages to hide some
-                //close to beginning; only hide later pages
-                if($page < 1 + ($adjacents * 2)) {
-                    for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++){
-                        if ($counter == $page)
-                        $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
-                        else
-                        $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&search=$search_word\">$counter</a></li>"; 
-                    }
-                    $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&search=$search_word\">$lpm1</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&search=$search_word\">$lastpage</a></li>"; 
-                }
-                //in middle; hide some front and some back
-                elseif($lastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2)){
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&search=$search_word\">1</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&search=$search_word\">2</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                    for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++){
-                        if ($counter == $page)
-                        $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
-                        else
-                        $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&search=$search_word\">$counter</a></li>"; 
-                    }
-                    $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&search=$search_word\">$lpm1</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&search=$search_word\">$lastpage</a></li>"; 
-                }
-                //close to end; only hide early pages
-                else{
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&search=$search_word\">1</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&search=$search_word\">2</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                    for ($counter = $lastpage - (2 + ($adjacents * 2)); $counter <= $lastpage; $counter++){
-                        if ($counter == $page)
-                        $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
-                        else
-                        $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&search=$search_word\">$counter</a></li>"; 
-                    }
-                }
-            }
-
-            //next button
-            if ($page < $counter - 1) 
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$next&search=$search_word\">Next</a></li>";
-            else
-                $pagination.= "";
-            $pagination.= "</ul></div>\n"; 
         }
 
-        $sql_site = "SELECT * FROM site WHERE client_id = '$client_id' ".$string." ORDER BY site_name ASC LIMIT $start, $limit";
-        $result_site = mysqli_query($db, $sql_site);
+        //next button
+        if ($page < $counter - 1) 
+            $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$next&search=$search_word\">Next</a></li>";
+        else
+            $pagination.= "";
+        $pagination.= "</ul></div>\n"; 
+    }
 
-        $hash = 1;
-        if(mysqli_num_rows($result_site) > 0){
-            while ($row = mysqli_fetch_assoc($result_site)) {
+    $sql_site = "SELECT * FROM site WHERE client_id = '$client_id' ".$string." ORDER BY site_name ASC LIMIT $start, $limit";
+    $result_site = mysqli_query($db, $sql_site);
 
-            $sql_number = "SELECT GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name ASC SEPARATOR ', ') as site_contact_name
-                            FROM site_contact_person p, site_contact_number n
-                            WHERE p.site_contact_person_id = n.site_contact_person_id
-                            AND p.site_id = '".$row['site_id']."'";
+    $hash = 1;
+    if(mysqli_num_rows($result_site) > 0){
+        while ($row = mysqli_fetch_assoc($result_site)) {
 
-            $result_number = mysqli_query($db, $sql_number);
-            $row_number = mysqli_fetch_assoc($result_number);
+        $sql_number = "SELECT GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name ASC SEPARATOR ', ') as site_contact_name
+                        FROM site_contact_person p, site_contact_number n
+                        WHERE p.site_contact_person_id = n.site_contact_person_id
+                        AND p.site_id = '".$row['site_id']."'";
 
-            $row['site_contact_name'] = $row_number['site_contact_name'];        
+        $result_number = mysqli_query($db, $sql_number);
+        $row_number = mysqli_fetch_assoc($result_number);
+
+        $row['site_contact_name'] = $row_number['site_contact_name'];        
 ?>
-                                        <tr>
-                                            <td><strong><?php echo $row['site_name']; ?></strong></td>
-                                            <td><strong><?php echo $row['site_address']; ?></strong></td>
-                                            <td>
+                                    <tr>
+                                        <td><strong><?php echo $row['site_name']; ?></strong></td>
+                                        <td><strong><?php echo $row['site_address']; ?></strong></td>
+                                        <td>
                                                 
 <?php
 
-    $name_sql = "SELECT DISTINCT site_contact_person_id, site_contact_name
-                    FROM site_contact_person
-                    WHERE site_id = '".$row['site_id']."'";
+        $name_sql = "SELECT DISTINCT site_contact_person_id, site_contact_name
+                        FROM site_contact_person
+                        WHERE site_id = '".$row['site_id']."'";
 
-    $name_sql_result = mysqli_query($db, $name_sql);
-    while ($row_name_sql = mysqli_fetch_assoc($name_sql_result)) {
-        
-        $no_sql = "SELECT GROUP_CONCAT(DISTINCT site_contact_no SEPARATOR ', ') as site_contact_no
-                    FROM site_contact_number
-                    WHERE site_contact_person_id = '".$row_name_sql['site_contact_person_id']."'";
-
-        $no_sql_result = mysqli_query($db, $no_sql);
-        while ($row_no_sql = mysqli_fetch_assoc($no_sql_result)) {
+        $name_sql_result = mysqli_query($db, $name_sql);
+        while ($row_name_sql = mysqli_fetch_assoc($name_sql_result)) {
             
-            $row_name_sql['site_contact_no'] = $row_no_sql['site_contact_no'];
+            $no_sql = "SELECT GROUP_CONCAT(DISTINCT site_contact_no SEPARATOR ' ') as site_contact_no
+                        FROM site_contact_number
+                        WHERE site_contact_person_id = '".$row_name_sql['site_contact_person_id']."'";
+
+            $no_sql_result = mysqli_query($db, $no_sql);
+            while ($row_no_sql = mysqli_fetch_assoc($no_sql_result)) {
+                
+                $row_name_sql['site_contact_no'] = $row_no_sql['site_contact_no'];
 ?>
-                                                <div class="form-group">
-                                                    <div class="row" style="margin-bottom: 2px;">
-                                                        <div class="col-md-6">
-                                                            <strong><?php echo $row_name_sql['site_contact_name']; ?></strong>
-                                                        </div>
-                                                        <div class="col-md-1">
-                                                            <strong>-</strong>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <strong><?php echo $row_name_sql['site_contact_no']; ?></strong>
-                                                        </div>
+                                            <div class="form-group">
+                                                <div class="row" style="margin-bottom: 2px;">
+                                                    <div class="col-md-6">
+                                                        <strong><?php echo $row_name_sql['site_contact_name']; ?></strong>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <strong>-</strong>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <strong><?php echo $row_name_sql['site_contact_no']; ?></strong>
                                                     </div>
                                                 </div>
+                                            </div>
 <?php
+            }
         }
-    }
 
 ?>                       
-                                            </td>
-                                            <td>
-                                                <div class="row" style="margin-bottom: 2px;">
-                                                    <div class="col-md-12">
-                                                        <form action="add_site_contact.php" method="post">
-                                                            <input type="hidden" name="post_site_id" value="<?php echo $row['site_id']; ?>">
-                                                            <input type="hidden" name="post_client_name" value="<?php echo $client_name; ?>">
-                                                            <!-- <div class="tooltips" data-original-title="Add Contact">
-                                                                <button class="btn btn-primary btn-xs"><span class="fa fa-plus-square"></span></button>
-                                                            </div> -->
-                                                            <button class="btn btn-sm btn-block" style="background-color: #1976d2; color: white;"><span class="fa fa-plus"></span> <strong>Add Contact</strong></button>
-                                                        </form>
-                                                    </div>
+                                        </td>
+                                        <td>
+                                            <div class="row" style="margin-bottom: 2px;">
+                                                <div class="col-md-12">
+                                                    <form action="add_site_contact.php" method="post">
+                                                        <input type="hidden" name="post_site_id" value="<?php echo $row['site_id']; ?>">
+                                                        <input type="hidden" name="post_client_name" value="<?php echo $client_name; ?>">
+                                                        <!-- <div class="tooltips" data-original-title="Add Contact">
+                                                            <button class="btn btn-primary btn-xs"><span class="fa fa-plus-square"></span></button>
+                                                        </div> -->
+                                                        <button class="btn btn-sm btn-block" style="background-color: #1976d2; color: white;"><span class="fa fa-plus"></span> <strong>Add Contact</strong></button>
+                                                    </form>
                                                 </div>
-                                                <div class="row" style="margin-bottom: 2px;">
-                                                    <div class="col-md-12">
-                                                        <form action="client_sites_update_info.php" method="post">
-                                                            <input type="hidden" name="post_site_id" value="<?php echo $row['site_id']; ?>">
-                                                            <input type="hidden" name="post_client_name" value="<?php echo $client_name; ?>">
-                                                            <!-- <div class="tooltips" data-original-title="Edit">
-                                                                <button class="btn btn-danger btn-xs" style="margin-bottom: 5px;"><span class="fa fa-edit"></span></button>
-                                                            </div> -->
-                                                            <button class="btn btn-sm btn-block" style="background-color: #ffa000; color: white;"><span class="fa fa-edit"></span> <strong>Update</strong></button>
-                                                        </form>
-                                                    </div>
+                                            </div>
+                                            <div class="row" style="margin-bottom: 2px;">
+                                                <div class="col-md-12">
+                                                    <form action="client_sites_update_info.php" method="post">
+                                                        <input type="hidden" name="post_site_id" value="<?php echo $row['site_id']; ?>">
+                                                        <input type="hidden" name="post_client_name" value="<?php echo $client_name; ?>">
+                                                        <!-- <div class="tooltips" data-original-title="Edit">
+                                                            <button class="btn btn-danger btn-xs" style="margin-bottom: 5px;"><span class="fa fa-edit"></span></button>
+                                                        </div> -->
+                                                        <button class="btn btn-sm btn-block" style="background-color: #ffa000; color: white;"><span class="fa fa-edit"></span> <strong>Update</strong></button>
+                                                    </form>
                                                 </div>
-                                            </td>
-                                            <!-- <td class="col-md-1">
-                                                <form action="client_sites.php" method="post">
-                                                    <input type="hidden" name="post_client_id" value="<?php echo $row['client_id']; ?>">
-                                                    <input type="submit" value="View Sites >" class="btn btn-success btn-xs" style="margin-bottom: 5px;">
-                                                </form>
-                                            </td> -->
-                                        </tr>
+                                            </div>
+                                        </td>
+                                        <!-- <td class="col-md-1">
+                                            <form action="client_sites.php" method="post">
+                                                <input type="hidden" name="post_client_id" value="<?php echo $row['client_id']; ?>">
+                                                <input type="submit" value="View Sites >" class="btn btn-success btn-xs" style="margin-bottom: 5px;">
+                                            </form>
+                                        </td> -->
+                                    </tr>
 <?php
-                $hash++;
-            }
-        }else{
-?>
-                                        <tr>        
-                                            <td colspan="4" style='height: 100%; background: white; border: none; text-align:center; 
-                vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
-                                        </tr>
-
-<?php
+            $hash++;
         }
     }else{
-
-        if($_GET['search'] == ''){
-            $search_word = "";
-        }else{
-            $search_word = $_GET['search'];
-        }
-
-        if($_GET['search'] != ''){
-            $string = " AND (site_name LIKE '%".$search_word."%' OR site_address LIKE '%".$search_word."%') ";
-        }else{
-            $string = "";
-        }
-
-        $sql = "SELECT * FROM site WHERE client_id = '$client_id'".$string;
-
-        $result = mysqli_query($db, $sql); 
-        $total = mysqli_num_rows($result);
-
-        $adjacents = 3;
-        $targetpage = "clients_sites.php"; //your file name
-        $page = $_GET['page'];
-
-        if($page){ 
-            $start = ($page - 1) * $limit; //first item to display on this page
-        }else{
-            $start = 0;
-        }
-
-        /* Setup page vars for display. */
-        if ($page == 0) $page = 1; //if no page var is given, default to 1.
-        $prev = $page - 1; //previous page is current page - 1
-        $next = $page + 1; //next page is current page + 1
-        $lastpage = ceil($total/$limit); //lastpage.
-        $lpm1 = $lastpage - 1; //last page minus 1
-
-        /* CREATE THE PAGINATION */
-        $counter = 0;
-        $pagination = "";
-        if($lastpage > 1){ 
-            $pagination .= "<div class='pagination1'> <ul class='pagination'>";
-            if ($page > $counter+1) {
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$prev&search=$search_word\">Previous</a></li>"; 
-            }
-
-            if ($lastpage < 7 + ($adjacents * 2)) { 
-                for ($counter = 1; $counter <= $lastpage; $counter++){
-                    if ($counter == $page)
-                    $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
-                    else
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&search=$search_word\">$counter</a></li>"; 
-                }
-            }
-            elseif($lastpage > 5 + ($adjacents * 2)){ //enough pages to hide some
-                //close to beginning; only hide later pages
-                if($page < 1 + ($adjacents * 2)) {
-                    for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++){
-                        if ($counter == $page)
-                        $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
-                        else
-                        $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&search=$search_word\">$counter</a></li>"; 
-                    }
-                    $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&search=$search_word\">$lpm1</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&search=$search_word\">$lastpage</a></li>"; 
-                }
-                //in middle; hide some front and some back
-                elseif($lastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2)){
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&search=$search_word\">1</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&search=$search_word\">2</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                    for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++){
-                        if ($counter == $page)
-                        $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
-                        else
-                        $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&search=$search_word\">$counter</a></li>"; 
-                    }
-                    $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&search=$search_word\">$lpm1</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&search=$search_word\">$lastpage</a></li>"; 
-                }
-                //close to end; only hide early pages
-                else{
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&search=$search_word\">1</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&search=$search_word\">2</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                    for ($counter = $lastpage - (2 + ($adjacents * 2)); $counter <= $lastpage; $counter++){
-                        if ($counter == $page)
-                        $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
-                        else
-                        $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&search=$search_word\">$counter</a></li>"; 
-                    }
-                }
-            }
-
-            //next button
-            if ($page < $counter - 1) 
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$next&search=$search_word\">Next</a></li>";
-            else
-                $pagination.= "";
-            $pagination.= "</ul></div>\n"; 
-        }
-
-        $sql_site = "SELECT * FROM site WHERE client_id = '$client_id' ".$string." ORDER BY site_name ASC LIMIT $start, $limit";
-        $result_site = mysqli_query($db, $sql_site);
-
-        $hash = 1;
-        if(mysqli_num_rows($result_site) > 0){
-            while ($row = mysqli_fetch_assoc($result_site)) {
-
-            $sql_number = "SELECT GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name ASC SEPARATOR ', ') as site_contact_name
-                            FROM site_contact_person p, site_contact_number n
-                            WHERE p.site_contact_person_id = n.site_contact_person_id
-                            AND p.site_id = '".$row['site_id']."'";
-
-            $result_number = mysqli_query($db, $sql_number);
-            $row_number = mysqli_fetch_assoc($result_number);
-
-            $row['site_contact_name'] = $row_number['site_contact_name'];        
 ?>
-                                        <tr>
-                                            <td><strong><?php echo $row['site_name']; ?></strong></td>
-                                            <td><strong><?php echo $row['site_address']; ?></strong></td>
-                                            <td>
-                                                
-<?php
-
-    $name_sql = "SELECT DISTINCT site_contact_person_id, site_contact_name
-                    FROM site_contact_person
-                    WHERE site_id = '".$row['site_id']."'";
-
-    $name_sql_result = mysqli_query($db, $name_sql);
-    while ($row_name_sql = mysqli_fetch_assoc($name_sql_result)) {
-        
-        $no_sql = "SELECT GROUP_CONCAT(DISTINCT site_contact_no SEPARATOR ' ') as site_contact_no
-                    FROM site_contact_number
-                    WHERE site_contact_person_id = '".$row_name_sql['site_contact_person_id']."'";
-
-        $no_sql_result = mysqli_query($db, $no_sql);
-        while ($row_no_sql = mysqli_fetch_assoc($no_sql_result)) {
-            
-            $row_name_sql['site_contact_no'] = $row_no_sql['site_contact_no'];
-?>
-                                                <div class="form-group">
-                                                    <div class="row" style="margin-bottom: 2px;">
-                                                        <div class="col-md-6">
-                                                            <strong><?php echo $row_name_sql['site_contact_name']; ?></strong>
-                                                        </div>
-                                                        <div class="col-md-1">
-                                                            <strong>-</strong>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <strong><?php echo $row_name_sql['site_contact_no']; ?></strong>
-                                                        </div>
-                                                    </div>
-                                                </div>
-<?php
-        }
-    }
-
-?>                       
-                                            </td>
-                                            <td>
-                                                <div class="row" style="margin-bottom: 2px;">
-                                                    <div class="col-md-12">
-                                                        <form action="add_site_contact.php" method="post">
-                                                            <input type="hidden" name="post_site_id" value="<?php echo $row['site_id']; ?>">
-                                                            <input type="hidden" name="post_client_name" value="<?php echo $client_name; ?>">
-                                                            <!-- <div class="tooltips" data-original-title="Add Contact">
-                                                                <button class="btn btn-primary btn-xs"><span class="fa fa-plus-square"></span></button>
-                                                            </div> -->
-                                                            <button class="btn btn-sm btn-block" style="background-color: #1976d2; color: white;"><span class="fa fa-plus"></span> <strong>Add Contact</strong></button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                                <div class="row" style="margin-bottom: 2px;">
-                                                    <div class="col-md-12">
-                                                        <form action="client_sites_update_info.php" method="post">
-                                                            <input type="hidden" name="post_site_id" value="<?php echo $row['site_id']; ?>">
-                                                            <input type="hidden" name="post_client_name" value="<?php echo $client_name; ?>">
-                                                            <!-- <div class="tooltips" data-original-title="Edit">
-                                                                <button class="btn btn-danger btn-xs" style="margin-bottom: 5px;"><span class="fa fa-edit"></span></button>
-                                                            </div> -->
-                                                            <button class="btn btn-sm btn-block" style="background-color: #ffa000; color: white;"><span class="fa fa-edit"></span> <strong>Update</strong></button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <!-- <td class="col-md-1">
-                                                <form action="client_sites.php" method="post">
-                                                    <input type="hidden" name="post_client_id" value="<?php echo $row['client_id']; ?>">
-                                                    <input type="submit" value="View Sites >" class="btn btn-success btn-xs" style="margin-bottom: 5px;">
-                                                </form>
-                                            </td> -->
-                                        </tr>
-<?php
-                $hash++;
-            }
-        }else{
-?>
-                                        <tr>        
-                                            <td colspan="4" style='height: 100%; background: white; border: none; text-align:center; 
-                vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
-                                        </tr>
+                                    <tr>        
+                                        <td colspan="4" style='height: 100%; background: white; border: none; text-align:center; 
+            vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
+                                    </tr>
 
 <?php
-        }
-        
     }
 ?>
                                 </tbody>

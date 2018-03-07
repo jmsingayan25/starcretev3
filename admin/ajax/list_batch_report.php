@@ -61,6 +61,11 @@
 ?>
 			</tbody>
 		</table>
+		<div class="row">
+			<div class="col-md-12">
+				1233456
+			</div>
+		</div>
 
 <?php
 	}else if($radio_option == 'total_batch_cement'){

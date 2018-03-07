@@ -110,10 +110,26 @@
 <script>
 
     function reportOption(str) {
-        // if (str == "") {
-        //     document.getElementById("site_id").innerHTML = "";
-        //     return;
-        // } else { 
+        if (str == "") {
+            
+            var hide_office = document.getElementById("hidden_office").value;
+
+            if (window.XMLHttpRequest) {
+                // code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            } else {
+                // code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("report_result").innerHTML = this.responseText;
+                }
+            };
+            xmlhttp.open("GET","ajax/list_batch_report.php?radio_option=total_cement&office="+hide_office,true);
+            xmlhttp.send();
+
+        } else { 
 
             var hide_office = document.getElementById("hidden_office").value;
 
@@ -131,7 +147,7 @@
             };
             xmlhttp.open("GET","ajax/list_batch_report.php?radio_option="+str+"&office="+hide_office,true);
             xmlhttp.send();
-        // }
+        }
     }
 
     // $(document).ready(function(){
@@ -156,7 +172,7 @@
 }
 </style>
 </head>
-<body onload="reportOption('total_cement');">
+<body onload="reportOption('');">
 
     <!-- container section start -->
     <section id="container" class="">
