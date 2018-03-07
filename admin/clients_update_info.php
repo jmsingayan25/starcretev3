@@ -367,7 +367,7 @@
     }else{
 ?>
                                             <div class="row" style="text-align: center;">
-                                                <strong><h4>No data found</h4></strong>
+                                                <strong><h4><p class='text-muted'>No data found</p></h4></strong>
                                             </div>
 <?php
     }

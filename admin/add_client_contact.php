@@ -313,7 +313,7 @@
 ?>
 												<div class="form-group">
 													<div class="row" style="text-align: center;">
-														<strong><h4>No data found</h4></strong>
+														<strong><h4><p class='text-muted'>No data found</p></h4></strong>
 													</div>
 												</div>
 
@@ -388,7 +388,7 @@
 
 		$count = 0;
 		$contact_name = $_POST['contact_name'];
-		$contact_no = str_replace("-", "", $_POST['contact_no']);
+		$contact_no = $_POST['contact_no'];
 
 		for ($i=0; $i < count($contact_name); $i++) { 
 			

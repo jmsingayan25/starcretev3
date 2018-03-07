@@ -43,39 +43,44 @@
     <![endif]-->
 </head>
 
-  <body class="login-img3-body">
-
+<body class="login-img3-body">
     <div class="container">
-
-      <form class="login-form" action="login.php" method="post">        
-        <div class="login-wrap">
-            <p class="login-img"><i class="icon_lock_alt"></i></p>
-            <div class="input-group">
-              <span class="input-group-addon"><i class="icon_profile"></i></span>
-              <input type="text" name="username" class="form-control" placeholder="Username" required autofocus>
+        <form class="login-form" action="login.php" method="post">        
+            <div class="login-wrap">
+                <p class="login-img"><i class="icon_lock_alt"></i></p>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="icon_profile"></i></span>
+                        <input type="text" name="username" class="form-control" placeholder="Username" value="<?php if(isset($_COOKIE["username"])) { echo $_COOKIE["username"]; } ?>" required autofocus>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                        <input type="password" name="password" class="form-control" placeholder="Password" value="<?php if(isset($_COOKIE["password"])) { echo $_COOKIE["password"]; } ?>" required>
+                    </div>
+                    <div class="input-group">
+                        <div class="col-lg-12">
+                            <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="remember" id="remember"> Remember me
+                            </label>
+                            </div>
+                        </div>
+                    </div>
+                <input class="btn btn-primary btn-lg btn-block" name="login-submit" id="login-submit" type="submit" value="Login">
             </div>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-                <input type="password" name="password" class="form-control" placeholder="Password" required>
-            </div>
-            <input class="btn btn-primary btn-lg btn-block" name="login-submit" id="login-submit" type="submit" value="Login">
-        </div>
-      </form>
-    <div class="text-right">
+        </form>
+        <div class="text-right">
             <div class="credits">
                 <!-- 
-                    All the links in the footer should remain intact. 
-                    You can delete the links only if you purchased the pro version.
-                    Licensing information: https://bootstrapmade.com/license/
-                    Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
+                All the links in the footer should remain intact. 
+                You can delete the links only if you purchased the pro version.
+                Licensing information: https://bootstrapmade.com/license/
+                Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
                 -->
                 <a href="https://bootstrapmade.com/free-business-bootstrap-themes-website-templates/">Business Bootstrap Themes</a> by <a href="https://bootstrapmade.com/">BootstrapMade</a>
             </div>
         </div>
     </div>
-
-
-  </body>
+</body>
 </html>
 <?php
 
@@ -94,6 +99,19 @@ if(isset($_POST['login-submit'])){
     $stmt->execute();
     $count = $stmt->get_result();
     if(mysqli_num_rows($count) == 1) {
+
+        if(!empty($_POST["remember"])) {
+            setcookie ("username",$_POST["username"],time()+ (10 * 365 * 24 * 60 * 60));
+            setcookie ("password",$_POST["password"],time()+ (10 * 365 * 24 * 60 * 60));
+        } else {
+            if(isset($_COOKIE["username"])) {
+                setcookie ("username","");
+            }
+            if(isset($_COOKIE["password"])) {
+                setcookie ("password","");
+            }
+        }
+
         $row = mysqli_fetch_assoc($count);
         session_start();
         $_SESSION['login_user'] = $username;

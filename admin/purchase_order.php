@@ -631,7 +631,7 @@ session_start();
                             <button type="button" class="btn btn-sm btn-block" style="margin-bottom: 5px; background-color: #ffa000; color: white;" data-toggle='modal' data-target='#purchaseOrderUpdateRow<?php echo $hash; ?>'><span class="fa fa-edit"></span> <strong>Update</strong></button>
 
                             <div class="modal fade" id="purchaseOrderUpdateRow<?php echo $hash;?>" role="dialog">
-                                <div class="modal-dialog modal-sm">
+                                <div class="modal-dialog modal-sm" style="max-width: 300px;">
 
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -642,7 +642,7 @@ session_start();
                                             </div>
                                         </div>
                                         <div class="modal-body" style="text-align: left;">
-                                            <h4 class="modal-title" style="text-align: center">Confirmation Login</h4>
+                                            <h4 class="modal-title" style="text-align: center">Confirmation</h4>
                                             <hr>
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -885,7 +885,7 @@ vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4></td>
                             <button type="button" class="btn btn-sm btn-block" style="margin-bottom: 5px; background-color: #ffa000; color: white;" data-toggle='modal' data-target='#purchaseOrderUpdateRow<?php echo $hash; ?>'><span class="fa fa-edit"></span> <strong>Update</strong></button>
 
                             <div class="modal fade" id="purchaseOrderUpdateRow<?php echo $hash;?>" role="dialog">
-                                <div class="modal-dialog modal-sm">
+                                <div class="modal-dialog modal-sm" style="max-width: 300px;">
 
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -896,7 +896,7 @@ vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4></td>
                                             </div>
                                         </div>
                                         <div class="modal-body" style="text-align: left;">
-                                            <h4 class="modal-title" style="text-align: center">Confirmation Login</h4>
+                                            <h4 class="modal-title" style="text-align: center">Confirmation</h4>
                                             <hr>
                                             <div class="row">
                                                 <div class="col-md-12">

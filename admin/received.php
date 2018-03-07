@@ -580,7 +580,7 @@ session_start();
                                 </td>
                                 <td class='col-md-1'><strong><?php echo $row['supplier_name']; ?></strong></td>
                                 <td class='col-md-1'><strong><?php echo $row['date_po_aggregates1']; ?></strong></td>
-                                <td class='col-md-1' style="background-color: green; color: white; color: white;"><strong><?php echo $row['remarks']; ?></strong></td>
+                                <td style="color: #388e3c;"><strong><?php echo $row['remarks']; ?></strong></td>
                             </tr>
 <?php   
                 $hash++;
@@ -753,7 +753,7 @@ session_start();
                                 </td>
                                 <td class='col-md-1'><strong><?php echo $row['supplier_name']; ?></strong></td>
                                 <td class='col-md-1'><strong><?php echo $row['date_po_aggregates1']; ?></strong></td>
-                                <td class='col-md-1' style="background-color: green; color: white; color: white;"><strong><?php echo $row['remarks']; ?></strong></td>
+                                <td style="color: #388e3c;"><strong><?php echo $row['remarks']; ?></strong></td>
                             </tr>
 <?php   
                 $hash++;

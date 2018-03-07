@@ -398,7 +398,7 @@
                                     <tr class="filters">
                                         <th class="col-md-4"><input type="text" class="form-control" placeholder="Site Name" disabled></th>
                                         <th class="col-md-4"><input type="text" class="form-control" placeholder="Address" disabled></th>
-                                        <th class="col-md-3">Contacts</th>
+                                        <th class="col-md-4">Contacts</th>
                                         <th class="col-md-1"></th>
                                     </tr>
                                 </thead>
@@ -556,7 +556,7 @@
                                                         <div class="col-md-1">
                                                             <strong>-</strong>
                                                         </div>
-                                                        <div class="col-md-1">
+                                                        <div class="col-md-4">
                                                             <strong><?php echo $row_name_sql['site_contact_no']; ?></strong>
                                                         </div>
                                                     </div>
@@ -763,7 +763,7 @@
                                                         <div class="col-md-1">
                                                             <strong>-</strong>
                                                         </div>
-                                                        <div class="col-md-1">
+                                                        <div class="col-md-4">
                                                             <strong><?php echo $row_name_sql['site_contact_no']; ?></strong>
                                                         </div>
                                                     </div>
