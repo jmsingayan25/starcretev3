@@ -627,7 +627,7 @@ session_start();
 ?>
                 </td>
                 <td><strong><?php echo $row['date_purchase']; ?></strong></td>
-                <td><strong><?php echo $row['remarks']; ?></strong></td>
+                <td><strong><?php echo "Pending" ?></strong></td>
             </tr>
 <?php
             $hash++;

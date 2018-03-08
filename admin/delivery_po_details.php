@@ -327,7 +327,7 @@ session_start();
                 <!--overview start-->
                	<div class="row">
 	                <div class="col-lg-12 page_links">
-	                    <h3 class="page-header"><i class="fa fa-laptop"></i> P.O. No. <?php echo $po_no_delivery; ?></h3>
+	                    <!-- <h3 class="page-header"><i class="fa fa-laptop"></i> P.O. No. <?php echo $po_no_delivery; ?></h3> -->
 	                    <ol class="breadcrumb">
 	                        <li><i class="fa fa-building"></i><?php echo ucfirst($plant) ?></li>
 	                        <li><i class="icon_document"></i><a href="delivery_order.php?office=<?php echo $plant; ?>">On Delivery Order <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $plant); ?></span></a></li>
@@ -347,42 +347,43 @@ session_start();
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th colspan="2">Item Balance</th>
-                                                    <th colspan="2">Delivered</th>
-                                                    <th colspan="1">On Delivery</th>
-                                                    <th colspan="1">Backloaded</th>
+                                                    <th class="col-md-1">Existing P.O. No.</th>
+                                                    <th class="col-md-1">Delivered</th>
+                                                    <th class="col-md-1">On Delivery</th>
+                                                    <th class="col-md-1">Backloaded</th>
+                                                    <th class="col-md-1">Cancelled</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <!-- <th colspan="2" style="text-align: left;">Balance: <?php echo number_format(getDeliveryBalance($db, $po_no_delivery, $fk_po_id)); ?> pcs</th> -->
-                                                    <th colspan="2" style="vertical-align: top;">
-                                                      
+                                                    <th style="vertical-align: top;">                                                   
 <?php
 
-    $balance_sql = "SELECT item_no, SUM(balance) as balance 
-                    FROM purchase_order 
-                    WHERE purchase_order_no = '$po_no_delivery'
-                    AND balance != 0
-                    GROUP BY item_no";
+    $balance_sql = "SELECT item_no, SUM(balance) as balance, psi
+            FROM purchase_order 
+            WHERE purchase_order_no = '$po_no_delivery'
+            GROUP BY item_no";
 
     $result_sql = mysqli_query($db, $balance_sql);
 
     if(mysqli_num_rows($result_sql) > 0){
-        
-        
+
         while ($balance_sql_row = mysqli_fetch_assoc($result_sql)) {
-            echo $balance_sql_row['item_no'] . ": ". number_format($balance_sql_row['balance']) . " pcs <br>";
-        }
+            if($balance_sql_row['psi'] != ''){
+                $ext = " (" . $balance_sql_row['psi'] . " PSI) ";
+            }else{
+                $ext = "";
+            }
+
+            echo $balance_sql_row['item_no'] . $ext . ": ". number_format($balance_sql_row['balance']) . " pcs <br>";
+        }  
     }
 ?>
                                                     </th>
-                                                    <th colspan="2" style="vertical-align: top;">
-                                                      
-                                                        <!-- <?php echo number_format(getDeliveryDelivered($db, $po_no_delivery, $plant)); ?> pcs</th> -->
+                                                    <th style="vertical-align: top;">
 <?php
     
-    $delivered_sql = "SELECT item_no, SUM(quantity) as quantity
+    $delivered_sql = "SELECT item_no, SUM(quantity) as quantity, psi
                         FROM delivery
                         WHERE remarks = 'Delivered'
                         AND office = '$plant'
@@ -393,21 +394,22 @@ session_start();
 
     if(mysqli_num_rows($delivered_result_sql) > 0){
 
-        
         while ($deliver_sql_row = mysqli_fetch_assoc($delivered_result_sql)) {
-            echo $deliver_sql_row['item_no'] . ": " . number_format($deliver_sql_row['quantity']) . " pcs <br>";
+            if($deliver_sql_row['psi'] != ''){
+                $ext = " (" . $deliver_sql_row['psi'] . " PSI) ";
+            }else{
+                $ext = "";
+            }
+
+            echo $deliver_sql_row['item_no'] . $ext . ": " . number_format($deliver_sql_row['quantity']) . " pcs <br>";
         }
     }
-    
-
 ?>
                                                     </th>
-                                                    <th colspan="1" style="vertical-align: top;">
-                                                     
-                                                        <!-- <?php echo number_format(getDeliveryOnDelivery($db, $po_no_delivery, $plant)); ?> pcs</th> -->
+                                                    <th style="vertical-align: top;">                                                    
 <?php
 
-    $ondelivery_sql = "SELECT item_no, SUM(quantity) as quantity
+    $ondelivery_sql = "SELECT item_no, SUM(quantity) as quantity, psi
                         FROM delivery
                         WHERE remarks = 'On Delivery'
                         AND office = '$plant'
@@ -418,19 +420,22 @@ session_start();
 
     if(mysqli_num_rows($ondelivery_result_sql) > 0){
 
-        
         while ($ondelivery_sql_row = mysqli_fetch_assoc($ondelivery_result_sql)) {
-            echo $ondelivery_sql_row['item_no'] . ": " . number_format($ondelivery_sql_row['quantity']) . " pcs <br>";
+            if($ondelivery_sql_row['psi'] != ''){
+                $ext = " (" . $ondelivery_sql_row['psi'] . " PSI) ";
+            }else{
+                $ext = "";
+            }
+
+            echo $ondelivery_sql_row['item_no'] . $ext . ": " . number_format($ondelivery_sql_row['quantity']) . " pcs <br>";
         }
-    }
-    
+    } 
 ?>
                                                     </th>
-                                                    <th colspan="1" style="vertical-align: top;">
-                                                  
+                                                    <th style="vertical-align: top;">                                               
 <?php
 
-    $backload_sql = "SELECT item_no, SUM(quantity) as quantity
+    $backload_sql = "SELECT item_no, SUM(quantity) as quantity, psi
                         FROM delivery
                         WHERE remarks = 'Backload'
                         AND office = '$plant'
@@ -441,14 +446,43 @@ session_start();
 
     if(mysqli_num_rows($backload_result_sql) > 0){
 
-        
         while ($backload_sql_row = mysqli_fetch_assoc($backload_result_sql)) {
-            echo $backload_sql_row['item_no'] . ": " . number_format($backload_sql_row['quantity']) . " pcs <br>";
+            if($backload_sql_row['psi'] != ''){
+                $ext = " (" . $backload_sql_row['psi'] . " PSI) ";
+            }else{
+                $ext = "";
+            }
+
+            echo $backload_sql_row['item_no'] . $ext . ": " . number_format($backload_sql_row['quantity']) . " pcs <br>";
         }  
-    }
-    
-?>                                               
+    }  
+?>  
                                                     </th>
+                                                    <th style="vertical-align: top;">
+<?php
+
+    $cancelled_sql = "SELECT item_no, SUM(cancelled) as cancelled, psi
+                        FROM purchase_order
+                        WHERE office = '$plant'
+                        AND purchase_order_no = '$po_no_delivery'
+                        AND cancelled > 0
+                        GROUP BY item_no";
+
+    $cancelled_result_sql = mysqli_query($db, $cancelled_sql);
+    if(mysqli_num_rows($cancelled_result_sql) > 0){
+
+        while ($cancelled_sql = mysqli_fetch_assoc($cancelled_result_sql)) {
+            if($cancelled_sql['psi'] != ''){
+                $ext = " (" . $cancelled_sql['psi'] . " PSI) ";
+            }else{
+                $ext = "";
+            }
+
+            echo $cancelled_sql['item_no'] . $ext . ": " . number_format($cancelled_sql['cancelled']) . " pcs <br>";
+        }
+    }
+?>
+                                                    </th>                                             
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -459,7 +493,7 @@ session_start();
                         <div class="row">
                             <div class="col-md-12">
                                 <header class="panel-heading">
-                                    Order Details
+                                    Order Details of P.O. No. <strong><?php echo $po_no_delivery; ?></strong>
                                 </header>
                                 <section class="panel">
                                     <div class="table-responsive filterable">
@@ -519,15 +553,15 @@ session_start();
 <?php
             if($row['remarks'] == 'Delivered'){
 ?>
-                                        <td style="background-color: green; color: white;"><strong><?php echo $row['remarks']; ?></strong></td>
+                                <td style="color: #388e3c;"><strong><?php echo $row['remarks']; ?></strong></td>
 <?php
             }else if($row['remarks'] == 'Backload'){
 ?>
-                                        <td style="background-color: #e60000; color: white;"><strong><?php echo $row['remarks']; ?></strong></td>
+                                <td style="color: #d32f2f;"><strong><?php echo $row['remarks']; ?></strong></td>
 <?php
             }else if($row['remarks'] == 'On Delivery'){
 ?>
-                                        <td style="background-color: #ffcc00;"><strong><?php echo $row['remarks']; ?></strong></td>
+                                <td style="color: #ffa000;"><strong><?php echo $row['remarks']; ?></strong></td>
 <?php
             }
 ?>
@@ -553,9 +587,9 @@ session_start();
                     </div>
                     <div class="col-md-3">
                         <section class="panel">
-                            <header class="panel-heading">
+                            <!-- <header class="panel-heading">
                                 Contact Details
-                            </header>
+                            </header> -->
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered">
                                     <thead>
