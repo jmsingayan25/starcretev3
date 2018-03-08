@@ -404,765 +404,383 @@
                                     </thead>
                                     <tbody>
 <?php
-	if(isset($_GET['search_table'])){
-        
-        if($_GET['search'] == ''){
-            $search_word = "";
-        }else{
-            $search_word = $_GET['search'];
+   
+    if($_GET['search'] == ''){
+        $search_word = "";
+    }else{
+        $search_word = $_GET['search'];
+    }
+
+    if($_GET['search'] != ''){
+        $string_ext = " AND (d.delivery_receipt_no LIKE '%".$search_word."%' 
+                            OR d.item_no LIKE '%".$search_word."%' 
+                            OR d.po_no_delivery LIKE '%".$search_word."%' 
+                            OR s.site_name LIKE '%".$search_word."%' 
+                            OR s.site_address LIKE '%".$search_word."%'
+                            OR p.site_contact_name LIKE '%".$search_word."%') ";
+    }else{
+        $string_ext = "";
+    }
+
+    if($_GET['end_date'] == ''){
+        $end_date = "";
+    }else{
+        $end_date = $_GET['end_date'];
+    }
+
+    if($_GET['start_date'] == ''){
+        $start_date = "";
+    }else{
+        $start_date = $_GET['start_date'];
+    }
+
+    if($_GET['start_date'] == '' && $_GET['end_date'] == ''){
+        $string_date = "";
+    }else if($_GET['start_date'] == '' && $_GET['end_date'] != ''){
+        $string_date = "AND DATE_FORMAT(date_delivery,'%Y-%m-%d') <= '$end_date'";
+    }else if($_GET['start_date'] != '' && $_GET['end_date'] == ''){
+        $string_date = "AND DATE_FORMAT(date_delivery,'%Y-%m-%d') >= '$start_date'";        
+    }else{
+        $string_date = "AND DATE_FORMAT(date_delivery,'%Y-%m-%d') BETWEEN '$start_date' AND '$end_date'";
+    }
+
+    $string = " WHERE office = '$search_plant'";
+
+    $sql = "SELECT * FROM delivery d, site s, purchase_order_contact pc, site_contact_person p ".$string." 
+            AND d.fk_po_id = pc.purchase_id
+            AND pc.site_contact_id = p.site_contact_person_id
+            AND d.site_id = s.site_id ".$string_date." ".$string_ext." 
+            AND remarks = 'On Delivery'
+            GROUP BY d.delivery_id";
+    // echo $sql;
+    $sql_result = mysqli_query($db, $sql); 
+    $total = mysqli_num_rows($sql_result);
+
+    $adjacents = 3;
+    $targetpage = "plant_delivery_order.php"; //your file name
+    $page = $_GET['page'];
+
+    if($page){ 
+        $start = ($page - 1) * $limit; //first item to display on this page
+    }else{
+        $start = 0;
+    }
+
+    /* Setup page vars for display. */
+    if ($page == 0) $page = 1; //if no page var is given, default to 1.
+    $prev = $page - 1; //previous page is current page - 1
+    $next = $page + 1; //next page is current page + 1
+    $lastpage = ceil($total/$limit); //lastpage.
+    $lpm1 = $lastpage - 1; //last page minus 1
+
+    /* CREATE THE PAGINATION */
+    $counter = 0;
+    $pagination = "";
+    if($lastpage > 1){ 
+        $pagination .= "<div class='pagination1'> <ul class='pagination'>";
+        if ($page > $counter+1) {
+            $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$prev&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">Previous</a></li>"; 
         }
 
-        if($_GET['search'] != ''){
-            $string_ext = " AND (d.delivery_receipt_no LIKE '%".$search_word."%' 
-                                OR d.item_no LIKE '%".$search_word."%' 
-                                OR d.po_no_delivery LIKE '%".$search_word."%' 
-                                OR s.site_name LIKE '%".$search_word."%' 
-                                OR s.site_address LIKE '%".$search_word."%'
-                                OR p.site_contact_name LIKE '%".$search_word."%') ";
-        }else{
-            $string_ext = "";
-        }
-
-        if($_GET['end_date'] == ''){
-            $end_date = "";
-        }else{
-            $end_date = $_GET['end_date'];
-        }
-
-        if($_GET['start_date'] == ''){
-            $start_date = "";
-        }else{
-            $start_date = $_GET['start_date'];
-        }
-
-        if($_GET['start_date'] == '' && $_GET['end_date'] == ''){
-            $string_date = "";
-        }else if($_GET['start_date'] == '' && $_GET['end_date'] != ''){
-            $string_date = "AND DATE_FORMAT(date_delivery,'%Y-%m-%d') <= '$end_date'";
-        }else if($_GET['start_date'] != '' && $_GET['end_date'] == ''){
-            $string_date = "AND DATE_FORMAT(date_delivery,'%Y-%m-%d') >= '$start_date'";        
-        }else{
-            $string_date = "AND DATE_FORMAT(date_delivery,'%Y-%m-%d') BETWEEN '$start_date' AND '$end_date'";
-        }
-
-        $string = " WHERE office = '$search_plant'";
-
-        $sql = "SELECT * FROM delivery d, site s, purchase_order_contact pc, site_contact_person p ".$string." 
-                AND d.fk_po_id = pc.purchase_id
-                AND pc.site_contact_id = p.site_contact_person_id
-                AND d.site_id = s.site_id ".$string_date." ".$string_ext." 
-                AND remarks = 'On Delivery'
-                GROUP BY d.delivery_id";
-        // echo $sql;
-        $sql_result = mysqli_query($db, $sql); 
-        $total = mysqli_num_rows($sql_result);
-
-        $adjacents = 3;
-        $targetpage = "plant_delivery_order.php"; //your file name
-        $page = $_GET['page'];
-
-        if($page){ 
-            $start = ($page - 1) * $limit; //first item to display on this page
-        }else{
-            $start = 0;
-        }
-
-        /* Setup page vars for display. */
-        if ($page == 0) $page = 1; //if no page var is given, default to 1.
-        $prev = $page - 1; //previous page is current page - 1
-        $next = $page + 1; //next page is current page + 1
-        $lastpage = ceil($total/$limit); //lastpage.
-        $lpm1 = $lastpage - 1; //last page minus 1
-
-        /* CREATE THE PAGINATION */
-        $counter = 0;
-        $pagination = "";
-        if($lastpage > 1){ 
-            $pagination .= "<div class='pagination1'> <ul class='pagination'>";
-            if ($page > $counter+1) {
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$prev&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">Previous</a></li>"; 
+        if ($lastpage < 7 + ($adjacents * 2)) { 
+            for ($counter = 1; $counter <= $lastpage; $counter++){
+                if ($counter == $page)
+                $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
+                else
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$counter</a></li>"; 
             }
-
-            if ($lastpage < 7 + ($adjacents * 2)) { 
-                for ($counter = 1; $counter <= $lastpage; $counter++){
+        }
+        elseif($lastpage > 5 + ($adjacents * 2)){ //enough pages to hide some
+            //close to beginning; only hide later pages
+            if($page < 1 + ($adjacents * 2)) {
+                for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++){
+                    if ($counter == $page)
+                    $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
+                    else
+                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$counter</a></li>"; 
+                }
+                $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$lpm1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$lastpage</a></li>"; 
+            }
+            //in middle; hide some front and some back
+            elseif($lastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2)){
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">2</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
+                for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++){
+                    if ($counter == $page)
+                    $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
+                    else
+                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$counter</a></li>"; 
+                }
+                $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$lpm1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$lastpage</a></li>"; 
+            }
+            //close to end; only hide early pages
+            else{
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">2</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
+                for ($counter = $lastpage - (2 + ($adjacents * 2)); $counter <= $lastpage; $counter++){
                     if ($counter == $page)
                     $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
                     else
                     $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$counter</a></li>"; 
                 }
             }
-            elseif($lastpage > 5 + ($adjacents * 2)){ //enough pages to hide some
-                //close to beginning; only hide later pages
-                if($page < 1 + ($adjacents * 2)) {
-                    for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++){
-                        if ($counter == $page)
-                        $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
-                        else
-                        $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$counter</a></li>"; 
-                    }
-                    $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$lpm1</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$lastpage</a></li>"; 
-                }
-                //in middle; hide some front and some back
-                elseif($lastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2)){
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">1</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">2</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                    for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++){
-                        if ($counter == $page)
-                        $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
-                        else
-                        $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$counter</a></li>"; 
-                    }
-                    $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$lpm1</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$lastpage</a></li>"; 
-                }
-                //close to end; only hide early pages
-                else{
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">1</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">2</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                    for ($counter = $lastpage - (2 + ($adjacents * 2)); $counter <= $lastpage; $counter++){
-                        if ($counter == $page)
-                        $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
-                        else
-                        $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$counter</a></li>"; 
-                    }
-                }
-            }
-
-            //next button
-            if ($page < $counter - 1) 
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$next&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">Next</a></li>";
-            else
-                $pagination.= "";
-            $pagination.= "</ul></div>\n"; 
         }
 
-        $query = "SELECT d.delivery_id, d.delivery_receipt_no, d.item_no, d.quantity, d.gate_pass, d.po_no_delivery, DATE_FORMAT(d.date_delivery,'%m/%d/%y') as date_delivery , d.office, d.remarks, d.fk_po_id, s.site_name, s.site_address, GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name ASC SEPARATOR ', ') as site_contact_name, c.client_name, d.psi
-                    FROM delivery d, site s, site_contact_person p, client c, site_contact_number sc, purchase_order_contact pc
-                    ".$string." ".$string_date."
-                    AND s.client_id = c.client_id
-                    AND d.fk_po_id = pc.purchase_id
-                    AND pc.site_contact_id = p.site_contact_person_id
-                    AND d.site_id = s.site_id ".$string_ext."
-                    AND remarks = 'On Delivery'
-                    GROUP BY delivery_id 
-                    ORDER BY delivery_id DESC
-                    LIMIT $start, $limit";
-        // echo $query;
-        $result = mysqli_query($db, $query);
-        if(mysqli_num_rows($result) > 0){
-            $hash = 1;
-            while($row = mysqli_fetch_assoc($result)){
+        //next button
+        if ($page < $counter - 1) 
+            $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$next&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">Next</a></li>";
+        else
+            $pagination.= "";
+        $pagination.= "</ul></div>\n"; 
+    }
 
-                if($row['psi'] != ""){
-                    $row['psi'] = "(" . $row['psi'] . " PSI)";
-                }else{
-                    $row['psi'] = "";
-                }
+    $query = "SELECT d.delivery_id, d.delivery_receipt_no, d.item_no, d.quantity, d.gate_pass, d.po_no_delivery, DATE_FORMAT(d.date_delivery,'%m/%d/%y') as date_delivery , d.office, d.remarks, d.fk_po_id, s.site_name, s.site_address, GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name ASC SEPARATOR ', ') as site_contact_name, c.client_name, d.psi
+                FROM delivery d, site s, site_contact_person p, client c, site_contact_number sc, purchase_order_contact pc
+                ".$string." ".$string_date."
+                AND s.client_id = c.client_id
+                AND d.fk_po_id = pc.purchase_id
+                AND pc.site_contact_id = p.site_contact_person_id
+                AND d.site_id = s.site_id ".$string_ext."
+                AND remarks = 'On Delivery'
+                GROUP BY delivery_id 
+                ORDER BY delivery_id DESC
+                LIMIT $start, $limit";
+    // echo $query;
+    $result = mysqli_query($db, $query);
+    if(mysqli_num_rows($result) > 0){
+        $hash = $start + 1;
+        while($row = mysqli_fetch_assoc($result)){
+
+            if($row['psi'] != ""){
+                $row['psi'] = "(" . $row['psi'] . " PSI)";
+            }else{
+                $row['psi'] = "";
+            }
 ?>
-                <tr>
-                	<td><?php echo $hash; ?></td>
-                	<td><strong><?php echo $row['delivery_receipt_no']; ?></strong></td>
-                	<td style="cursor: pointer;">
-                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['po_no_delivery'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo $row['fk_po_id']; ?>&po_no_delivery=<?php echo $row['po_no_delivery']; ?>'">
-                            <strong><?php echo $row['po_no_delivery']; ?></strong>
-                        </div>
-                    </td>
-                    <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
-                    <td><strong><?php echo number_format($row['quantity'])." pcs"; ?></strong></td>
-                    <td><strong><?php echo $row['site_name']; ?></strong></td>
-                    <td><strong><?php echo $row['site_address']; ?></strong></td>
-                    <td>
+            <tr>
+            	<td><?php echo $hash; ?></td>
+                <td><strong><?php echo $row['delivery_receipt_no']; ?></strong></td>
+                <td style="cursor: pointer;">
+                    <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['po_no_delivery'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo $row['fk_po_id']; ?>&po_no_delivery=<?php echo $row['po_no_delivery']; ?>'">
+                        <strong><?php echo $row['po_no_delivery']; ?></strong>
+                    </div>
+                </td>
+                <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
+                <td><strong><?php echo number_format($row['quantity'])." pcs"; ?></strong></td>
+                <td><strong><?php echo $row['site_name']; ?></strong></td>
+                <td><strong><?php echo $row['site_address']; ?></strong></td>
+                <td>
 <?php
+            $contact_sql = "SELECT DISTINCT p.site_contact_id, c.site_contact_name
+                            FROM purchase_order_contact p, delivery d, site_contact_person c
+                            WHERE d.fk_po_id = p.purchase_id
+                            AND p.site_contact_id = c.site_contact_person_id
+                            AND d.fk_po_id = '".$row['fk_po_id']."'
+                            ORDER BY c.site_contact_name";
+                            // echo $contact_sql;
+            $contact_sql_result = mysqli_query($db, $contact_sql);
+            while ($contact_sql_row = mysqli_fetch_assoc($contact_sql_result)) {
 
-                $contact_sql = "SELECT DISTINCT p.site_contact_id, c.site_contact_name
-                                FROM purchase_order_contact p, delivery d, site_contact_person c
-                                WHERE d.fk_po_id = p.purchase_id
-                                AND p.site_contact_id = c.site_contact_person_id
-                                AND d.fk_po_id = '".$row['fk_po_id']."'
-                                ORDER BY c.site_contact_name";
-                                // echo $contact_sql;
-                $contact_sql_result = mysqli_query($db, $contact_sql);
-                while ($contact_sql_row = mysqli_fetch_assoc($contact_sql_result)) {
+                $no_sql = "SELECT GROUP_CONCAT(site_contact_no SEPARATOR ', ') as site_contact_no 
+                            FROM site_contact_number
+                            WHERE site_contact_person_id = '".$contact_sql_row['site_contact_id']."'";
 
-                    $no_sql = "SELECT GROUP_CONCAT(site_contact_no SEPARATOR ', ') as site_contact_no 
-                                FROM site_contact_number
-                                WHERE site_contact_person_id = '".$contact_sql_row['site_contact_id']."'";
+                $no_sql_result = mysqli_query($db, $no_sql);
+                while ($no_sql_row = mysqli_fetch_assoc($no_sql_result)) {
 
-                    $no_sql_result = mysqli_query($db, $no_sql);
-                    while ($no_sql_row = mysqli_fetch_assoc($no_sql_result)) {
-
-                        $contact_sql_row['site_contact_no'] = $no_sql_row['site_contact_no'];
+                    $contact_sql_row['site_contact_no'] = $no_sql_row['site_contact_no'];
 ?>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <strong><?php echo $contact_sql_row['site_contact_name'] . "<br> (" . $contact_sql_row['site_contact_no'] . ")"; ?></strong>
-                            </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <strong><?php echo $contact_sql_row['site_contact_name'] . "<br> (" . $contact_sql_row['site_contact_no'] . ")"; ?></strong>
                         </div>
+                    </div>
 <?php
-                    } 
-                }
+                } 
+            }
 ?>
-                    </td>
-                    <td><strong><?php echo $row['gate_pass']; ?></strong></td>
-                    <td><strong><?php echo $row['date_delivery']; ?></strong></td>
-                    <td>
-                        <form action="plant_delivery_order.php" method="post">
-                            <button type="button" id="update" name="update" value="<?php echo $row['delivery_id']; ?>" class="btn btn-sm btn-block" style="background-color: #ffa000; color: white; margin-bottom: 3px;" data-toggle='modal' data-target='#deliveryOrderUpdateRow<?php echo $hash; ?>'><span class="fa fa-edit"></span> <strong>Update</strong></button>
+                </td>
+                <td><strong><?php echo $row['gate_pass']; ?></strong></td>
+                <td><strong><?php echo $row['date_delivery']; ?></strong></td>
+                <td>
+                    <form action="plant_delivery_order.php" method="post">
+                        <button type="button" id="update" name="update" value="<?php echo $row['delivery_id']; ?>" class="btn btn-sm btn-block" style="background-color: #ffa000; color: white; margin-bottom: 3px;" data-toggle='modal' data-target='#deliveryOrderUpdateRow<?php echo $hash; ?>'><span class="fa fa-edit"></span> <strong>Update</strong></button>
 
-                            <div class="modal fade" id="deliveryOrderUpdateRow<?php echo $hash;?>" role="dialog">
-                                <div class="modal-dialog" style="max-width: 300px;">
+                        <div class="modal fade" id="deliveryOrderUpdateRow<?php echo $hash;?>" role="dialog">
+                            <div class="modal-dialog" style="max-width: 300px;">
 
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <div class="row" style="text-align: center;">
-                                                <div class="col-md-12">
-                                                    <img src="images/starcrete.png" width="150" height="50">
-                                                </div>
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <div class="row" style="text-align: center;">
+                                            <div class="col-md-12">
+                                                <img src="images/starcrete.png" width="150" height="50">
                                             </div>
-                                        </div>
-                                        <div class="modal-body" style="text-align: left;">
-                                            <h4 class="modal-title" style="text-align: center">Confirmation</h4>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="confirm_password">Password</label>
-                                                        <input type="password" name="confirm_password" class="form-control" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" name="update" id="update" value="<?php echo $row['delivery_id']; ?>" class="btn btn-primary">Submit</button>
-                                            <button type="button" class="btn" data-dismiss="modal">Close</button>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </form>
-                        <button type="submit" class='btn btn-sm btn-block' style="margin-bottom: 3px; width: 85px; background-color: #388e3c; color: white;" data-toggle='modal' data-target='#deliveryModal<?php echo $hash; ?>'><span class="fa fa-check"></span> <strong>Delivered</strong></button>
-                        
-                        <form action="plant_delivery_order.php" method="post">
-                        <div class="modal fade" id="deliveryModal<?php echo $hash;?>" role="dialog">
-                            <div class="modal-dialog modal-md">
-
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title"><!-- DR No. <?php echo $row['delivery_receipt_no'] ?> -->Delivery Details</h4>
-                                </div>
-                                <div class="modal-body" style="text-align: left;">
-                                        <input type="hidden" id="hidden_id" name="hidden_id" value="<?php echo $row['delivery_id']; ?>">
+                                    <div class="modal-body" style="text-align: left;">
+                                        <h4 class="modal-title" style="text-align: center">Confirmation</h4>
+                                        <hr>
                                         <div class="row">
-                                            <div class="col-md-6">
-                                                <label>DR No.:</label>
-                                                <strong><?php echo $row['delivery_receipt_no']; ?></strong>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label>Date Issued:</label>
-                                                <strong><?php echo $row['date_delivery']; ?></strong>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>P.O. No.:</label>
-                                                <strong><?php echo $row['po_no_delivery']; ?></strong>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label>Date Delivered:</label>
-                                                <!-- <input type="datetime-local" name="option_delivered" required> -->
-                                                <input type="date" name="option_delivered" required>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Gate Pass:</label>
-                                                <strong><?php echo $row['gate_pass']; ?></strong>
-                                            </div>
-                                        </div>
-                                        <div style="margin: 5px 0px 5px 0px; background-color: #f2f2f2; padding: 0px 15px 0px 15px; border: 1px solid #0884e4;">
-                                            <div class="row" style="padding-bottom: 5px;">
-                                                <div class="col-md-12" style="text-align: center; background-color: #0884e4; color: white; padding: 5px;"><strong>Item Information</strong>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Item</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Quantity</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <strong><?php echo number_format($row['quantity'])." pcs"; ?></strong>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="confirm_password">Password</label>
+                                                    <input type="password" name="confirm_password" class="form-control" required>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div style="margin: 5px 0px 5px 0px; background-color: #f2f2f2; padding: 0px 15px 0px 15px; border: 1px solid #0884e4;">
-                                            <div class="row" style="padding-bottom: 5px;">
-                                                <div class="col-md-12" style="text-align: center; background-color: #0884e4; color: white; padding: 5px;"><strong>Client Information</strong>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Client Name</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <strong><?php echo $row['client_name']; ?></strong>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Site Name</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <strong><?php echo $row['site_name']; ?></strong>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Site Address</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <strong><?php echo $row['site_address']; ?></strong>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div style="margin: 5px 0px 5px 0px; background-color: #f2f2f2; padding: 0px 15px 0px 15px; border: 1px solid #0884e4;">
-                                            <div class="row" style="padding-bottom: 5px;">
-                                                <div class="col-md-12" style="text-align: center; background-color: #0884e4; color: white; padding: 5px;"><strong>Contact Information</strong>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Contact</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <strong><?php echo $row['site_contact_name']; ?></strong>
-                                                </div>
-                                            </div>
-                                           <!--  <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Contact No.</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <strong><?php echo $row['site_contact_no']; ?></strong>
-                                                </div>
-                                            </div> -->
-                                        </div>                  
                                     </div>
                                     <div class="modal-footer">
-                                        <input type="submit" id="delivered" name="delivered" value="Confirm" class="btn btn-primary">
-                                        <button type="button" class="btn" data-dismiss="modal"><strong>Close</strong></button>
+                                        <button type="submit" name="update" id="update" value="<?php echo $row['delivery_id']; ?>" class="btn btn-primary">Submit</button>
+                                        <button type="button" class="btn" data-dismiss="modal">Close</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        </form>
-                        <form action="plant_delivery_order.php" method="post">
-                        	<button type="submit" id="returned" name="returned" value="<?php echo $row['delivery_id']?>" class='btn btn-sm btn-block' onclick="return confirm('Confirm DR No. <?php echo $row['delivery_receipt_no']; ?> as backload delivery?')" style="background-color: #d32f2f; color: white; width: 85px;" ><span class="fa fa-close"></span> <strong>Backload</strong></button>
-                        </form>
-                	</td>                 
-                </tr>
+                    </form>
+                    <button type="submit" class='btn btn-sm btn-block' style="margin-bottom: 3px; width: 85px; background-color: #388e3c; color: white;" data-toggle='modal' data-target='#deliveryModal<?php echo $hash; ?>'><span class="fa fa-check"></span> <strong>Delivered</strong></button>
+                    
+                    <form action="plant_delivery_order.php" method="post">
+                    <div class="modal fade" id="deliveryModal<?php echo $hash;?>" role="dialog">
+                        <div class="modal-dialog modal-md">
+
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title"><!-- DR No. <?php echo $row['delivery_receipt_no'] ?> -->Delivery Details</h4>
+                            </div>
+                            <div class="modal-body" style="text-align: left;">
+                                    <input type="hidden" id="hidden_id" name="hidden_id" value="<?php echo $row['delivery_id']; ?>">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>DR No.:</label>
+                                            <strong><?php echo $row['delivery_receipt_no']; ?></strong>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Date Issued:</label>
+                                            <strong><?php echo $row['date_delivery']; ?></strong>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>P.O. No.:</label>
+                                            <strong><?php echo $row['po_no_delivery']; ?></strong>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Date Delivered:</label>
+                                            <!-- <input type="datetime-local" name="option_delivered" required> -->
+                                            <input type="date" name="option_delivered" required>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Gate Pass:</label>
+                                            <strong><?php echo $row['gate_pass']; ?></strong>
+                                        </div>
+                                    </div>
+                                    <div style="margin: 5px 0px 5px 0px; background-color: #f2f2f2; padding: 0px 15px 0px 15px; border: 1px solid #0884e4;">
+                                        <div class="row" style="padding-bottom: 5px;">
+                                            <div class="col-md-12" style="text-align: center; background-color: #0884e4; color: white; padding: 5px;"><strong>Item Information</strong>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Item</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Quantity</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <strong><?php echo number_format($row['quantity'])." pcs"; ?></strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="margin: 5px 0px 5px 0px; background-color: #f2f2f2; padding: 0px 15px 0px 15px; border: 1px solid #0884e4;">
+                                        <div class="row" style="padding-bottom: 5px;">
+                                            <div class="col-md-12" style="text-align: center; background-color: #0884e4; color: white; padding: 5px;"><strong>Client Information</strong>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Client Name</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <strong><?php echo $row['client_name']; ?></strong>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Site Name</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <strong><?php echo $row['site_name']; ?></strong>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Site Address</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <strong><?php echo $row['site_address']; ?></strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="margin: 5px 0px 5px 0px; background-color: #f2f2f2; padding: 0px 15px 0px 15px; border: 1px solid #0884e4;">
+                                        <div class="row" style="padding-bottom: 5px;">
+                                            <div class="col-md-12" style="text-align: center; background-color: #0884e4; color: white; padding: 5px;"><strong>Contact Information</strong>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Contact</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <strong><?php echo $row['site_contact_name']; ?></strong>
+                                            </div>
+                                        </div>
+                                       <!--  <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Contact No.</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <strong><?php echo $row['site_contact_no']; ?></strong>
+                                            </div>
+                                        </div> -->
+                                    </div>                  
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="submit" id="delivered" name="delivered" value="Confirm" class="btn btn-primary">
+                                    <button type="button" class="btn" data-dismiss="modal"><strong>Close</strong></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                    <form action="plant_delivery_order.php" method="post">
+                    	<button type="submit" id="returned" name="returned" value="<?php echo $row['delivery_id']?>" class='btn btn-sm btn-block' onclick="return confirm('Confirm DR No. <?php echo $row['delivery_receipt_no']; ?> as backload delivery?')" style="background-color: #d32f2f; color: white; width: 85px;" ><span class="fa fa-close"></span> <strong>Backload</strong></button>
+                    </form>
+            	</td>                 
+            </tr>
 <?php
-            $hash++;
-            }
-        }else{
-?>
-                <tr>
-                    <td colspan="11" style='min-height: 100%; background: white; text-align:center; 
-vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4>
-                    </td>
-                </tr>
-<?php
+        $hash++;
         }
     }else{
-        
-        if($_GET['search'] == ''){
-            $search_word = "";
-        }else{
-            $search_word = $_GET['search'];
-        }
-
-        if($_GET['search'] != ''){
-            $string_ext = " AND (d.delivery_receipt_no LIKE '%".$search_word."%' 
-                                OR d.item_no LIKE '%".$search_word."%' 
-                                OR d.po_no_delivery LIKE '%".$search_word."%' 
-                                OR s.site_name LIKE '%".$search_word."%' 
-                                OR s.site_address LIKE '%".$search_word."%'
-                                OR p.site_contact_name LIKE '%".$search_word."%') ";
-        }else{
-            $string_ext = "";
-        }
-
-        if($_GET['end_date'] == ''){
-            $end_date = "";
-        }else{
-            $end_date = $_GET['end_date'];
-        }
-
-        if($_GET['start_date'] == ''){
-            $start_date = "";
-        }else{
-            $start_date = $_GET['start_date'];
-        }
-
-        if($_GET['start_date'] == '' && $_GET['end_date'] == ''){
-            $string_date = "";
-        }else if($_GET['start_date'] == '' && $_GET['end_date'] != ''){
-            $string_date = "AND DATE_FORMAT(date_delivery,'%Y-%m-%d') <= '$end_date'";
-        }else if($_GET['start_date'] != '' && $_GET['end_date'] == ''){
-            $string_date = "AND DATE_FORMAT(date_delivery,'%Y-%m-%d') >= '$start_date'";        
-        }else{
-            $string_date = "AND DATE_FORMAT(date_delivery,'%Y-%m-%d') BETWEEN '$start_date' AND '$end_date'";
-        }
-
-        $string = " WHERE office = '$search_plant'";
-
-        $sql = "SELECT * FROM delivery d, site s, purchase_order_contact pc, site_contact_person p ".$string." 
-                AND d.fk_po_id = pc.purchase_id
-                AND pc.site_contact_id = p.site_contact_person_id
-                AND d.site_id = s.site_id ".$string_date." ".$string_ext." 
-                AND remarks = 'On Delivery'
-                GROUP BY d.delivery_id";
-        // echo $sql;
-        $sql_result = mysqli_query($db, $sql); 
-        $total = mysqli_num_rows($sql_result);
-
-        $adjacents = 3;
-        $targetpage = "plant_delivery_order.php"; //your file name
-        $page = $_GET['page'];
-
-        if($page){ 
-            $start = ($page - 1) * $limit; //first item to display on this page
-        }else{
-            $start = 0;
-        }
-
-        /* Setup page vars for display. */
-        if ($page == 0) $page = 1; //if no page var is given, default to 1.
-        $prev = $page - 1; //previous page is current page - 1
-        $next = $page + 1; //next page is current page + 1
-        $lastpage = ceil($total/$limit); //lastpage.
-        $lpm1 = $lastpage - 1; //last page minus 1
-
-        /* CREATE THE PAGINATION */
-        $counter = 0;
-        $pagination = "";
-        if($lastpage > 1){ 
-            $pagination .= "<div class='pagination1'> <ul class='pagination'>";
-            if ($page > $counter+1) {
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$prev&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">Previous</a></li>"; 
-            }
-
-            if ($lastpage < 7 + ($adjacents * 2)) { 
-                for ($counter = 1; $counter <= $lastpage; $counter++){
-                    if ($counter == $page)
-                    $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
-                    else
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$counter</a></li>"; 
-                }
-            }
-            elseif($lastpage > 5 + ($adjacents * 2)){ //enough pages to hide some
-                //close to beginning; only hide later pages
-                if($page < 1 + ($adjacents * 2)) {
-                    for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++){
-                        if ($counter == $page)
-                        $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
-                        else
-                        $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$counter</a></li>"; 
-                    }
-                    $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$lpm1</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$lastpage</a></li>"; 
-                }
-                //in middle; hide some front and some back
-                elseif($lastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2)){
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">1</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">2</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                    for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++){
-                        if ($counter == $page)
-                        $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
-                        else
-                        $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$counter</a></li>"; 
-                    }
-                    $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$lpm1</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$lastpage</a></li>"; 
-                }
-                //close to end; only hide early pages
-                else{
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">1</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">2</a></li>";
-                    $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                    for ($counter = $lastpage - (2 + ($adjacents * 2)); $counter <= $lastpage; $counter++){
-                        if ($counter == $page)
-                        $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
-                        else
-                        $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$counter</a></li>"; 
-                    }
-                }
-            }
-
-            //next button
-            if ($page < $counter - 1) 
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$next&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">Next</a></li>";
-            else
-                $pagination.= "";
-            $pagination.= "</ul></div>\n"; 
-        }
-
-        $query = "SELECT d.delivery_id, d.delivery_receipt_no, d.item_no, d.quantity, d.gate_pass, d.po_no_delivery, DATE_FORMAT(d.date_delivery,'%m/%d/%y') as date_delivery , d.office, d.remarks, d.fk_po_id, s.site_name, s.site_address, GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name ASC SEPARATOR ', ') as site_contact_name, c.client_name, d.psi
-                    FROM delivery d, site s, site_contact_person p, client c, site_contact_number sc, purchase_order_contact pc
-                    ".$string." ".$string_date."
-                    AND s.client_id = c.client_id
-                    AND d.fk_po_id = pc.purchase_id
-                    AND pc.site_contact_id = p.site_contact_person_id
-                    AND d.site_id = s.site_id ".$string_ext."
-                    AND remarks = 'On Delivery'
-                    GROUP BY delivery_id 
-                    ORDER BY delivery_id DESC
-                    LIMIT $start, $limit";
-        // echo $query;
-        $result = mysqli_query($db, $query);
-        if(mysqli_num_rows($result) > 0){
-            $hash = $start + 1;
-            while($row = mysqli_fetch_assoc($result)){
-
-                if($row['psi'] != ""){
-                    $row['psi'] = "(" . $row['psi'] . " PSI)";
-                }else{
-                    $row['psi'] = "";
-                }
 ?>
-                <tr>
-                	<td><?php echo $hash; ?></td>
-                    <td><strong><?php echo $row['delivery_receipt_no']; ?></strong></td>
-                    <td style="cursor: pointer;">
-                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['po_no_delivery'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo $row['fk_po_id']; ?>&po_no_delivery=<?php echo $row['po_no_delivery']; ?>'">
-                            <strong><?php echo $row['po_no_delivery']; ?></strong>
-                        </div>
-                    </td>
-                    <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
-                    <td><strong><?php echo number_format($row['quantity'])." pcs"; ?></strong></td>
-                    <td><strong><?php echo $row['site_name']; ?></strong></td>
-                    <td><strong><?php echo $row['site_address']; ?></strong></td>
-                    <td>
-<?php
-                $contact_sql = "SELECT DISTINCT p.site_contact_id, c.site_contact_name
-                                FROM purchase_order_contact p, delivery d, site_contact_person c
-                                WHERE d.fk_po_id = p.purchase_id
-                                AND p.site_contact_id = c.site_contact_person_id
-                                AND d.fk_po_id = '".$row['fk_po_id']."'
-                                ORDER BY c.site_contact_name";
-                                // echo $contact_sql;
-                $contact_sql_result = mysqli_query($db, $contact_sql);
-                while ($contact_sql_row = mysqli_fetch_assoc($contact_sql_result)) {
-
-                    $no_sql = "SELECT GROUP_CONCAT(site_contact_no SEPARATOR ', ') as site_contact_no 
-                                FROM site_contact_number
-                                WHERE site_contact_person_id = '".$contact_sql_row['site_contact_id']."'";
-
-                    $no_sql_result = mysqli_query($db, $no_sql);
-                    while ($no_sql_row = mysqli_fetch_assoc($no_sql_result)) {
-
-                        $contact_sql_row['site_contact_no'] = $no_sql_row['site_contact_no'];
-?>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <strong><?php echo $contact_sql_row['site_contact_name'] . "<br> (" . $contact_sql_row['site_contact_no'] . ")"; ?></strong>
-                            </div>
-                        </div>
-<?php
-                    } 
-                }
-?>
-                    </td>
-                    <td><strong><?php echo $row['gate_pass']; ?></strong></td>
-                    <td><strong><?php echo $row['date_delivery']; ?></strong></td>
-                    <td>
-                        <form action="plant_delivery_order.php" method="post">
-                            <button type="button" id="update" name="update" value="<?php echo $row['delivery_id']; ?>" class="btn btn-sm btn-block" style="background-color: #ffa000; color: white; margin-bottom: 3px;" data-toggle='modal' data-target='#deliveryOrderUpdateRow<?php echo $hash; ?>'><span class="fa fa-edit"></span> <strong>Update</strong></button>
-
-                            <div class="modal fade" id="deliveryOrderUpdateRow<?php echo $hash;?>" role="dialog">
-                                <div class="modal-dialog" style="max-width: 300px;">
-
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <div class="row" style="text-align: center;">
-                                                <div class="col-md-12">
-                                                    <img src="images/starcrete.png" width="150" height="50">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-body" style="text-align: left;">
-                                            <h4 class="modal-title" style="text-align: center">Confirmation</h4>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="confirm_password">Password</label>
-                                                        <input type="password" name="confirm_password" class="form-control" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" name="update" id="update" value="<?php echo $row['delivery_id']; ?>" class="btn btn-primary">Submit</button>
-                                            <button type="button" class="btn" data-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                        <button type="submit" class='btn btn-sm btn-block' style="margin-bottom: 3px; width: 85px; background-color: #388e3c; color: white;" data-toggle='modal' data-target='#deliveryModal<?php echo $hash; ?>'><span class="fa fa-check"></span> <strong>Delivered</strong></button>
-                        
-                        <form action="plant_delivery_order.php" method="post">
-                        <div class="modal fade" id="deliveryModal<?php echo $hash;?>" role="dialog">
-                            <div class="modal-dialog modal-md">
-
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title"><!-- DR No. <?php echo $row['delivery_receipt_no'] ?> -->Delivery Details</h4>
-                                </div>
-                                <div class="modal-body" style="text-align: left;">
-                                        <input type="hidden" id="hidden_id" name="hidden_id" value="<?php echo $row['delivery_id']; ?>">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>DR No.:</label>
-                                                <strong><?php echo $row['delivery_receipt_no']; ?></strong>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label>Date Issued:</label>
-                                                <strong><?php echo $row['date_delivery']; ?></strong>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>P.O. No.:</label>
-                                                <strong><?php echo $row['po_no_delivery']; ?></strong>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label>Date Delivered:</label>
-                                                <!-- <input type="datetime-local" name="option_delivered" required> -->
-                                                <input type="date" name="option_delivered" required>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label>Gate Pass:</label>
-                                                <strong><?php echo $row['gate_pass']; ?></strong>
-                                            </div>
-                                        </div>
-                                        <div style="margin: 5px 0px 5px 0px; background-color: #f2f2f2; padding: 0px 15px 0px 15px; border: 1px solid #0884e4;">
-                                            <div class="row" style="padding-bottom: 5px;">
-                                                <div class="col-md-12" style="text-align: center; background-color: #0884e4; color: white; padding: 5px;"><strong>Item Information</strong>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Item</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Quantity</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <strong><?php echo number_format($row['quantity'])." pcs"; ?></strong>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div style="margin: 5px 0px 5px 0px; background-color: #f2f2f2; padding: 0px 15px 0px 15px; border: 1px solid #0884e4;">
-                                            <div class="row" style="padding-bottom: 5px;">
-                                                <div class="col-md-12" style="text-align: center; background-color: #0884e4; color: white; padding: 5px;"><strong>Client Information</strong>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Client Name</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <strong><?php echo $row['client_name']; ?></strong>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Site Name</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <strong><?php echo $row['site_name']; ?></strong>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Site Address</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <strong><?php echo $row['site_address']; ?></strong>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div style="margin: 5px 0px 5px 0px; background-color: #f2f2f2; padding: 0px 15px 0px 15px; border: 1px solid #0884e4;">
-                                            <div class="row" style="padding-bottom: 5px;">
-                                                <div class="col-md-12" style="text-align: center; background-color: #0884e4; color: white; padding: 5px;"><strong>Contact Information</strong>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Contact</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <strong><?php echo $row['site_contact_name']; ?></strong>
-                                                </div>
-                                            </div>
-                                           <!--  <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Contact No.</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <strong><?php echo $row['site_contact_no']; ?></strong>
-                                                </div>
-                                            </div> -->
-                                        </div>                  
-                                    </div>
-                                    <div class="modal-footer">
-                                        <input type="submit" id="delivered" name="delivered" value="Confirm" class="btn btn-primary">
-                                        <button type="button" class="btn" data-dismiss="modal"><strong>Close</strong></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        </form>
-                        <form action="plant_delivery_order.php" method="post">
-                        	<button type="submit" id="returned" name="returned" value="<?php echo $row['delivery_id']?>" class='btn btn-sm btn-block' onclick="return confirm('Confirm DR No. <?php echo $row['delivery_receipt_no']; ?> as backload delivery?')" style="background-color: #d32f2f; color: white; width: 85px;" ><span class="fa fa-close"></span> <strong>Backload</strong></button>
-                        </form>
-                	</td>                 
-                </tr>
-<?php
-            $hash++;
-            }
-        }else{
-?>
-                <tr>
-                    <td colspan="11" style='min-height: 100%; background: white; text-align:center; 
+            <tr>
+                <td colspan="11" style='min-height: 100%; background: white; text-align:center; 
 vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4>
-                    </td>
-                </tr>
+                </td>
+            </tr>
 <?php
-        }
     }
 ?>
                                     </tbody>

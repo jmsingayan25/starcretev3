@@ -319,7 +319,7 @@
             <section class="wrapper">            
                 <!--overview start-->
                 <div class="row">
-                    <div class="col-md-10">
+                    <div class="col-md-12">
                         <!-- <h3 class="page-header"><i class="fa fa-laptop"></i> P.O. No. <?php echo $po_no_delivery; ?></h3> -->
                         <ol class="breadcrumb">
                             <li><i class="fa fa-building"></i><a href="plant_delivery_order.php">Delivery Order</a></li>
@@ -337,22 +337,21 @@
                                         <table class="table table-striped table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th colspan="2">Item Balance</th>
-                                                    <th colspan="2">Delivered</th>
-                                                    <th colspan="1">On Delivery</th>
-                                                    <th colspan="1">Backloaded</th>
+                                                    <th class="col-md-1">Existing P.O. No.</th>
+                                                    <th class="col-md-1">Delivered</th>
+                                                    <th class="col-md-1">On Delivery</th>
+                                                    <th class="col-md-1">Backloaded</th>
+                                                    <th class="col-md-1">Cancelled</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr class="filterable" style="vertical-align: top;">
-                                                    <th colspan="2" style="vertical-align: top;">
-                                                
+                                                    <th style="vertical-align: top;">                                       
 <?php
 
     $balance_sql = "SELECT item_no, SUM(balance) as balance, psi
             FROM purchase_order 
             WHERE purchase_order_no = '$po_no_delivery'
-            -- AND cancelled = 0
             GROUP BY item_no";
 
     $result_sql = mysqli_query($db, $balance_sql);
@@ -368,14 +367,12 @@
             echo $balance_sql_row['item_no'] . $ext . ": ". number_format($balance_sql_row['balance']) . " pcs <br>";
         }  
     }
-    
-
 ?>
                                                     </th>
-                                                    <th colspan="2" style="vertical-align: top;">
+                                                    <th style="vertical-align: top;">
 <?php
     
-    $delivered_sql = "SELECT item_no, SUM(quantity) as quantity
+    $delivered_sql = "SELECT item_no, SUM(quantity) as quantity, psi
                         FROM delivery
                         WHERE remarks = 'Delivered'
                         AND office = '$office'
@@ -387,18 +384,20 @@
     if(mysqli_num_rows($delivered_result_sql) > 0){
 
         while ($deliver_sql_row = mysqli_fetch_assoc($delivered_result_sql)) {
-            echo $deliver_sql_row['item_no'] . ": " . number_format($deliver_sql_row['quantity']) . " pcs <br>";
+            if($deliver_sql_row['psi'] != ''){
+                $ext = " (" . $deliver_sql_row['psi'] . " PSI) ";
+            }else{
+                $ext = "";
+            }
+            echo $deliver_sql_row['item_no'] . $ext . ": " . number_format($deliver_sql_row['quantity']) . " pcs <br>";
         }
     }
-    
-
 ?>
                                                     </th>
-                                                    <th colspan="1" style="vertical-align: top;">
-                                          
+                                                    <th style="vertical-align: top;">                                       
 <?php
 
-    $ondelivery_sql = "SELECT item_no, SUM(quantity) as quantity
+    $ondelivery_sql = "SELECT item_no, SUM(quantity) as quantity, psi
                         FROM delivery
                         WHERE remarks = 'On Delivery'
                         AND office = '$office'
@@ -410,16 +409,20 @@
     if(mysqli_num_rows($ondelivery_result_sql) > 0){
 
         while ($ondelivery_sql_row = mysqli_fetch_assoc($ondelivery_result_sql)) {
-            echo $ondelivery_sql_row['item_no'] . ": " . number_format($ondelivery_sql_row['quantity']) . " pcs <br>";
+            if($ondelivery_sql_row['psi'] != ''){
+                $ext = " (" . $ondelivery_sql_row['psi'] . " PSI) ";
+            }else{
+                $ext = "";
+            }
+            echo $ondelivery_sql_row['item_no'] . $ext . ": " . number_format($ondelivery_sql_row['quantity']) . " pcs <br>";
         } 
-    }
-    
+    }  
 ?>
                                                     </th>
-                                                    <th colspan="1" style="vertical-align: top;">                                       
+                                                    <th style="vertical-align: top;">                                       
 <?php
 
-    $backload_sql = "SELECT item_no, SUM(quantity) as quantity
+    $backload_sql = "SELECT item_no, SUM(quantity) as quantity, psi
                         FROM delivery
                         WHERE remarks = 'Backload'
                         AND office = '$office'
@@ -430,11 +433,39 @@
     if(mysqli_num_rows($backload_result_sql) > 0){
 
          while ($backload_sql_row = mysqli_fetch_assoc($backload_result_sql)) {
-            echo $backload_sql_row['item_no'] . ": " . number_format($backload_sql_row['quantity']) . " pcs <br>";
+            if($backload_sql_row['psi'] != ''){
+                $ext = " (" . $backload_sql_row['psi'] . " PSI) ";
+            }else{
+                $ext = "";
+            }
+            echo $backload_sql_row['item_no'] . $ext . ": " . number_format($backload_sql_row['quantity']) . " pcs <br>";
+        }
+    } 
+?>                                               
+                                                    </th>
+                                                    <th style="vertical-align: top;">
+<?php
+
+    $cancelled_sql = "SELECT item_no, SUM(cancelled) as cancelled, psi
+                        FROM purchase_order
+                        WHERE office = '$office'
+                        AND purchase_order_no = '$po_no_delivery'
+                        AND cancelled > 0
+                        GROUP BY item_no";
+
+    $cancelled_result_sql = mysqli_query($db, $cancelled_sql);
+    if(mysqli_num_rows($cancelled_result_sql) > 0){
+
+        while ($cancelled_sql = mysqli_fetch_assoc($cancelled_result_sql)) {
+            if($cancelled_sql['psi'] != ''){
+                $ext = " (" . $cancelled_sql['psi'] . " PSI) ";
+            }else{
+                $ext = "";
+            }
+            echo $cancelled_sql['item_no'] . $ext . ": " . number_format($cancelled_sql['cancelled']) . " pcs <br>";
         }
     }
-   
-?>                                               
+?>
                                                     </th>
                                                 </tr>
                                             </tbody>
@@ -447,17 +478,18 @@
                             <div class="col-md-12">
                                 <section class="panel">
                                 <header class="panel-heading">
-                                    Order Details
+                                    Order Details of P.O. No. <strong><?php echo $po_no_delivery; ?></strong>
                                 </header>
                                 <div class="table-responsive filterable">
                                     <table class="table table-striped table-bordered">
                                         <thead>
                                             <tr class="filterable">
-                                                <th colspan="8">
+                                                <th colspan="9">
                                                     <button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
                                                 </th>
                                             </tr>
                                             <tr class="filters">
+                                                <th class="col-md-1">#</th>
                                                 <th class="col-md-1">P.O. No.</th>
                                                 <th class="col-md-1"><input type="text" class="form-control" placeholder="DR No." disabled></th>
                                                 <th class="col-md-1"><input type="text" class="form-control" placeholder="Item" disabled></th>
@@ -488,6 +520,7 @@
             ORDER BY date_delivery DESC";
     $result = mysqli_query($db, $sql);
     if(mysqli_num_rows($result) > 0){
+        $hash = 1;
         while ($row = mysqli_fetch_assoc($result)) {
         
         if($row['psi'] != ""){
@@ -497,30 +530,32 @@
         }
 ?>
                             <tr>
-                                <td class="col-md-1"><strong><?php echo $row['po_no_delivery']; ?></strong></td>
-                                <td class="col-md-1"><strong><?php echo $row['delivery_receipt_no']; ?></strong></td>
-                                <td class="col-md-1"><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
-                                <td class="col-md-1"><strong><?php echo number_format($row['quantity']); ?> pcs</strong></td>
-                                <td class="col-md-2"><strong><?php echo $row['site_name']; ?></strong></td>
-                                <td class="col-md-2"><strong><?php echo $row['site_address']; ?></strong></td>
+                                <td><?php echo $hash; ?></td>
+                                <td><strong><?php echo $row['po_no_delivery']; ?></strong></td>
+                                <td><strong><?php echo $row['delivery_receipt_no']; ?></strong></td>
+                                <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
+                                <td><strong><?php echo number_format($row['quantity']); ?> pcs</strong></td>
+                                <td><strong><?php echo $row['site_name']; ?></strong></td>
+                                <td><strong><?php echo $row['site_address']; ?></strong></td>
                                 <td class='col-md-1'><strong><?php echo $row['date_delivery1']; ?></strong></td>
 <?php
             if($row['remarks'] == 'Delivered'){
 ?>
-                                <td class="col-md-1" style="background-color: green; color: white;"><strong><?php echo $row['remarks']; ?></strong></td>
+                                <td style="color: #388e3c;"><strong><?php echo $row['remarks']; ?></strong></td>
 <?php
             }else if($row['remarks'] == 'Backload'){
 ?>
-                                <td class="col-md-1" style="background-color: #e60000; color: white;"><strong><?php echo $row['remarks']; ?></strong></td>
+                                <td style="color: #d32f2f;"><strong><?php echo $row['remarks']; ?></strong></td>
 <?php
             }else if($row['remarks'] == 'On Delivery'){
 ?>
-                                <td class="col-md-1" style="background-color: #ffcc00;"><strong><?php echo $row['remarks']; ?></strong></td>
+                                <td style="color: #ffa000;"><strong><?php echo $row['remarks']; ?></strong></td>
 <?php
             }
 ?>
                             </tr>
 <?php
+            $hash++;
         }
     }else{
 ?>
@@ -543,9 +578,9 @@
                     </div> -->
                     <div class="col-md-3">
                         <section class="panel">
-                            <header class="panel-heading">
+                            <!-- <header class="panel-heading">
                                 Contact Details
-                            </header>
+                            </header> -->
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered">
                                     <thead>
