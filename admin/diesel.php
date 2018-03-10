@@ -236,7 +236,7 @@
             <div id="sidebar"  class="nav-collapse ">
                 <!-- sidebar menu start-->
                 <ul class="sidebar-menu">                
-                    <li class="active">
+                    <li>
                         <a class="" href="index.php">
                             <i class="icon_house"></i>
                             <span>History</span>
@@ -303,44 +303,6 @@
                 </div>	
 
                 <div class="row">
-                	<!-- <div class="col-lg-2">
-                		<section class="panel">
-                			<header class="panel-heading">
-                				Diesel Stock
-                			</header>
-                			<div class="panel-body">
-                				<div class="table-responsive">
-                					<table class="table table-striped table-bordered">
-                						<thead>
-                							<tr>
-                								<th class="col-md-1">Plant</th>
-                								<th class="col-md-1">Stock</th>
-                							</tr>
-                						</thead>
-                						<tbody>
-<?php
-
-	$sql = "SELECT CONCAT(FORMAT(stock,0), ' liter') as stock, office 
-			FROM item_stock 
-			WHERE office = '$search_plant'
-			AND item_no = 'Diesel'
-			ORDER BY office ASC";
-	$result = mysqli_query($db, $sql);
-	while($row = mysqli_fetch_assoc($result)){
-?>
-							<tr align="center">
-								<td><strong><?php echo ucfirst($row['office']); ?></strong></td>
-								<td><strong><?php echo $row['stock']; ?></strong></td>
-							</tr>
-<?php
-	}
-?>
-                						</tbody>
-                					</table>
-                				</div>
-                			</div>
-                		</section>
-                	</div> -->
                     <div class="col-lg-12">
                         <section class="panel">
                         	<form action="diesel.php" method="get" class="form-inline">
@@ -392,7 +354,7 @@
         $date_view = $_GET['date_view'];
     }
 
-	$query = "SELECT quantity_in, quantity_out, balance, destination, truck_no, operator, delivery_date, office
+	$query = "SELECT CONCAT(FORMAT(quantity_in,0), ' liters') as quantity_in, CONCAT(FORMAT(quantity_out,0), ' liters') as quantity_out, CONCAT(FORMAT(balance,0), ' liters') as balance, destination, truck_no, operator, delivery_date, office
 		  		FROM diesel
 		  		WHERE office = '$search_plant'
 		  		AND DATE_FORMAT(delivery_date,'%Y-%m-%d') = '$date_view'

@@ -328,10 +328,13 @@
                             <header class="panel-heading">
                                 <div class="row" style="margin-bottom: 5px;">
                                 	<div class="col-md-12" style="margin-bottom: 5px;">
-										<div class="col-md-3">
+										<div class="col-md-2">
 											Select Date:
                                 			<input type="date" name="date_view" class="form-control" value="<?php if(isset($_GET['date_view'])) { echo htmlentities ($_GET['date_view']); }?>" onblur="this.form.submit();">	
 										</div>
+                                        <div class="col-md-1 col-md-offset-8">
+                                            <button type="button" class="btn btn-info btn-md" onclick="location.href='plant_diesel_form.php'" style="margin-top: 30px; margin-left: 40px;"><span class="fa fa-plus"></span> <strong>Add Transaction</strong></button>
+                                        </div>
                                 	</div>
                                 </div>
                             </header>

@@ -164,6 +164,22 @@
         // alert(ordered);
     }
 
+    function warning(){
+        var balance = document.getElementById('stock').value;
+        balance = balance.replace(",","");
+        balance = Number(balance);
+        var warning = document.getElementById('stock_warning');
+        var ok = document.getElementById('stock_ok');
+
+        if(balance <= 7500){
+            warning.style.display = 'block';
+            ok.style.display = 'none';
+        }else{
+            warning.style.display = 'none';
+            ok.style.display = 'block';
+        }
+    }
+
 </script>
 <style>
 .page_links a{
@@ -171,7 +187,7 @@
 }
 </style>
 </head>
-<body onload="compareValues('');">
+<body onload="compareValues('');warning();">
 <!-- container section start -->
     <section id="container" class="">
         <header class="header dark-bg">
@@ -278,7 +294,9 @@
 	                					<label for="quantity_out" class="col-md-4 control-label">Quantity (OUT)<span class="required" style="color: red;">*</span></label>
                                         <div class="col-md-8">
                                             <input type="text" id="quantity_out" name="quantity_out" class="form-control" onkeyup="compareValues(this.value);" required>
-                                            <span class="help-block">Available Stock: <?php echo number_format(getStock($db, 'Diesel', $search_plant)) . " liters"; ?></span>
+                                            <span class="help-block" id="stock_warning" style="color: red; display: none;"><strong>Warning!</strong> Available Stock: <?php echo number_format(getStock($db, 'Diesel', $search_plant)) . " liters"; ?></span>
+                                            <span class="help-block" id="stock_ok" style="display: none;">Available Stock: <?php echo number_format(getStock($db, 'Diesel', $search_plant)) . " liters"; ?></span>
+
                                         </div>
 
 	                				</div>
