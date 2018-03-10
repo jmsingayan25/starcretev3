@@ -3,6 +3,19 @@
 	    echo '<script type="text/javascript">alert("' . $msg . '")</script>';
 	}
 
+	function getDieselStock($db, $office){
+
+		$sql = "SELECT stock
+				FROM item_stock 
+				WHERE office = '$office'
+				AND item_no = 'Diesel'";
+
+		$result = mysqli_query($db, $sql);
+		$row = mysqli_fetch_assoc($result);
+
+		return $row['stock'];
+	}
+
 	function getBatchType($db, $office, $machine_no, $date){
 
 		$sql = "SELECT item_no
