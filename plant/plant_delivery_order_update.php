@@ -244,7 +244,7 @@
 	                    <!-- <h3 class="page-header"><i class="fa fa-file"></i><a href="plant_delivery_issue_form.php">Update Form</a></h3> -->
 	                    <ol class="breadcrumb">
 	                        <li><i class="fa fa-building"></i>Delivery Order</li>
-	                        <li><i class="icon_document"></i><a href="plant_delivery_order.php">On Delivery Order</a></li>			
+	                        <li><i class="fa fa-truck"></i><a href="plant_delivery_order.php">On Delivery Order</a></li>			
 	                        <li><i class="fa fa-file"></i><a href="plant_delivery_order_update.php" style="color: blue;">Update Form</a></li>						  	
 	                    </ol>
 	                </div>
@@ -263,7 +263,8 @@
 									<div class="form-group">
 										<label for="po_no" class="col-md-3 control-label">P.O. No.</label>
 										<div class="col-md-6">
-											<input type="text" name="update_delivery_receipt_no" value="<?php echo $delivery_row['po_no_delivery'] ?>" class="form-control" readonly>
+											<input type="hidden" name="update_delivery_receipt_no" value="<?php echo $delivery_row['po_no_delivery'] ?>" class="form-control" readonly>
+											<p class="help-block"><?php echo $delivery_row['po_no_delivery']; ?></p>
 										</div>
 									</div>
 									<div class="form-group">
@@ -282,20 +283,19 @@
 										<label for="item_no" class="col-md-3 control-label">Current Item</label>
 										<div class="col-md-6">
 											<input type="hidden" name="item_no" value="<?php echo $delivery_row['item_no']; ?>">
-											<input type="text" name="item_no_display" 
-												value="<?php 
+											<p class="help-block"><?php 
 													if($delivery_row['psi'] != ''){
 														echo $delivery_row['item_no'] . " (" . $delivery_row['psi'] . " PSI)";
 													}else{
 														echo $delivery_row['item_no'];
 													}
-													?>" class="form-control" disabled>
+													?></p>
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="update_item" class="col-md-3 control-label">New Item</label>
-										<div class="col-md-6">
-											<select id="update_item" name="update_item" class="form-control">
+										<div class="col-md-3">
+											<select id="update_item" name="update_item" class="form-control" style="width: 150px;">
 												<option value="">Select</option>
 <?php
 	$item_sql = "SELECT item_no FROM batch_list
@@ -306,6 +306,10 @@
 	}
 ?>												
 											</select>
+										</div>
+										<label for="psi" class="col-md-2 control-label">PSI</label>
+										<div class="col-md-3">
+											<input type="text" name="update_psi" class="form-control">
 										</div>
 									</div>
 									<div class="form-group">
@@ -348,6 +352,7 @@
 		$new_delivery_receipt_no = mysqli_real_escape_string($db, $_POST['update_delivery_receipt_no']);
 		$new_quantity = mysqli_real_escape_string($db, str_replace(',','',$_POST['update_quantity']));
 		$new_gate_pass = mysqli_real_escape_string($db, $_POST['update_gate_pass']);
+		$new_psi = mysqli_real_escape_string($db, $_POST['update_psi']);
 		
 		$datetime = date("Y/m/d H:i:s");
 
@@ -357,7 +362,7 @@
 			$new_item_no = mysqli_real_escape_string($db, $_POST['item_no']);
 		}
 		$sql = "UPDATE delivery 
-				SET item_no = '$new_item_no', delivery_receipt_no = '$new_delivery_receipt_no', quantity = '$new_quantity', gate_pass = '$new_gate_pass' 
+				SET item_no = '$new_item_no', delivery_receipt_no = '$new_delivery_receipt_no', quantity = '$new_quantity', gate_pass = '$new_gate_pass', psi = '$new_psi' 
 				WHERE delivery_id = '$delivery_id' AND office = '$office'";
 
 		// $sql = "UPDATE delivery SET item_no = '$new_item_no' WHERE delivery_id = '$delivery_id' AND delivery_receipt_no = '$delivery_receipt_no' AND fk_po_id = '$fk_po_id' AND office = '$office'";
