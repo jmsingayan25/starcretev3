@@ -242,6 +242,12 @@ session_start();
 .page_links a{
     color: inherit;
 }
+/*tbody:before {
+    content: "-";
+    display: block;
+    line-height: 0em;
+    color: transparent;
+}*/
 </style>
 </head>
 <body>
@@ -584,16 +590,36 @@ session_start();
                 $row['psi'] = "";
             }
 ?>
-            <tr>
                 <td><?php echo $hash; ?></td>
-                <td style="cursor: pointer;">
-                    <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>'">
-                        <strong><?php echo $row['purchase_order_no']; ?></strong>
-                    </div>
-                </td>
-                <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
+<?php
+                if($row['balance'] <= 1350){
+?>
+                    <td style="cursor: pointer; color: red;">
+                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>'">
+                            <strong><?php echo $row['purchase_order_no']; ?></strong>
+                        </div>
+                    </td>
+                    <td style="color: red;"><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
+<?php
+                }else{
+?>
+                    <td style="cursor: pointer;">
+                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>'">
+                            <strong><?php echo $row['purchase_order_no']; ?></strong>
+                        </div>
+                    </td>
+                    <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
+<?php
+                }
+?>  
                 <td><strong><?php echo number_format((float)$row['quantity'])." pcs" ?></strong></td>
-                <td><strong><?php echo number_format((float)$row['balance'])." pcs"; ?></strong></td>
+<?php
+            if($row['balance'] <= 1350){
+                echo "<td style='color: red;'><strong>" . number_format((float)$row['balance']) . " pcs </strong></td>";
+            }else{
+                echo "<td><strong>" . number_format((float)$row['balance']) . " pcs </strong></td>";
+            }
+?>
                 <td><strong><?php echo $row['site_name']; ?></strong></td>
                 <td><strong><?php echo $row['site_address']; ?></strong></td>
                 <td>

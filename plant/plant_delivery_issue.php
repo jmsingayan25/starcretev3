@@ -238,6 +238,12 @@
 .page_links a{
     color: inherit;
 }
+/*tbody:before {
+    content: "-";
+    display: block;
+    line-height: 0em;
+    color: transparent;
+}*/
 </style>
 </head>
 <!-- container section start -->
@@ -564,8 +570,17 @@
             }else{
                 $row['psi'] = "";
             }
+
+            if($row['balance'] <= 1350){
+?>
+            <tr style="color: red;">
+<?php
+            }else{
 ?>
             <tr>
+<?php
+            }
+?>
                 <td><?php echo $hash; ?></td>
 				<td style="cursor: pointer;">
                     <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>'">

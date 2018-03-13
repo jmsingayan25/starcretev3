@@ -232,6 +232,14 @@ session_start();
 .page_links a{
     color: inherit;
 }
+
+/*tbody:before {
+    content: "-";
+    display: block;
+    line-height: 0em;
+    color: transparent;
+}*/
+
 </style>
 </head>
 <body>
@@ -575,13 +583,26 @@ session_start();
             }else{
                 $row['psi'] = "";
             }
-?>
+?>  
             <tr>
                 <td><?php echo $hash; ?></td>
-                <td><strong><?php echo $row['purchase_order_no']; ?></strong></td>
-                <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
+<?php
+            if($row['balance'] <= 1350){
+                echo "<td style='color: red;'><strong>" . $row['purchase_order_no'] . "</strong></td>
+                      <td style='color: red;'><strong>" . $row['item_no'] . " " . $row['psi'] . "</strong></td>";
+            }else{
+                echo "<td><strong>" . $row['purchase_order_no'] . "</strong></td>
+                      <td><strong>" . $row['item_no'] . " " . $row['psi'] . "</strong></td>";
+            }
+?>
                 <td><strong><?php echo number_format((float)$row['quantity'])." pcs"; ?></strong></td>
-                <td><strong><?php echo number_format((float)$row['balance'])." pcs"; ?></strong></td>
+<?php
+            if($row['balance'] <= 1350){
+                echo "<td style='color: red;'><strong>" . number_format((float)$row['balance']) . " pcs </strong></td>";
+            }else{
+                echo "<td><strong>" . number_format((float)$row['balance']) . " pcs </strong></td>";
+            }
+?>
                 <td><strong><?php echo $row['site_name']; ?></strong></td>
                 <td><strong><?php echo $row['site_address']; ?></strong></td>
                 <td>
