@@ -433,7 +433,9 @@ session_start();
                             OR p.item_no LIKE '%".$search_word."%' 
                             OR s.site_name LIKE '%".$search_word."%' 
                             OR s.site_address LIKE '%".$search_word."%'
-                            OR c.site_contact_name LIKE '%".$search_word."%') ";
+                            OR c.site_contact_name LIKE '%".$search_word."%'
+                            OR MATCH (s.site_name, s.site_address) AGAINST ('".$search_word."' IN BOOLEAN MODE) 
+                            OR MATCH (c.site_contact_name) AGAINST ('".$search_word."' IN BOOLEAN MODE)) ";
     }else{
         $string_ext = "";
     }
