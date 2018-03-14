@@ -582,8 +582,6 @@ session_start();
 
 				$insert_purchase_order = "INSERT INTO purchase_order(purchase_unique_id, purchase_order_no, site_id, item_no, psi, quantity, balance, date_purchase, office, remarks) VALUES('$purchase_unique_id','$po_no','$site_id','$item[$i]', '$psi[$i]','$quantity[$i]','$quantity[$i]','$datetime','$plant','Pending')";
 
-				// $history_query = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Purchase Order','Issued P.O. No.','$item[$i]','$client_name ordered ".number_format($quantity[$i])." pcs of $item[$i] $psi_ext with P.O. No. $po_no to be delivered to $site_name','$datetime','$plant')";
-
 				// echo $insert_purchase_order."<br>";
 
 				if(mysqli_query($db, $insert_purchase_order)){

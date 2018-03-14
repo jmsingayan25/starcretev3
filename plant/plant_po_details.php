@@ -364,7 +364,11 @@
             }else{
                 $ext = "";
             }
-            echo $balance_sql_row['item_no'] . $ext . ": ". number_format($balance_sql_row['balance']) . " pcs <br>";
+            if($balance_sql_row['balance'] <= 1350){
+                echo "<span style='color: red;'>" . $balance_sql_row['item_no'] . $ext . ": ". number_format($balance_sql_row['balance']) . " pcs <br></span>";
+            }else{
+                echo "<span>" . $balance_sql_row['item_no'] . $ext . ": ". number_format($balance_sql_row['balance']) . " pcs <br></span>";
+            }
         }  
     }
 ?>

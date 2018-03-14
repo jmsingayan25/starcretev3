@@ -831,7 +831,8 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4>
 
 if(isset($_POST['delivered'])){
 		$dr_id = $_POST['hidden_id'];
-		// $datetime = date("Y-m-d H:i:s");
+        $selected_date = date('m/d/y',strtotime($_POST['option_delivered']));
+		$today = date("Y-m-d H:i:s");
 		$datetime = $_POST['option_delivered']." ".date("H:i:s");
 		$datetime = str_replace("T", " ", $datetime);
 		// echo $datetime;
@@ -849,7 +850,11 @@ if(isset($_POST['delivered'])){
 		$row_quantity = $order['quantity'];
 		$row_item_no = $order['item_no'];
 		$row_site_id = $order['site_id'];
-        $row_psi = $order['psi'];
+        if($order['psi'] != ''){
+            $row_psi = "(" . $order['psi'] . " PSI)";
+        }else{
+            $row_psi = '';
+        }
 
 		$site = getSiteInfo($db, $row_site_id);
 		$row_site_name = $site['site_name'];
@@ -862,10 +867,10 @@ if(isset($_POST['delivered'])){
 										AND purchase_order_no = '$row_po_no_delivery'
 										AND purchase_id = '$row_fk_po_id'";
                                         // echo $purchase_order_count_update;
-		mysqli_query($db, $purchase_order_count_update);
+		// mysqli_query($db, $purchase_order_count_update);
 		
 		$history_query = "INSERT INTO history(table_report,transaction_type,item_no,detail,history_date,office)
-							VALUES('Delivery','Delivered Order','$row_item_no','Delivered DR No. $row_delivery_receipt_no with P.O. No. $row_po_no_delivery and ".number_format($row_quantity)." pcs of $row_item_no ($row_psi PSI) to $row_site_name','$datetime','$row_office')";
+							VALUES('Delivery','Delivered Order','$row_item_no','Delivered DR No. $row_delivery_receipt_no with P.O. No. $row_po_no_delivery and ".number_format($row_quantity)." pcs of $row_item_no $row_psi to $row_site_name dated $selected_date','$today','$row_office')";
 
 		$batch_prod_stock = "INSERT INTO batch_prod_stock(item_no, delivered, office, date_production)
 								VALUES('$row_item_no','$row_quantity','$row_office','$datetime')";

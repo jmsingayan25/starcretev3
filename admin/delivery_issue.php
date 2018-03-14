@@ -590,25 +590,26 @@ session_start();
                 $row['psi'] = "";
             }
 ?>
+            <tr>
                 <td><?php echo $hash; ?></td>
 <?php
-                if($row['balance'] <= 1350){
+            if($row['balance'] <= 1350){
 ?>
-                    <td style="cursor: pointer; color: red;">
-                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>'">
-                            <strong><?php echo $row['purchase_order_no']; ?></strong>
-                        </div>
-                    </td>
-                    <td style="color: red;"><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
+                <td style="cursor: pointer; color: red;">
+                    <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>'">
+                        <strong><?php echo $row['purchase_order_no']; ?></strong>
+                    </div>
+                </td>
+                <td style="color: red;"><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
 <?php
-                }else{
+            }else{
 ?>
-                    <td style="cursor: pointer;">
-                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>'">
-                            <strong><?php echo $row['purchase_order_no']; ?></strong>
-                        </div>
-                    </td>
-                    <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
+                <td style="cursor: pointer;">
+                    <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>'">
+                        <strong><?php echo $row['purchase_order_no']; ?></strong>
+                    </div>
+                </td>
+                <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
 <?php
                 }
 ?>  
