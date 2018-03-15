@@ -480,6 +480,7 @@
     $sql_client = "SELECT * FROM client ".$string." ORDER BY client_name ASC LIMIT $start, $limit";
     $result_client = mysqli_query($db, $sql_client);
     // echo $sql_client;
+    if(mysqli_num_rows($result_client) > 0){
     $hash = 1;
     while ($row = mysqli_fetch_assoc($result_client)) {
         
@@ -581,6 +582,14 @@
 <?php
             $hash++;
         }
+    }else{
+?>
+                                    <tr>
+                                        <td colspan="4" style='height: 100%; background: white; text-align:center; 
+                                    vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
+                                    </tr>
+<?php
+    }
 ?>
 
                                 </tbody>

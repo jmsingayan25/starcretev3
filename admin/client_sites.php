@@ -509,8 +509,9 @@
     $sql_site = "SELECT * FROM site WHERE client_id = '$client_id' ".$string." ORDER BY site_name ASC LIMIT $start, $limit";
     $result_site = mysqli_query($db, $sql_site);
 
-    $hash = 1;
+    
     if(mysqli_num_rows($result_site) > 0){
+        $hash = 1;
         while ($row = mysqli_fetch_assoc($result_site)) {
 
         $sql_number = "SELECT GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name ASC SEPARATOR ', ') as site_contact_name
