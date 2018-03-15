@@ -430,8 +430,7 @@
 
     if($_GET['search'] != ''){
         $string_ext = " AND (transaction_type LIKE '%".$search_word."%' 
-                                OR detail LIKE '%".$search_word."%'
-                                OR MATCH (transaction_type, detail) AGAINST ('".$search_word."')) ";
+                                OR detail LIKE '%".$search_word."%') ";
     }else{
         $string_ext = "";
     }

@@ -417,9 +417,7 @@
                             OR d.po_no_delivery LIKE '%".$search_word."%' 
                             OR s.site_name LIKE '%".$search_word."%' 
                             OR s.site_address LIKE '%".$search_word."%'
-                            OR p.site_contact_name LIKE '%".$search_word."%'
-                            OR MATCH (s.site_name, s.site_address) AGAINST ('".$search_word."')
-                            OR MATCH (p.site_contact_name) AGAINST ('".$search_word."')) ";
+                            OR p.site_contact_name LIKE '%".$search_word."%') ";
     }else{
         $string_ext = "";
     }
@@ -760,7 +758,7 @@
                                     </div>                  
                                 </div>
                                 <div class="modal-footer">
-                                    <input type="submit" id="delivered" name="delivered" value="Confirm" class="btn btn-primary">
+                                    <input type="submit" id="delivered" name="delivered" value="Confirm" class="btn btn-primary" style="font-weight: bold;">
                                     <button type="button" class="btn" data-dismiss="modal"><strong>Close</strong></button>
                                 </div>
                             </div>
@@ -835,11 +833,6 @@ if(isset($_POST['delivered'])){
 		$today = date("Y-m-d H:i:s");
 		$datetime = $_POST['option_delivered']." ".date("H:i:s");
 		$datetime = str_replace("T", " ", $datetime);
-		// echo $datetime;
-		// $select = "SELECT * FROM delivery WHERE delivery_id = '$dr_id'";
-
-		// $result = mysqli_query($db, $select);
-		// $row = mysqli_fetch_assoc($result);
 
 		$order = getDeliveryOrderDetails($db, $dr_id);
 
