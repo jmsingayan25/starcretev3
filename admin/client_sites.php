@@ -49,7 +49,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Sites</title>
+    <title>Projects</title>
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -352,7 +352,7 @@
                     <ol class="breadcrumb">
                         <li><i class="fa fa-address-book"></i><a href="clients.php">Clients</a></li>
                         <li><i class="fa fa-building"></i><?php echo $client_name; ?></li>    
-                        <li><i class="fa fa-address-card"></i><a href="client_sites.php" style="color: blue;">Sites</a></li>                         
+                        <li><i class="fa fa-address-card"></i><a href="client_sites.php" style="color: blue;">Projects</a></li>                         
                     </ol>
                 </div>
             </div>
@@ -364,7 +364,9 @@
                             <div class="row">
                                 <form action="client_sites.php" method="get">
                                     <div class="input-group col-md-8" style="margin: 5px 0px 5px 0px;">
-                                        <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                        <div class="tooltips" data-original-title="Search Project Name or Address" data-placement="top">
+                                            <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                        </div>
                                         <span class="input-group-btn">
                                             <button class="btn btn-info" type="submit" name="search_site">
                                                 <i class="fa fa-search"></i>
@@ -376,7 +378,7 @@
                                 <div class="pull-right" style="margin-top: 5px; margin-right: 5px;">
                                      <form action="add_site.php" method="post">
                                             <input type="hidden" name="post_client_id" value="<?php echo $client_id; ?>">
-                                            <button type="submit" class="btn btn-info" style="font-weight: bold;"><span class="fa fa-plus"></span> Add Site</button>
+                                            <button type="submit" class="btn btn-info" style="font-weight: bold;"><span class="fa fa-plus"></span> Add Project</button>
                                     </form>
                                 </div>
                             </div>
@@ -396,10 +398,10 @@
                                         </th>
                                     </tr> -->
                                     <tr class="filters">
-                                        <th class="col-md-4"><input type="text" class="form-control" placeholder="Site Name" disabled></th>
+                                        <th class="col-md-4"><input type="text" class="form-control" placeholder="Project Name" disabled></th>
                                         <th class="col-md-4"><input type="text" class="form-control" placeholder="Address" disabled></th>
                                         <th class="col-md-4">Contacts</th>
-                                        <th class="col-md-1"></th>
+                                        <th class="col-md-1">Option</th>
                                     </tr>
                                 </thead>
                                 <tbody>

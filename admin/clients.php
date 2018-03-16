@@ -350,7 +350,9 @@
                              <form method="get" action="clients.php">
                                 <div class="row">
                                     <div class="input-group col-md-8" style="margin: 5px 0px 5px 0px;">
-                                         <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                        <div class="tooltips" data-original-title="Search Client or Address" data-placement="top">
+                                            <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                        </div>
                                         <span class="input-group-btn">
                                             <button class="btn btn-info" type="submit" name="search_client">
                                                 <i class="fa fa-search"></i>
@@ -370,7 +372,7 @@
                                         <th class="col-md-4"><input type="text" class="form-control" placeholder="Client" disabled></th>
                                         <th class="col-md-4"><input type="text" class="form-control" placeholder="Address" disabled></th>
                                         <th class="col-md-4">Contacts</th>
-                                        <th class="col-md-1"></th>
+                                        <th class="col-md-1">Option</th>
                                     </tr>
                                 </thead>
                                 <tbody>                                
@@ -569,7 +571,7 @@
                                                 <div class="col-md-12">
                                                      <form action="client_sites.php" method="post">
                                                         <input type="hidden" name="post_client_id" value="<?php echo $row['client_id']; ?>">
-                                                        <button class="btn btn-sm btn-block" style="background-color: #388e3c; color: white;"><span class="  fa fa-info-circle"></span> <strong>View Sites</strong></button>
+                                                        <button class="btn btn-sm btn-block" style="background-color: #388e3c; color: white;"><span class="  fa fa-info-circle"></span> <strong>View Projects</strong></button>
                                                         <!-- <div class="tooltips" data-original-title="View Sites">
                                                             <button class="btn btn-default btn-xs" style="margin-bottom: 5px;"><span class="fa fa-eye"></span></button>
                                                         </div> -->

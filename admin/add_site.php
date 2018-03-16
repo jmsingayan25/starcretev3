@@ -234,7 +234,7 @@
 	                        <li><i class="fa fa-address-book"></i><a href="clients.php">Client</a></li>
 	                        <li><i class="fa fa-building"></i><a href="client_sites.php"><?php echo $client_name; ?></a></li>
 	                        <!-- <li><a href="client_sites.php"><i class="icon_document_alt"></i>Sites</a></li> -->
-	                        <li><i class="icon_document"></i><a href="add_site.php" style="color: blue;">New Site</a></li>						  	
+	                        <li><i class="icon_document"></i><a href="add_site.php" style="color: blue;">New Project</a></li>						  	
 	                    </ol>
 	                </div>
 	            </div>
@@ -272,18 +272,18 @@
 								<div class="col-md-12">
 									<section class="panel">
 										<header class="panel-heading">
-										Site Info
+										Project Info
 										</header>
 										<div class="panel-body">
 											<div class="form-group">
-												<label for="site_name" class="col-md-4 control-label">Site Name<span class="required" style="color: red;">*</span></label>
+												<label for="site_name" class="col-md-4 control-label">Project Name<span class="required" style="color: red;">*</span></label>
 												<div class="col-md-8">
 													<!-- <input type="text" name="site_name" class="form-control" required> -->
 													<textarea name="site_name" class="form-control" required></textarea>
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="site_address" class="col-md-4 control-label">Site Address<span class="required" style="color: red;">*</span> </label>
+												<label for="site_address" class="col-md-4 control-label">Project Address<span class="required" style="color: red;">*</span> </label>
 												<div class="col-md-8">
 													<!-- <input type="textarea" name="site_address" class="form-control" required> -->
 													<textarea name="site_address" class="form-control" rows="5" required></textarea>
@@ -308,7 +308,7 @@
 								<div class="col-md-12">
 									<section class="panel">
 										<header class="panel-heading">
-										Site Contact
+										Project Contacts
 										</header>
 										<div class="panel-body">
 											<div class="row">

@@ -430,7 +430,7 @@ session_start();
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="site_id" class="col-md-4 control-label">Site Name / Site Address<span class="required" style="color: red;">*</span></label>
+									<label for="site_id" class="col-md-4 control-label">Project Name / Address<span class="required" style="color: red;">*</span></label>
 									<div class="col-md-8">
 										<select id="site_id" name="site_id" class="form-control" onchange="contactPerson(this.value); displayContactNumber(this.value);" required>
 											<option value="">Select</option>

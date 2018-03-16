@@ -353,7 +353,7 @@ session_start();
                         <h3 class="page-header"><a href="delivery_issue.php?office=<?php echo $search_plant; ?>"><?php echo $plant; ?> Delivery Order</a></h3>
                         <ol class="breadcrumb">
                             <li><i class="fa fa-building"></i><?php echo $plant; ?></li>
-                            <li><i class="icon_document"></i><a href="delivery_order.php?office=<?php echo $search_plant; ?>">On Delivery Order <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $search_plant); ?></span></a></li>
+                            <li><i class="icon_document"></i><a href="delivery_order.php?office=<?php echo $search_plant; ?>">Ongoing Delivery <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $search_plant); ?></span></a></li>
                             <li><i class="fa fa-info-circle"></i><a href="delivery_issue.php?office=<?php echo $search_plant; ?>" style="color: blue;">Existing P.O. <span class='badge'><?php echo countPendingPo($db, $search_plant); ?></span></a></li>
                             <li><i class="fa fa-truck"></i><a href="delivery_success.php?office=<?php echo $search_plant; ?>">Delivered</a></li>
                             <li><i class="fa fa-reply"></i><a href="delivery_backload.php?office=<?php echo $search_plant; ?>">Backload</a></li>                          
@@ -369,21 +369,30 @@ session_start();
                                     <div class="row" style="margin-bottom: 5px;">
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="start_date">Start Date:</label><input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">
-                                            </div>   
+                                                <label for="start_date">Start Date:</label>
+                                                <div class="tooltips" data-original-title="Start date of transaction" data-placement="top">
+                                                    <input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="end_date">End Date:</label><input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">
+                                                <label for="end_date">End Date:</label>
+                                                <div class="tooltips" data-original-title="End date of transaction" data-placement="top">
+                                                    <input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">
+                                                </div>
                                             </div>
-                                        </div>
+                                        </div>  
                                         <div class="input-group col-md-5" style="margin: 38px 0px 0px 0px;">
-                                            <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                            <div class="tooltips" data-original-title="Search P.O. No., Item, Project Name, Address or Contact" data-placement="top">
+                                                <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                            </div>
                                             <span class="input-group-btn">
                                                 <button class="btn btn-info" type="submit" name="search_table">
                                                     <i class="fa fa-search"></i>
                                                 </button>
                                             </span>
+                                            
                                         </div>
                                     </div>
                                     <div class="row">
@@ -417,7 +426,7 @@ session_start();
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="Item" disabled></th>
                                             <th class="col-md-1">Order</th>
                                             <th class="col-md-1">Balance</th>
-                                            <th class="col-md-2"><input type="text" class="form-control" placeholder="Site Name" disabled></th>
+                                            <th class="col-md-2"><input type="text" class="form-control" placeholder="Project Name" disabled></th>
                                             <th class="col-md-2"><input type="text" class="form-control" placeholder="Address" disabled></th>
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="Contact" disabled></th>
                                             <th class="col-md-1">Date Order</th>

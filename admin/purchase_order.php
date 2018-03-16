@@ -189,8 +189,26 @@ session_start();
         });
     });
 
+    function disableTextArea(value){
+        // alert(value);
+        var textareafield = document.getElementsByClassName("inputArea");
+        // alert(textareafield.length)
+        for(var i=0; i<textareafield.length; i++){
+            if(value == "closed_only"){
+                textareafield[i].disabled = false;
+            }else{
+                textareafield[i].disabled = true;
+            }    
+        }
+    }
+
 </script>
 <style>
+/*table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }*/
 .table_page{
     /*margin: auto;*/
     margin-top: -40px;
@@ -348,8 +366,8 @@ session_start();
                         <ol class="breadcrumb">
                             <li><i class="fa fa-building"></i><?php echo $plant; ?></li>
                             <li><i class="icon_document"></i><a href="purchase_order.php?office=<?php echo $search_plant; ?>" style="color: blue;">Pending P.O.</a></li>                            
-                            <li><i class="icon_document"></i><a href="purchase_cancelled_order.php?office=<?php echo $search_plant; ?>">Cancelled P.O.</a></li>                          
-                            <li><i class="icon_document"></i><a href="purchase_deliver_order.php?office=<?php echo $search_plant; ?>">Delivered P.O.</a></li>						  	
+                            <li><i class="icon_document"></i><a href="purchase_closed_order.php?office=<?php echo $search_plant; ?>">Closed P.O.</a></li>                          
+                            <!-- <li><i class="icon_document"></i><a href="purchase_deliver_order.php?office=<?php echo $search_plant; ?>">Delivered P.O.</a></li>						  	 -->
                         </ol>
                     </div>
                 </div>
@@ -362,21 +380,30 @@ session_start();
                                     <div class="row" style="margin-bottom: 5px;">
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="start_date">Start Date:</label><input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">
+                                                <label for="start_date">Start Date:</label>
+                                                <div class="tooltips" data-original-title="Start date of transaction" data-placement="top">
+                                                    <input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="end_date">End Date:</label><input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">
+                                                <label for="end_date">End Date:</label>
+                                                <div class="tooltips" data-original-title="End date of transaction" data-placement="top">
+                                                    <input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">
+                                                </div>
                                             </div>
-                                        </div>
+                                        </div>  
                                         <div class="input-group col-md-5" style="margin: 38px 0px 0px 0px;">
-                                            <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                            <div class="tooltips" data-original-title="Search P.O. No., Item, Project Name, Address or Contact" data-placement="top">
+                                                <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                            </div>
                                             <span class="input-group-btn">
                                                 <button class="btn btn-info" type="submit" name="search_table">
                                                     <i class="fa fa-search"></i>
                                                 </button>
                                             </span>
+                                            
                                         </div>
                                     </div>
                                     <div class="row">
@@ -410,7 +437,7 @@ session_start();
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="Item" disabled></th>
                                             <th class="col-md-1">Quantity</th>
                                             <th class="col-md-1">Balance</th>
-                                            <th class="col-md-2"><input type="text" class="form-control" placeholder="Site Name" disabled></th>
+                                            <th class="col-md-2"><input type="text" class="form-control" placeholder="Project Name" disabled></th>
                                             <th class="col-md-2"><input type="text" class="form-control" placeholder="Address" disabled></th>
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="Contact" disabled></th>
                                             <th class="col-md-1">Date Order</th>
@@ -418,7 +445,6 @@ session_start();
                                         </tr>
                                     </thead>
                                     <tbody>
-
 <?php
 
     if($_GET['search'] == ''){
@@ -584,18 +610,32 @@ session_start();
             <tr>
                 <td><?php echo $hash; ?></td>
 <?php
-            if($row['balance'] <= 1350){
-                echo "<td style='color: red;'><strong>" . $row['purchase_order_no'] . "</strong></td>
-                      <td style='color: red;'><strong>" . $row['item_no'] . " " . $row['psi'] . "</strong></td>";
+            $sql_delivery = "SELECT * FROM delivery
+                                WHERE fk_po_id = '".$row['purchase_id']."'
+                                AND remarks = 'Delivered'";
+
+            $count = mysqli_query($db, $sql_delivery);
+            if(mysqli_num_rows($count) > 0){
+                if($row['balance'] <= 1350){
+                    echo "<td style='color: red;'><strong>" . $row['purchase_order_no'] . "</strong></td>
+                          <td style='color: red;'><strong>" . $row['item_no'] . " " . $row['psi'] . "</strong></td>";
+                }else{
+                    echo "<td><strong>" . $row['purchase_order_no'] . "</strong></td>
+                          <td><strong>" . $row['item_no'] . " " . $row['psi'] . "</strong></td>";
+                }
             }else{
                 echo "<td><strong>" . $row['purchase_order_no'] . "</strong></td>
-                      <td><strong>" . $row['item_no'] . " " . $row['psi'] . "</strong></td>";
+                          <td><strong>" . $row['item_no'] . " " . $row['psi'] . "</strong></td>";
             }
 ?>
                 <td><strong><?php echo number_format((float)$row['quantity'])." pcs"; ?></strong></td>
 <?php
-            if($row['balance'] <= 1350){
-                echo "<td style='color: red;'><strong>" . number_format((float)$row['balance']) . " pcs </strong></td>";
+            if(mysqli_num_rows($count) > 0){
+                if($row['balance'] <= 1350){
+                    echo "<td style='color: red;'><strong>" . number_format((float)$row['balance']) . " pcs </strong></td>";
+                }else{
+                    echo "<td><strong>" . number_format((float)$row['balance']) . " pcs </strong></td>";
+                }
             }else{
                 echo "<td><strong>" . number_format((float)$row['balance']) . " pcs </strong></td>";
             }
@@ -671,7 +711,46 @@ session_start();
                         </div>
                     </form>
                     <form action="purchase_order.php" method="post">
-                        <button type="submit" id="cancel" name="cancel" value="<?php echo $row['purchase_id']; ?>" class="btn btn-sm btn-block" style="background-color: #d32f2f; color: white;" onclick="return confirm('Proceed cancelling item <?php echo $row['item_no'] . " " . $row['psi']; ?> under P.O. No. <?php echo $row['purchase_order_no']; ?>?')"; ><span class="fa fa-close"></span> <strong>Cancel Order</strong></button>
+                        <!-- <button type="submit" id="cancel" name="cancel" value="<?php echo $row['purchase_id']; ?>" class="btn btn-sm btn-block" style="background-color: #d32f2f; color: white;" onclick="return confirm('Proceed cancelling item <?php echo $row['item_no'] . " " . $row['psi']; ?> under P.O. No. <?php echo $row['purchase_order_no']; ?>?')"; ><span class="fa fa-close"></span> <strong>Cancel Order</strong></button> -->
+                        <button type="button" class="btn btn-sm btn-block" style="margin-bottom: 5px; background-color: #d32f2f; color: white;" data-toggle='modal' data-target='#purchaseOrderClosedRow<?php echo $hash; ?>'><span class="fa fa-edit"></span> <strong>Close</strong></button>
+
+                        <div class="modal fade" id="purchaseOrderClosedRow<?php echo $hash;?>" role="dialog">
+                            <div class="modal-dialog modal-sm">
+
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <div class="row" style="text-align: center;">
+                                            <div class="col-md-12">
+                                                <img src="images/starcrete.png" width="150" height="50">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-body" style="text-align: left;">
+                                        <!-- <h4 class="modal-title" style="text-align: center">Closed P.O. No. <?php echo $row['purchase_order_no'] . " " . $row['item_no'] . " " . $row['psi']; ?></h4> -->
+                                        <!-- <hr> -->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <!-- <label for="radiooption">
+                                                        <input type="radio" name="radiooption" id="radiooption" value="served_only" onchange="disableTextArea(this.value)" checked> Served Only
+                                                    </label>
+                                                    <br>
+                                                    <label for="radiooption">
+                                                        <input type="radio" name="radiooption" id="radiooption" value="closed_only" onchange="disableTextArea(this.value)"> Reason for closing P.O. No. <strong><?php echo $row['purchase_order_no'] . " " . $row['item_no'] . " " . $row['psi']; ?></strong>
+                                                    </label> -->
+                                                    <label for="radiooption">Reason for closing P.O. No. <strong><?php echo $row['purchase_order_no'] . " " . $row['item_no'] . " " . $row['psi'] . " (Balance: " . number_format((float)$row['balance']) . " pcs)"; ?></strong></label>
+                                                    <textarea name="reason" id="reason" rows="5" class="form-control inputArea" placeholder="Type here..." required></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" name="closed" id="closed" value="<?php echo $row['purchase_id']; ?>" class="btn btn-primary"><strong>Submit</strong></button>
+                                        <button type="button" class="btn" data-dismiss="modal"><strong>Close</strong></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </td>
             </tr>
@@ -734,7 +813,70 @@ vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4></td>
 </html>
 <?php
 
-    if(isset($_POST['cancel'])){
+    if(isset($_POST['closed'])){
+
+        $purchase_id = $_POST['closed'];
+        $reason = $_POST['reason'];
+        $sql = "SELECT *, s.site_name, c.client_name 
+                    FROM purchase_order p, site s, client c 
+                    WHERE p.site_id = s.site_id 
+                    AND s.client_id = c.client_id 
+                    AND purchase_id = '$purchase_id'";
+        $result = mysqli_query($db, $sql);
+        $row = mysqli_fetch_assoc($result);
+
+        $po_no = $row['purchase_order_no'];
+        $item_no = $row['item_no'];
+        // $psi = "(" . $row['psi'] . " PSI)";
+        $client = $row['client_name'];
+        $datetime = date("Y-m-d H:i:s");
+        $plant = $row['office'];
+        $balance = $row['balance'];
+
+        if($row['psi'] != ""){
+            $psi = "(" . $row['psi'] . " PSI)";
+        }else{
+            $psi = "";
+        }
+
+        //     $status = " served";
+        //     $remarks = "Closed";
+        //     $reason = '';
+
+        $update = "UPDATE purchase_order 
+                    SET cancelled = cancelled + '$balance', balance = 0, remarks = 'Closed', date_cancelled = '$datetime'
+                    WHERE purchase_id = '$purchase_id'";
+
+        $insert_closed = "INSERT INTO purchase_order_deliveries(purchase_order_id, purchase_order_no, quantity, reason, status, date_closed) VALUES ('$purchase_id','$po_no','$balance','$reason','Closed', '$datetime')";
+        
+        $history = "INSERT INTO history(table_report,transaction_type,item_no,detail,history_date,office) 
+                        VALUES('Purchase Order','Closed P.O. No.','$item_no','P.O. No. $po_no with balance of ".number_format($balance)." pcs of $item_no $psi order by $client has been closed','$datetime','$plant')";
+
+        $sql_po_id = "SELECT * FROM purchase_order_deliveries WHERE purchase_order_id = '$purchase_id'";
+        $sql_po_id_result = mysqli_query($db, $sql_po_id);
+
+        if(mysqli_num_rows($sql_po_id_result) > 0){
+            $update_deliveries = "UPDATE purchase_order_deliveries SET status = 'Closed' WHERE purchase_order_id = '$purchase_id'";
+
+            mysqli_query($db, $update_deliveries);
+        }
+
+        // echo $update . "<br>";
+        // echo $insert_closed . "<br>";
+        // echo $history . "<br>";
+        // echo $update_deliveries . "<br>";
+
+        if(mysqli_query($db, $insert_closed) && mysqli_query($db, $update) && mysqli_query($db, $history)){
+            phpAlert("P.O. No. $po_no with item $item_no has been closed");
+            echo "<meta http-equiv='refresh' content='0'>";
+        }else{
+            phpAlert(mysqli_error($db));
+        }
+
+        // $reply = array('post' => $_POST);
+        // echo json_encode($reply);
+
+    }else if(isset($_POST['cancel'])){
 
         // $username = mysqli_real_escape_string($db, $_SESSION['login_user']);
         // $password = mysqli_real_escape_string($db, $_POST['confirm_password']);

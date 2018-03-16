@@ -42,7 +42,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Add New Contact - Site</title>
+    <title>Add New Contact - Project</title>
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -247,17 +247,17 @@
 								<div class="col-md-12">
 									<section class="panel">
 										<header class="panel-heading">
-										Site Info
+										Project Info
 										</header>
 										<div class="panel-body">
 											<div class="form-group">
-												<label for="site_name" class="col-md-4 control-label">Site Name: </label>
+												<label for="site_name" class="col-md-4 control-label">Project Name: </label>
 												<div class="col-md-8">
 													<p class="help-block"><?php echo $site_name; ?></p>
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="site_address" class="col-md-4 control-label">Site Address: </label>
+												<label for="site_address" class="col-md-4 control-label">Project Address: </label>
 												<div class="col-md-8">
 													<p class="help-block"><?php echo $site_address; ?></p>
 												</div>

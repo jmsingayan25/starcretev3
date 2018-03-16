@@ -330,7 +330,7 @@ session_start();
 	                    <!-- <h3 class="page-header"><i class="fa fa-laptop"></i> P.O. No. <?php echo $po_no_delivery; ?></h3> -->
 	                    <ol class="breadcrumb">
 	                        <li><i class="fa fa-building"></i><?php echo ucfirst($plant) ?></li>
-	                        <li><i class="icon_document"></i><a href="delivery_order.php?office=<?php echo $plant; ?>">On Delivery Order <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $plant); ?></span></a></li>
+	                        <li><i class="icon_document"></i><a href="delivery_order.php?office=<?php echo $plant; ?>">Ongoing Delivery <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $plant); ?></span></a></li>
 	                        <li><i class="fa fa-info-circle"></i><a href="delivery_issue.php?office=<?php echo $plant; ?>">Existing P.O. <span class='badge'><?php echo countPendingPo($db, $plant); ?></span></a></li>
 	                        <li><i class="fa fa-truck"></i><a href="delivery_success.php?office=<?php echo $plant; ?>">Delivered</a></li>
 	                        <li><i class="fa fa-reply"></i><a href="delivery_backload.php?office=<?php echo $plant; ?>">Backload</a></li>                             
@@ -340,7 +340,7 @@ session_start();
 
                 <div class="row">
                     <div class="col-md-9">
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-md-12">
                                 <section class="panel">
                                     <div class="table-responsive">
@@ -351,7 +351,6 @@ session_start();
                                                     <th class="col-md-1">Delivered</th>
                                                     <th class="col-md-1">On Delivery</th>
                                                     <th class="col-md-1">Backloaded</th>
-                                                    <th class="col-md-1">Cancelled</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -362,6 +361,7 @@ session_start();
     $balance_sql = "SELECT item_no, SUM(balance) as balance, psi
             FROM purchase_order 
             WHERE purchase_order_no = '$po_no_delivery'
+            AND balance != 0
             GROUP BY item_no";
 
     $result_sql = mysqli_query($db, $balance_sql);
@@ -370,12 +370,21 @@ session_start();
 
         while ($balance_sql_row = mysqli_fetch_assoc($result_sql)) {
             if($balance_sql_row['psi'] != ''){
-                $ext = " (" . $balance_sql_row['psi'] . " PSI) ";
+                $ext = " (" . $balance_sql_row['psi'] . " PSI)";
             }else{
                 $ext = "";
             }
-            if($balance_sql_row['balance'] <= 1350){
-                echo "<span style='color: red;'>" . $balance_sql_row['item_no'] . $ext . ": ". number_format($balance_sql_row['balance']) . " pcs <br></span>";
+            $sql_delivery = "SELECT * FROM delivery
+                                WHERE po_no_delivery = '$po_no_delivery'
+                                AND remarks = 'Delivered'";
+           
+            $count = mysqli_query($db, $sql_delivery);
+            if(mysqli_num_rows($count) > 0){
+                if($balance_sql_row['balance'] <= 1350){
+                    echo "<span style='color: red;'>" . $balance_sql_row['item_no'] . $ext . ": ". number_format($balance_sql_row['balance']) . " pcs <br></span>";
+                }else{
+                    echo "<span>" . $balance_sql_row['item_no'] . $ext . ": ". number_format($balance_sql_row['balance']) . " pcs <br></span>";
+                }
             }else{
                 echo "<span>" . $balance_sql_row['item_no'] . $ext . ": ". number_format($balance_sql_row['balance']) . " pcs <br></span>";
             }
@@ -460,39 +469,14 @@ session_start();
         }  
     }  
 ?>  
-                                                    </th>
-                                                    <th style="vertical-align: top;">
-<?php
-
-    $cancelled_sql = "SELECT item_no, SUM(cancelled) as cancelled, psi
-                        FROM purchase_order
-                        WHERE office = '$plant'
-                        AND purchase_order_no = '$po_no_delivery'
-                        AND cancelled > 0
-                        GROUP BY item_no";
-
-    $cancelled_result_sql = mysqli_query($db, $cancelled_sql);
-    if(mysqli_num_rows($cancelled_result_sql) > 0){
-
-        while ($cancelled_sql = mysqli_fetch_assoc($cancelled_result_sql)) {
-            if($cancelled_sql['psi'] != ''){
-                $ext = " (" . $cancelled_sql['psi'] . " PSI) ";
-            }else{
-                $ext = "";
-            }
-
-            echo $cancelled_sql['item_no'] . $ext . ": " . number_format($cancelled_sql['cancelled']) . " pcs <br>";
-        }
-    }
-?>
-                                                    </th>                                             
+                                                    </th>                                           
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </section>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="row">
                             <div class="col-md-12">
                                 <header class="panel-heading">
@@ -513,7 +497,7 @@ session_start();
                                                     <th class="col-md-1"><input type="text" class="form-control" placeholder="DR No." disabled></th>
                                                     <th class="col-md-1"><input type="text" class="form-control" placeholder="Item" disabled></th>
                                                     <th class="col-md-1">Quantity</th>
-                                                    <th class="col-md-2"><input type="text" class="form-control" placeholder="Site Name" disabled></th>
+                                                    <th class="col-md-2"><input type="text" class="form-control" placeholder="Project Name" disabled></th>
                                                     <th class="col-md-2"><input type="text" class="form-control" placeholder="Address" disabled></th>
                                                     <!-- <th class="col-md-1">Contact</th> -->
                                                     <th class="col-md-1">Date Transaction</th>
@@ -611,7 +595,7 @@ session_start();
                     FROM purchase_order_contact p, delivery d, site_contact_person c
                     WHERE d.fk_po_id = p.purchase_id
                     AND p.site_contact_id = c.site_contact_person_id
-                    AND po_no_delivery = '$po_no_delivery'
+                    AND d.fk_po_id = '$fk_po_id'
                     ORDER BY c.site_contact_name";
                     // echo $contact_sql;
     $contact_sql_result = mysqli_query($db, $contact_sql);
@@ -650,7 +634,7 @@ session_start();
                     FROM purchase_order_contact p, purchase_order d, site_contact_person c
                     WHERE d.purchase_id = p.purchase_id
                     AND p.site_contact_id = c.site_contact_person_id
-                    AND purchase_order_no = '$po_no_delivery'
+                    AND d.purchase_id = '$fk_po_id'
                     ORDER BY c.site_contact_name";
                     // echo $contact_sql;
         $contact_sql_result = mysqli_query($db, $contact_sql);
