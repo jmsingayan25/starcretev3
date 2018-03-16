@@ -301,8 +301,7 @@
 	                    </a>
 	                    <ul class="sub">
 	                        <li><a class="" href="plant_purchase_order.php">Pending P.O.</a></li>  
-                            <li><a class="" href="plant_purchase_deliver_order.php">Delivered P.O.</a></li>                        
-	                        <li><a class="" href="plant_cancelled_order.php">Cancelled P.O.</a></li>
+                            <li><a class="" href="plant_purchase_closed_order.php">Closed P.O.</a></li>
 	                    </ul>
 	                </li>  
 	                <li class="sub-menu">
@@ -313,7 +312,7 @@
 	                    </a>
 	                    <ul class="sub">
 	                    	<li><a class="" href="plant_delivery_issue.php">Existing P.O. <span class='badge'><?php echo getCountPlantPo($db, $office); ?></span></a></li>       
-	                        <li><a class="" href="plant_delivery_order.php">On Delivery Order <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>              
+	                        <li><a class="" href="plant_delivery_order.php">Ongoing Delivery <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>              
 	                        <li><a class="" href="plant_delivery_delivered.php">Delivered Order</a></li>
 	                        <li><a class="" href="plant_delivery_backloaded.php">Backloaded Order</a></li>
 	                    </ul>
@@ -344,26 +343,34 @@
 	                        <form action="plant_delivery_delivered.php" method="get" class="form-inline">
 	                        	<header class="panel-heading">
 	                                <div class="row" style="margin-bottom: 5px;">
-	                                    <div class="col-md-2">
-	                                        <div class="form-group">
-	                                            <label for="start_date">Start Date:</label><input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">
-	                                        </div>
-	                                        
-	                                    </div>
-	                                    <div class="col-md-2">
-	                                        <div class="form-group">
-	                                            <label for="end_date">End Date:</label><input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">
-	                                        </div>
-	                                    </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="start_date">Start Date:</label>
+                                                <div class="tooltips" data-original-title="Start date of transaction" data-placement="top">
+                                                    <input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="end_date">End Date:</label>
+                                                <div class="tooltips" data-original-title="End date of transaction" data-placement="top">
+                                                    <input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">
+                                                </div>
+                                            </div>
+                                        </div>  
                                         <div class="input-group col-md-5" style="margin: 38px 0px 0px 0px;">
-                                            <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                            <div class="tooltips" data-original-title="Search DR No., P.O. No., Item, Project Name, Address or Contact" data-placement="top">
+                                                <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                            </div>
                                             <span class="input-group-btn">
                                                 <button class="btn btn-info" type="submit" name="search_table">
                                                     <i class="fa fa-search"></i>
                                                 </button>
                                             </span>
-                                        </div> 
-	                                </div>
+                                            
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="input-group col-md-12" style="margin: 5px 0px 0px 0px;">
                                             <label for="view_count" class="col-md-2 control-label" style="margin-right: -80px;">Number of rows:</label>
@@ -395,7 +402,7 @@
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="P.O. No." disabled></th>
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="Item" disabled></th>
                                             <th class="col-md-1">Quantity</th>
-                                            <th class="col-md-2"><input type="text" class="form-control" placeholder="Site Name" disabled></th>
+                                            <th class="col-md-2"><input type="text" class="form-control" placeholder="Project Name" disabled></th>
                                             <th class="col-md-2"><input type="text" class="form-control" placeholder="Address" disabled></th>
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="Contact" disabled></th>
                                             <th class="col-md-1">Date</th>

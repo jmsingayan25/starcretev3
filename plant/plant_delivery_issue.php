@@ -306,8 +306,7 @@
 	                    </a>
 	                    <ul class="sub">
 	                        <li><a class="" href="plant_purchase_order.php">Pending P.O.</a></li>  
-                            <li><a class="" href="plant_purchase_deliver_order.php">Delivered P.O.</a></li>                        
-	                        <li><a class="" href="plant_cancelled_order.php">Cancelled P.O.</a></li>
+                            <li><a class="" href="plant_purchase_closed_order.php">Closed P.O.</a></li>
 	                    </ul>
 	                </li>  
 	                <li class="sub-menu">
@@ -318,7 +317,7 @@
 	                    </a>
 	                    <ul class="sub">
 	                    	<li><a class="" href="plant_delivery_issue.php">Existing P.O. <span class='badge'><?php echo getCountPlantPo($db, $office); ?></span></a></li>      
-	                        <li><a class="" href="plant_delivery_order.php">On Delivery Order <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>    
+	                        <li><a class="" href="plant_delivery_order.php">Ongoing Delivery <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>    
 	                        <li><a class="" href="plant_delivery_delivered.php">Delivered Order</a></li>
 	                        <li><a class="" href="plant_delivery_backloaded.php">Backloaded Order</a></li>
 	                    </ul>
@@ -349,26 +348,34 @@
 	                        <form action="plant_delivery_issue.php" method="get" class="form-inline">
 	                        	<header class="panel-heading">
 	                                <div class="row" style="margin-bottom: 5px;">
-	                                    <div class="col-md-2">
-	                                        <div class="form-group">
-	                                            <label for="start_date">Start Date:</label><input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">
-	                                        </div>
-	                                        
-	                                    </div>
-	                                    <div class="col-md-2">
-	                                        <div class="form-group">
-	                                            <label for="end_date">End Date:</label><input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">
-	                                       </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="start_date">Start Date:</label>
+                                                <div class="tooltips" data-original-title="Start date of transaction" data-placement="top">
+                                                    <input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">
+                                                </div>
+                                            </div>
                                         </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="end_date">End Date:</label>
+                                                <div class="tooltips" data-original-title="End date of transaction" data-placement="top">
+                                                    <input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">
+                                                </div>
+                                            </div>
+                                        </div>  
                                         <div class="input-group col-md-5" style="margin: 38px 0px 0px 0px;">
-                                            <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                            <div class="tooltips" data-original-title="Search P.O. No., Item, Project Name, Address or Contact" data-placement="top">
+                                                <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                            </div>
                                             <span class="input-group-btn">
                                                 <button class="btn btn-info" type="submit" name="search_table">
                                                     <i class="fa fa-search"></i>
                                                 </button>
                                             </span>
-                                        </div> 
-	                                </div>
+                                            
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="input-group col-md-12" style="margin: 5px 0px 0px 0px;">
                                             <label for="view_count" class="col-md-2 control-label" style="margin-right: -80px;">Number of rows:</label>
@@ -400,7 +407,7 @@
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="Item" disabled></th>
                                             <th class="col-md-1">Order</th>
                                             <th class="col-md-1">Balance</th>
-                                            <th class="col-md-2"><input type="text" class="form-control" placeholder="Site Name" disabled></th>
+                                            <th class="col-md-2"><input type="text" class="form-control" placeholder="Project Name" disabled></th>
                                             <th class="col-md-2"><input type="text" class="form-control" placeholder="Address" disabled></th>
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="Contact" disabled></th>
                                             <th class="col-md-1">Date Order</th>
@@ -573,15 +580,31 @@
             <tr>
                 <td><?php echo $hash; ?></td>
 <?php 
-            if($row['balance'] <= 1350){
+            $sql_delivery = "SELECT * FROM delivery
+                                WHERE fk_po_id = '".$row['purchase_id']."'
+                                AND remarks = 'Delivered'";
+
+            $count = mysqli_query($db, $sql_delivery);
+            if(mysqli_num_rows($count) > 0){
+                if($row['balance'] <= 1350){
 ?>
-                <td style="cursor: pointer; color: red;">
-                    <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>'">
-                        <strong><?php echo $row['purchase_order_no']; ?></strong>
-                    </div>
-                </td>
-                <td style="color: red;"><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
+                    <td style="cursor: pointer; color: red;">
+                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>'">
+                            <strong><?php echo $row['purchase_order_no']; ?></strong>
+                        </div>
+                    </td>
+                    <td style="color: red;"><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
 <?php
+                }else{
+?>
+                    <td style="cursor: pointer;">
+                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>'">
+                            <strong><?php echo $row['purchase_order_no']; ?></strong>
+                        </div>
+                    </td>
+                    <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
+<?php
+                }
             }else{
 ?>
                 <td style="cursor: pointer;">
@@ -595,10 +618,16 @@
 ?>
 				<td><strong><?php echo number_format((float)$row['quantity'])." pcs" ?></strong></td>
 <?php 
-            if($row['balance'] <= 1350){
+            if(mysqli_num_rows($count) > 0){
+                if($row['balance'] <= 1350){
 ?>
-                <td style="color: red;"><strong><?php echo number_format((float)$row['balance'])." pcs"; ?></strong></td>
+                    <td style="color: red;"><strong><?php echo number_format((float)$row['balance'])." pcs"; ?></strong></td>
 <?php
+                }else{
+?>
+                    <td><strong><?php echo number_format((float)$row['balance'])." pcs"; ?></strong></td>
+<?php
+                }
             }else{
 ?>
                 <td><strong><?php echo number_format((float)$row['balance'])." pcs"; ?></strong></td>

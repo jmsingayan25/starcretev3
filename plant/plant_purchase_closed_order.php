@@ -12,7 +12,7 @@
         header("location: ../login.php");
     }
 
-    if(!isset($_GET['page']) || $_GET['page'] == ''){
+     if(!isset($_GET['page']) || $_GET['page'] == ''){
         $_GET['page'] = 0;
     }
 
@@ -74,7 +74,7 @@
     <link href="css/widgets.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/style-responsive.css" rel="stylesheet" />
-    <link href="css/xcharts.min.css" rel=" stylesheet">	
+    <link href="css/xcharts.min.css" rel=" stylesheet"> 
     <link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 
      <!-- javascripts -->
@@ -117,7 +117,6 @@
     <script src="js/sparklines.js"></script>    
     <script src="js/charts.js"></script>
     <script src="js/jquery.slimscroll.min.js"></script>
-
     <!-- =======================================================
     Theme Name: NiceAdmin
     Theme URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
@@ -179,7 +178,7 @@
             $filteredRows.hide();
             /* Prepend no-result row if all rows are filtered */
             if ($filteredRows.length === $rows.length) {
-                 $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="10" style="min-height: 100%;background: white; text-align:center; vertical-align:middle;"><h4><p class="text-muted">No data found</p></h4></td></tr>'));
+                 $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="9" style="min-height: 100%;background: white; text-align:center; vertical-align:middle;"><h4><p class="text-muted">No data found</p></h4></td></tr>'));
             }
         });
 
@@ -238,12 +237,6 @@
 .page_links a{
     color: inherit;
 }
-/*tbody:before {
-    content: "-";
-    display: block;
-    line-height: 0em;
-    color: transparent;
-}*/
 </style>
 </head>
 <body>
@@ -288,67 +281,67 @@
                 <!-- notificatoin dropdown end-->
             </div>
         </header>   
-        <!--sidebar start-->
-	    <aside>
-	        <div id="sidebar"  class="nav-collapse ">
-	            <!-- sidebar menu start-->
-	            <ul class="sidebar-menu">                
-	                <li class="">
-	                    <a class="" href="index.php">
-	                        <i class="icon_house"></i>
-	                        <span>History</span>
-	                    </a>
-	                </li>
-	                <li class="sub-menu">
-	                    <a href="javascript:;" class="">
-	                        <i class="fa fa-building"></i>
-	                        <span>Purchase Order</span>
-	                        <span class="menu-arrow arrow_carrot-right"></span>
-	                    </a>
-	                    <ul class="sub">
-	                        <li><a class="" href="plant_purchase_order.php">Pending P.O.</a></li>  
+        <!--sidebar start-->    
+
+        <aside>
+            <div id="sidebar"  class="nav-collapse ">
+                <!-- sidebar menu start-->
+                <ul class="sidebar-menu">                
+                    <li class="">
+                        <a class="" href="index.php">
+                            <i class="icon_house"></i>
+                            <span>History</span>
+                        </a>
+                    </li>
+                    <li class="sub-menu">
+                        <a href="javascript:;" class="">
+                            <i class="fa fa-building"></i>
+                            <span>Purchase Order</span>
+                            <span class="menu-arrow arrow_carrot-right"></span>
+                        </a>
+                        <ul class="sub">
+                            <li><a class="" href="plant_purchase_order.php">Pending P.O.</a></li>                         
                             <li><a class="" href="plant_purchase_closed_order.php">Closed P.O.</a></li>
-	                    </ul>
-	                </li>  
-	                <li class="sub-menu">
-	                    <a href="javascript:;" class="">
-	                        <i class="fa fa-building"></i>
-	                        <span>Delivery Order</span>
-	                        <span class="menu-arrow arrow_carrot-right"></span>
-	                    </a>
-	                    <ul class="sub">
-                            <li><a class="" href="plant_delivery_issue.php">Existing P.O. <span class='badge'><?php echo getCountPlantPo($db, $office); ?></span></a></li>   
-	                        <li><a class="" href="plant_delivery_order.php">Ongoing Delivery <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>                   
-	                        <li><a class="" href="plant_delivery_delivered.php">Delivered Order</a></li>
-	                        <li><a class="" href="plant_delivery_backloaded.php">Backloaded Order</a></li>
-	                    </ul>
-	                </li>  
-	            </ul>
-	            <!-- sidebar menu end-->
-	        </div>
-	    </aside>
-	    <!--sidebar end-->
+                        </ul>
+                    </li>  
+                    <li class="sub-menu">
+                        <a href="javascript:;" class="">
+                            <i class="fa fa-building"></i>
+                            <span>Delivery Order</span>
+                            <span class="menu-arrow arrow_carrot-right"></span>
+                        </a>
+                        <ul class="sub">
+                            <li><a class="" href="plant_delivery_issue.php">Existing P.O. <span class='badge'><?php echo getCountPlantPo($db, $office); ?></span></a></li>    
+                            <li><a class="" href="plant_delivery_order.php">Ongoing Delivery <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>                      
+                            <li><a class="" href="plant_delivery_delivered.php">Delivered Order</a></li>
+                            <li><a class="" href="plant_delivery_backloaded.php">Backloaded Order</a></li>
+                        </ul>
+                    </li> 
+                </ul>
+                <!-- sidebar menu end-->
+            </div>
+        </aside>
+        <!--sidebar end-->
 
-	    <!--main content start-->
-	    <section id="main-content">
-	        <section class="wrapper">            
-	            <!--overview start-->
-	            <div class="row">
-	                <div class="col-lg-12 page_links">
-	                    <!-- <h3 class="page-header"><i class="icon_document"></i><a href="plant_purchase_order.php"> Purchase Order</a></h3> -->
-	                    <ol class="breadcrumb">
-	                        <li><i class="fa fa-building"></i>Purchase Order</li>
-	                        <li><i class="icon_document"></i><a href="plant_purchase_order.php" style="color: blue;">Pending P.O.</a></li>						  	
-	                    </ol>
-	                </div>
-	            </div>
-
-	            <div class="row">
-	            	<div class="col-md-12">
-	                    <section class="panel">
-	                        <form action="plant_purchase_order.php" method="get" class="form-inline">
-	                        	<header class="panel-heading">
-	                                <div class="row" style="margin-bottom: 5px;">
+        <!--main content start-->
+        <section id="main-content">
+            <section class="wrapper">            
+                <!--overview start-->
+                <div class="row">
+                    <div class="col-lg-12 page_links">
+                        <!-- <h3 class="page-header"><i class="icon_document"></i><a href="plant_purchase_deliver_order.php">Delivered P.O.</a></h3> -->
+                        <ol class="breadcrumb">
+                            <li><i class="fa fa-building"></i>Purchase Order</li>
+                            <li><i class="icon_document"></i><a href="plant_purchase_deliver_order.php" style="color: blue;">Closed P.O.</a></li>                           
+                        </ol>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <section class="panel">
+                            <form action="plant_purchase_deliver_order.php" method="get" class="form-inline">
+                                <header class="panel-heading">
+                                    <div class="row" style="margin-bottom: 5px;">
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="start_date">Start Date:</label>
@@ -392,32 +385,33 @@
                                             </div>
                                         </div> 
                                     </div>
-	                            </header>
-	                        </form>
-	                        <div class="table-responsive filterable">
+                                </header>
+                            </form>
+                            <div class="table-responsive filterable">
                                 <table class="table table-striped table-bordered">
                                     <thead>
                                         <tr class="filterable">
-                                            <th colspan="10">
-                                                <button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
-                                            </th>
+                                            <th colspan="10"><button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button></th>
+                                            <!-- <th colspan="2" style="text-align: center;">
+                                                <p>Date</p>
+                                            </th> -->
                                         </tr>
                                         <tr class="filters">
                                             <th class="col-md-1">#</th>
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="P.O. No." disabled></th>
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="Item" disabled></th>
                                             <th class="col-md-1">Quantity</th>
-                                            <th class="col-md-1">Balance</th>
                                             <th class="col-md-2"><input type="text" class="form-control" placeholder="Project Name" disabled></th>
                                             <th class="col-md-2"><input type="text" class="form-control" placeholder="Address" disabled></th>
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="Contact" disabled></th>
-                                            <th class="col-md-1">Date Order</th>
+                                            <th class="col-md-1">Date</th>
                                             <th class="col-md-1">Status</th>
+                                            <th class="col-md-1">Reason</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 <?php
-
+ 
     if($_GET['search'] == ''){
         $search_word = "";
     }else{
@@ -449,28 +443,30 @@
     if($_GET['start_date'] == '' && $_GET['end_date'] == ''){
         $string_date = "";
     }else if($_GET['start_date'] == '' && $_GET['end_date'] != ''){
-        $string_date = "AND DATE_FORMAT(date_purchase,'%Y-%m-%d') <= '$end_date'";
+        $string_date = "AND DATE_FORMAT(date_closed,'%Y-%m-%d') <= '$end_date'";
     }else if($_GET['start_date'] != '' && $_GET['end_date'] == ''){
-        $string_date = "AND DATE_FORMAT(date_purchase,'%Y-%m-%d') >= '$start_date'";        
+        $string_date = "AND DATE_FORMAT(date_closed,'%Y-%m-%d') >= '$start_date'";        
     }else{
-        $string_date = "AND DATE_FORMAT(date_purchase,'%Y-%m-%d') BETWEEN '$start_date' AND '$end_date'";
+        $string_date = "AND DATE_FORMAT(date_closed,'%Y-%m-%d') BETWEEN '$start_date' AND '$end_date'";
     }
 
-    $string = " WHERE office = '$search_plant'";
+     $string = " WHERE office = '$search_plant'";
 
-    $sql = "SELECT * FROM purchase_order o, site s, purchase_order_contact c, site_contact_person p ".$string." 
-            AND o.site_id = s.site_id 
-            AND o.purchase_id = c.purchase_id 
-            AND c.site_contact_id = p.site_contact_person_id ".$string_date." ".$string_ext." 
-            AND balance != 0
-            GROUP BY o.purchase_id";
-    // echo $sql;
+    $sql = "SELECT o.purchase_id, o.purchase_order_no, o.item_no, d.quantity, o.psi, l.unit, s.site_name, s.site_address, DATE_FORMAT(d.date_closed,'%m/%d/%y') as date_closed, d.status, d.reason
+                FROM purchase_order_deliveries d, purchase_order o, batch_list l, site_contact_person p, site s, purchase_order_contact c
+                ".$string." ".$string_date."
+                AND d.purchase_order_id = o.purchase_id
+                AND o.purchase_id = c.purchase_id
+                AND c.site_contact_id = p.site_contact_person_id
+                AND o.site_id = s.site_id
+                AND o.item_no = l.item_no ".$string_ext."
+                GROUP BY d.delivered_po_id";
 
     $sql_result = mysqli_query($db, $sql); 
     $total = mysqli_num_rows($sql_result);
 
     $adjacents = 3;
-    $targetpage = "plant_purchase_order.php"; //your file name
+    $targetpage = "plant_purchase_closed_order.php"; //your file name
     $page = $_GET['page'];
 
     if($page){ 
@@ -553,18 +549,17 @@
         $pagination.= "</ul></div>\n"; 
     }
 
-    $query = "SELECT o.purchase_id, o.purchase_order_no, o.item_no, o.quantity, o.delivered, o.backload, o.balance, o.office, o.remarks, l.unit, s.site_name, s.site_address, GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name ASC SEPARATOR ', ') as site_contact_name, DATE_FORMAT(o.date_purchase,'%m/%d/%y') as date_purchase, o.psi
-                FROM purchase_order o, batch_list l, site_contact_person p, site s, purchase_order_contact c
+    $query = "SELECT o.purchase_id, o.purchase_order_no, o.item_no, d.quantity, o.psi, l.unit, s.site_name, s.site_address, DATE_FORMAT(d.date_closed,'%m/%d/%y') as date_closed, d.status, d.reason
+                FROM purchase_order_deliveries d, purchase_order o, batch_list l, site_contact_person p, site s, purchase_order_contact c
                 ".$string." ".$string_date."
-                AND o.site_id = s.site_id
+                AND d.purchase_order_id = o.purchase_id
                 AND o.purchase_id = c.purchase_id
                 AND c.site_contact_id = p.site_contact_person_id
-                AND o.item_no = l.item_no 
-                AND o.balance != 0 ".$string_ext."
-                AND DATE_FORMAT(date_purchase,'%Y-%m-%d') != ''
-                GROUP BY purchase_id
-                ORDER BY purchase_id DESC LIMIT $start, $limit";
-// echo $query;
+                AND o.site_id = s.site_id
+                AND o.item_no = l.item_no ".$string_ext."
+                GROUP BY d.delivered_po_id
+                ORDER BY d.delivered_po_id DESC LIMIT $start, $limit";
+                // echo $query;
     $result = mysqli_query($db, $query);
     if(mysqli_num_rows($result) > 0){
         $hash = $start + 1;
@@ -578,37 +573,9 @@
 ?>
             <tr>
                 <td><?php echo $hash; ?></td>
-<?php
-            $sql_delivery = "SELECT * FROM delivery
-                                WHERE fk_po_id = '".$row['purchase_id']."'
-                                AND remarks = 'Delivered'";
-
-            $count = mysqli_query($db, $sql_delivery);
-            if(mysqli_num_rows($count) > 0){
-                if($row['balance'] <= 1350){
-                    echo "<td style='color: red;'><strong>" . $row['purchase_order_no'] . "</strong></td>
-                          <td style='color: red;'><strong>" . $row['item_no'] . " " . $row['psi'] . "</strong></td>";
-                }else{
-                    echo "<td><strong>" . $row['purchase_order_no'] . "</strong></td>
-                          <td><strong>" . $row['item_no'] . " " . $row['psi'] . "</strong></td>";
-                }
-            }else{
-                echo "<td><strong>" . $row['purchase_order_no'] . "</strong></td>
-                          <td><strong>" . $row['item_no'] . " " . $row['psi'] . "</strong></td>";
-            }
-?>
+                <td><strong><?php echo $row['purchase_order_no']; ?></strong></td>
+                <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
                 <td><strong><?php echo number_format((float)$row['quantity'])." pcs"; ?></strong></td>
-<?php
-            if(mysqli_num_rows($count) > 0){
-                if($row['balance'] <= 1350){
-                    echo "<td style='color: red;'><strong>" . number_format((float)$row['balance']) . " pcs </strong></td>";
-                }else{
-                    echo "<td><strong>" . number_format((float)$row['balance']) . " pcs </strong></td>";
-                }
-            }else{
-                echo "<td><strong>" . number_format((float)$row['balance']) . " pcs </strong></td>";
-            }
-?>
                 <td><strong><?php echo $row['site_name']; ?></strong></td>
                 <td><strong><?php echo $row['site_address']; ?></strong></td>
                 <td>
@@ -633,7 +600,7 @@
 
                     $contact_sql_row['site_contact_no'] = $no_sql_row['site_contact_no'];
 ?>
-                    <div class="row">
+                    <div class="row" style="margin-bottom: 2px;">
                         <div class="col-md-12">
                             <strong><?php echo $contact_sql_row['site_contact_name'] . "<br> (" . $contact_sql_row['site_contact_no'] . ")"; ?></strong>
                         </div>
@@ -643,60 +610,30 @@
             }
 ?>
                 </td>
-                <td><strong><?php echo $row['date_purchase']; ?></strong></td>
-                <td><strong><?php echo $row['remarks']; ?></strong></td>
+                <td><strong><?php echo $row['date_closed']; ?></strong></td>
+                <td><strong><?php echo $row['status']; ?></strong></td>
+                <td><strong><?php echo $row['reason']; ?></strong></td>
             </tr>
 <?php
-        $hash++;
+            $hash++;
         }
     }else{
 ?>
-                        <tr>
-                            <td colspan="10" style='min-height: 100%; background: white; text-align:center; 
-        vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
-                        </tr>
+                            <tr>
+                                <td colspan="10" style='height: 100%; background: white; text-align:center; 
+            vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
+                            </tr>
 <?php
     }
 ?>
                                     </tbody>
                                 </table>
-	                        </div>
-	                    </section>
-	                </div>
-	            </div>
-	            <div class="row">
-                    <div class="col-md-4">
-                        <div class="table_row_count">
-<?php
-                        if(isset($hash)){
-                            echo "Showing " . ($start+1)  . " to " . ($start + $hash - $start - 1) . " of " . $total . " entries"; 
-                        }
-?>
-                        </div>
+                            </div>
+                        </section>
                     </div>
-                    <div class="col-md-4">
-                        <div class="table_page">
-<?php
-                        echo $pagination; 
-?>      
-                        </div>
-                    </div>
-                </div> 
-	        </section>
-            <div class="text-right">
-                <div class="credits">
-                    <!-- 
-                    All the links in the footer should remain intact. 
-                    You can delete the links only if you purchased the pro version.
-                    Licensing information: https://bootstrapmade.com/license/
-                    Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
-                    -->
-                    <a href="https://bootstrapmade.com/free-business-bootstrap-themes-website-templates/">Business Bootstrap Themes</a> by <a href="https://bootstrapmade.com/">BootstrapMade</a>
                 </div>
-            </div>
-        <!--main content end-->
+            </section>
         </section>
-        <!-- container section start -->
     </section>
 </body>
 </html>

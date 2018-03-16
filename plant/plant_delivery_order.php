@@ -301,8 +301,7 @@
 	                    </a>
 	                    <ul class="sub">
 	                        <li><a class="" href="plant_purchase_order.php">Pending P.O.</a></li>   
-                            <li><a class="" href="plant_purchase_deliver_order.php">Delivered P.O.</a></li>                       
-	                        <li><a class="" href="plant_cancelled_order.php">Cancelled P.O.</a></li>
+                            <li><a class="" href="plant_purchase_closed_order.php">Closed P.O.</a></li>
 	                    </ul>
 	                </li>  
 	                <li class="sub-menu">
@@ -313,7 +312,7 @@
 	                    </a>
 	                    <ul class="sub">
 	                    	<li><a class="" href="plant_delivery_issue.php">Existing P.O. <span class='badge'><?php echo getCountPlantPo($db, $office); ?></span></a></li>       
-	                        <li><a class="" href="plant_delivery_order.php">On Delivery Order <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>         
+	                        <li><a class="" href="plant_delivery_order.php">Ongoing Delivery <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>         
 	                        <li><a class="" href="plant_delivery_delivered.php">Delivered Order</a></li>
 	                        <li><a class="" href="plant_delivery_backloaded.php">Backloaded Order</a></li>
 	                    </ul>
@@ -333,7 +332,7 @@
 	                    <!-- <h3 class="page-header"><i class="fa fa-building"></i><a href="plant_delivery_order.php">On Delivery Order</a></h3> -->
 	                    <ol class="breadcrumb">
 	                        <li><i class="fa fa-building"></i>Delivery Order</li>
-	                        <li><i class="fa fa-truck"></i><a href="plant_delivery_order.php" style="color: blue;">On Delivery Order <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>						  	
+	                        <li><i class="fa fa-truck"></i><a href="plant_delivery_order.php" style="color: blue;">Ongoing Delivery <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>						  	
 	                    </ol>
 	                </div>
 	            </div>
@@ -344,25 +343,34 @@
 	                        <form action="plant_delivery_order.php" method="get" class="form-inline">
 	                        	<header class="panel-heading">
 	                                <div class="row" style="margin-bottom: 5px;">
-	                                    <div class="col-md-2">
-	                                        <div class="form-group">
-	                                            <label for="start_date">Start Date:</label><input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">
-	                                        </div> 
-	                                    </div>
-	                                    <div class="col-md-2">
-	                                        <div class="form-group">
-	                                            <label for="end_date">End Date:</label><input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="start_date">Start Date:</label>
+                                                <div class="tooltips" data-original-title="Start date of transaction" data-placement="top">
+                                                    <input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="end_date">End Date:</label>
+                                                <div class="tooltips" data-original-title="End date of transaction" data-placement="top">
+                                                    <input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">
+                                                </div>
+                                            </div>
+                                        </div>  
                                         <div class="input-group col-md-5" style="margin: 38px 0px 0px 0px;">
-                                            <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                            <div class="tooltips" data-original-title="Search DR No., P.O. No., Item, Project Name, Address or Contact" data-placement="top">
+                                                <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                            </div>
                                             <span class="input-group-btn">
                                                 <button class="btn btn-info" type="submit" name="search_table">
                                                     <i class="fa fa-search"></i>
                                                 </button>
                                             </span>
-                                        </div> 
-	                                </div>
+                                            
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="input-group col-md-12" style="margin: 5px 0px 0px 0px;">
                                             <label for="view_count" class="col-md-2 control-label" style="margin-right: -80px;">Number of rows:</label>
@@ -394,7 +402,7 @@
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="P.O. No." disabled></th>
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="Item" disabled></th>
                                             <th class="col-md-1">Quantity</th>
-                                            <th class="col-md-2"><input type="text" class="form-control" placeholder="Site Name" disabled></th>
+                                            <th class="col-md-2"><input type="text" class="form-control" placeholder="Project Name" disabled></th>
                                             <th class="col-md-2"><input type="text" class="form-control" placeholder="Address" disabled></th>
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="Contact" disabled></th>
                                             <th class="col-md-1">Gate Pass</th>
@@ -889,17 +897,43 @@ if(isset($_POST['delivered'])){
 		$update_delivery = "UPDATE delivery SET remarks = 'Delivered', date_delivery = '$datetime'
 							WHERE delivery_id = '$dr_id'";
 
+        $sql_po = "SELECT * FROM purchase_order
+                    WHERE purchase_id = '$row_fk_po_id'";
+
+        $po_result = mysqli_query($db, $sql_po);
+        $row = mysqli_fetch_assoc($po_result);
+
+        if($row['balance'] == 0){
+            $update_po = "UPDATE purchase_order 
+                            SET remarks = 'Closed', date_cancelled = '$datetime' 
+                            WHERE purchase_id = '$row_fk_po_id'";
+
+            $update_deliveries = "UPDATE  purchase_order_deliveries 
+                                    SET status = 'Closed' 
+                                    WHERE purchase_order_id = '$row_fk_po_id'";
+
+            $insert_delivered_po = "INSERT INTO purchase_order_deliveries (purchase_order_id, purchase_order_no, quantity, reason, status, date_closed) VALUES ('$row_fk_po_id','$row_po_no_delivery','$row_quantity','Delivered','Closed','$datetime')";
+
+            mysqli_query($db, $update_deliveries);
+            mysqli_query($db, $update_po);
+        }else{
+            $insert_delivered_po = "INSERT INTO purchase_order_deliveries (purchase_order_id, purchase_order_no, quantity, reason, date_closed) VALUES ('$row_fk_po_id','$row_po_no_delivery','$row_quantity','Delivered','$datetime')";
+        }
+
+        
+
+        // echo $insert_delivered_po;
 		// echo $update_delivery;
 		// echo $update_stock;
 		// echo $purchase_order_count_update;
 		// echo $history_query;
 		// echo $batch_prod_stock;
 		// if($row['quantity'] < getStock($db, $row['item_no'], $office)){
-		if(mysqli_query($db, $update_delivery) && mysqli_query($db, $batch_prod_stock) && mysqli_query($db, $history_query)){
+		if(mysqli_query($db, $update_delivery) && mysqli_query($db, $batch_prod_stock) && mysqli_query($db, $history_query) && mysqli_query($db, $insert_delivered_po)){
 			phpAlert("Item has been delivered successfully!!!");
 			echo "<meta http-equiv='refresh' content='0'>";
 		}else{
-			phpAlert("Something went wrong!!");
+			phpAlert(mysqli_error($db));
 		}
 		// }else{
 		// 	phpAlert("Quantity exceeded over stock!!");
