@@ -468,7 +468,7 @@
 
 		$sql = "SELECT count(*) as total
 				FROM purchase_order
-				WHERE remarks = 'On Delivery'";
+				WHERE remarks = 'Ongoing Delivery'";
 
 		$result = mysqli_query($db, $sql);
       	$row = mysqli_fetch_assoc($result);
@@ -480,7 +480,7 @@
 
 		$sql = "SELECT count(*) as total
 				FROM purchase_order
-				WHERE remarks = 'On Delivery'
+				WHERE remarks = 'Ongoing Delivery'
 				AND office = '$office'";
 
 		$result = mysqli_query($db, $sql);
@@ -523,7 +523,7 @@
 
 		$sql = "SELECT count(*) as total
 				FROM delivery
-				WHERE remarks = 'On Delivery'
+				WHERE remarks = 'Ongoing Delivery'
 				AND office = '$office'";
 
 		$result = mysqli_query($db, $sql);
@@ -563,7 +563,7 @@
 
 		$sql = "SELECT SUM(quantity) as quantity
 				FROM delivery
-				WHERE remarks = 'On Delivery'
+				WHERE remarks = 'Ongoing Delivery'
 				AND office = '$office'
 				AND po_no_delivery = '$po_no_delivery'";
 			// echo $sql;

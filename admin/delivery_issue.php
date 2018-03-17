@@ -600,15 +600,31 @@ session_start();
             <tr>
                 <td><?php echo $hash; ?></td>
 <?php
-            if($row['balance'] <= 1350){
+            $sql_delivery = "SELECT * FROM delivery
+                                WHERE fk_po_id = '".$row['purchase_id']."'
+                                AND remarks = 'Delivered'";
+
+            $count = mysqli_query($db, $sql_delivery);
+            if(mysqli_num_rows($count) > 0){
+                if($row['balance'] <= 1350){
 ?>
-                <td style="cursor: pointer; color: red;">
-                    <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>'">
-                        <strong><?php echo $row['purchase_order_no']; ?></strong>
-                    </div>
-                </td>
-                <td style="color: red;"><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
+                    <td style="cursor: pointer; color: red;">
+                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>'">
+                            <strong><?php echo $row['purchase_order_no']; ?></strong>
+                        </div>
+                    </td>
+                    <td style="color: red;"><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
 <?php
+                }else{
+?>
+                    <td style="cursor: pointer;">
+                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>'">
+                            <strong><?php echo $row['purchase_order_no']; ?></strong>
+                        </div>
+                    </td>
+                    <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
+<?php
+                }
             }else{
 ?>
                 <td style="cursor: pointer;">
@@ -618,14 +634,19 @@ session_start();
                 </td>
                 <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
 <?php
-                }
+            }
 ?>  
                 <td><strong><?php echo number_format((float)$row['quantity'])." pcs" ?></strong></td>
 <?php
-            if($row['balance'] <= 1350){
-                echo "<td style='color: red;'><strong>" . number_format((float)$row['balance']) . " pcs </strong></td>";
+            if(mysqli_num_rows($count) > 0){
+                if($row['balance'] <= 1350){
+                    echo "<td style='color: red;'><strong>" . number_format((float)$row['balance']) . " pcs </strong></td>";
+                }else{
+                    echo "<td><strong>" . number_format((float)$row['balance']) . " pcs </strong></td>";
+                }
             }else{
                 echo "<td><strong>" . number_format((float)$row['balance']) . " pcs </strong></td>";
+
             }
 ?>
                 <td><strong><?php echo $row['site_name']; ?></strong></td>
@@ -684,7 +705,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="table_row_count">
 <?php
                         if(isset($hash)){
@@ -693,7 +714,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
 ?>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="table_page">
 <?php
                         echo $pagination; 

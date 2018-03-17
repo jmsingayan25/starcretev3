@@ -710,6 +710,17 @@ session_start();
                             </div>
                         </div>
                     </form>
+<?php
+
+    $sql_select = "SELECT * FROM delivery
+                    WHERE po_no_delivery = '". $row['purchase_order_no']."'
+                    AND fk_po_id = '".$row['purchase_id']."'
+                    AND remarks = 'Ongoing Delivery'";
+    // echo $sql_select;
+    $sql_select_result = mysqli_query($db, $sql_select);
+    if(mysqli_num_rows($sql_select_result) <= 0){
+?>
+
                     <form action="purchase_order.php" method="post">
                         <!-- <button type="submit" id="cancel" name="cancel" value="<?php echo $row['purchase_id']; ?>" class="btn btn-sm btn-block" style="background-color: #d32f2f; color: white;" onclick="return confirm('Proceed cancelling item <?php echo $row['item_no'] . " " . $row['psi']; ?> under P.O. No. <?php echo $row['purchase_order_no']; ?>?')"; ><span class="fa fa-close"></span> <strong>Cancel Order</strong></button> -->
                         <button type="button" class="btn btn-sm btn-block" style="margin-bottom: 5px; background-color: #d32f2f; color: white;" data-toggle='modal' data-target='#purchaseOrderClosedRow<?php echo $hash; ?>'><span class="fa fa-edit"></span> <strong>Close</strong></button>
@@ -752,6 +763,9 @@ session_start();
                             </div>
                         </div>
                     </form>
+<?php
+    }
+?>
                 </td>
             </tr>
 <?php
@@ -773,7 +787,7 @@ vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4></td>
                 </div>
             </div><!--/.row-->      
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="table_row_count">
 <?php
                     if(isset($hash)){
@@ -782,7 +796,7 @@ vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4></td>
 ?>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="table_page">
 <?php
                     echo $pagination; 

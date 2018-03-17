@@ -493,7 +493,7 @@ session_start();
                                                 </tr>
                                                 <tr class="filters">
                                                     <th class="col-md-1">#</th>
-                                                    <th class="col-md-1">P.O. No.</th>
+                                                    <!-- <th class="col-md-1">P.O. No.</th> -->
                                                     <th class="col-md-1"><input type="text" class="form-control" placeholder="DR No." disabled></th>
                                                     <th class="col-md-1"><input type="text" class="form-control" placeholder="Item" disabled></th>
                                                     <th class="col-md-1">Quantity</th>
@@ -530,7 +530,7 @@ session_start();
 ?>
                                     <tr>
                                         <td><?php echo $hash; ?></td>
-                                        <td><strong><?php echo $row['po_no_delivery']; ?></strong></td>
+                                        <!-- <td><strong><?php echo $row['po_no_delivery']; ?></strong></td> -->
                                         <td><strong><?php echo $row['delivery_receipt_no']; ?></strong></td>
                                         <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
                                         <td><strong><?php echo number_format($row['quantity']); ?> pcs</strong></td>
@@ -546,7 +546,7 @@ session_start();
 ?>
                                 <td style="color: #d32f2f;"><strong><?php echo $row['remarks']; ?></strong></td>
 <?php
-            }else if($row['remarks'] == 'On Delivery'){
+            }else if($row['remarks'] == 'Ongoing Delivery'){
 ?>
                                 <td style="color: #ffa000;"><strong><?php echo $row['remarks']; ?></strong></td>
 <?php

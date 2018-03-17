@@ -574,7 +574,7 @@ session_start();
                 AND d.fk_po_id = poc.purchase_id
                 AND poc.site_contact_id = p.site_contact_person_id
                 AND d.site_id = s.site_id ".$string_ext."
-                AND remarks = 'On Delivery' 
+                AND remarks = 'Ongoing Delivery' 
                 GROUP BY delivery_id 
                 ORDER BY delivery_id DESC
                 LIMIT $start, $limit";
@@ -657,7 +657,7 @@ session_start();
                 </div>
             </div>     
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="table_row_count">
 <?php
                     if(isset($hash)){
@@ -666,7 +666,7 @@ session_start();
 ?>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="table_page">
 <?php
                     echo $pagination; 
