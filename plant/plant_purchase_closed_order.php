@@ -339,7 +339,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <section class="panel">
-                            <form action="plant_purchase_deliver_order.php" method="get" class="form-inline">
+                            <form action="plant_purchase_closed_order.php" method="get" class="form-inline">
                                 <header class="panel-heading">
                                     <div class="row" style="margin-bottom: 5px;">
                                         <div class="col-md-2">
@@ -632,7 +632,36 @@
                         </section>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="table_row_count">
+<?php
+                        if(isset($hash)){
+                            echo "Showing " . ($start+1)  . " to " . ($start + $hash - $start - 1) . " of " . $total . " entries"; 
+                        }
+?>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="table_page">
+<?php
+                        echo $pagination; 
+?>      
+                        </div>
+                    </div>
+                </div>
             </section>
+            <div class="text-right">
+                <div class="credits">
+                    <!-- 
+                    All the links in the footer should remain intact. 
+                    You can delete the links only if you purchased the pro version.
+                    Licensing information: https://bootstrapmade.com/license/
+                    Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
+                    -->
+                    <a href="https://bootstrapmade.com/free-business-bootstrap-themes-website-templates/">Business Bootstrap Themes</a> by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                </div>
+            </div>
         </section>
     </section>
 </body>

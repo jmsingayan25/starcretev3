@@ -211,8 +211,7 @@
 	                    </a>
 	                    <ul class="sub">
 	                        <li><a class="" href="plant_purchase_order.php">Pending P.O.</a></li>  
-	                        <li><a class="" href="plant_purchase_deliver_order.php">Delivered P.O.</a></li>                       
-	                        <li><a class="" href="plant_cancelled_order.php">Cancelled P.O.</a></li>
+	                        <li><a class="" href="plant_purchase_closed_order.php">Closed P.O.</a></li>
 	                    </ul>
 	                </li>  
 	                <li class="sub-menu">
@@ -223,7 +222,7 @@
 	                    </a>
 	                    <ul class="sub">
 	                    	<li><a class="" href="plant_delivery_issue.php">Existing P.O. <span class='badge'><?php echo getCountPlantPo($db, $office); ?></span></a></li>       
-	                        <li><a class="" href="plant_delivery_order.php">On Delivery Order <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>          
+	                        <li><a class="" href="plant_delivery_order.php">Ongoing Delivery <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>          
 	                        <li><a class="" href="plant_delivery_delivered.php">Delivered Order</a></li>
 	                        <li><a class="" href="plant_delivery_backloaded.php">Backloaded Order</a></li>
 	                    </ul>
@@ -244,7 +243,7 @@
 	                    <!-- <h3 class="page-header"><i class="fa fa-file"></i><a href="plant_delivery_issue_form.php">Update Form</a></h3> -->
 	                    <ol class="breadcrumb">
 	                        <li><i class="fa fa-building"></i>Delivery Order</li>
-	                        <li><i class="fa fa-truck"></i><a href="plant_delivery_order.php">On Delivery Order</a></li>			
+	                        <li><i class="fa fa-truck"></i><a href="plant_delivery_order.php">Ongoing Delivery</a></li>			
 	                        <li><i class="fa fa-file"></i><a href="plant_delivery_order_update.php" style="color: blue;">Update Form</a></li>						  	
 	                    </ol>
 	                </div>

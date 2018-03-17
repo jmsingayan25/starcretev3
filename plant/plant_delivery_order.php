@@ -555,7 +555,7 @@
                 AND d.fk_po_id = pc.purchase_id
                 AND pc.site_contact_id = p.site_contact_person_id
                 AND d.site_id = s.site_id ".$string_ext."
-                AND remarks = 'On Delivery'
+                AND remarks = 'Ongoing Delivery'
                 GROUP BY delivery_id 
                 ORDER BY delivery_id DESC
                 LIMIT $start, $limit";
@@ -798,7 +798,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4>
 	                </div>
 	            </div>
 	            <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="table_row_count">
 <?php
                         if(isset($hash)){
@@ -807,7 +807,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4>
 ?>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="table_page">
 <?php
                         echo $pagination; 

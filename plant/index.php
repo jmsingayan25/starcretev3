@@ -586,7 +586,7 @@
                 </div>
             </div><!--/.row-->       
             <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="table_row_count">
 <?php
                         if(isset($hash)){
@@ -595,7 +595,7 @@
 ?>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="table_page">
 <?php
                         echo $pagination; 

@@ -535,7 +535,7 @@
 ?>
                                 <td style="color: #d32f2f;"><strong><?php echo $row['remarks']; ?></strong></td>
 <?php
-            }else if($row['remarks'] == 'On Delivery'){
+            }else if($row['remarks'] == 'Ongoing Delivery'){
 ?>
                                 <td style="color: #ffa000;"><strong><?php echo $row['remarks']; ?></strong></td>
 <?php

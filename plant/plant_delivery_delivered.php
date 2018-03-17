@@ -639,7 +639,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
 	                </div>
 	            </div>
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="table_row_count">
 <?php
                         if(isset($hash)){
@@ -648,7 +648,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
 ?>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="table_page">
 <?php
                         echo $pagination; 
