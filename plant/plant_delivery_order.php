@@ -1017,7 +1017,7 @@ if(isset($_POST['delivered'])){
 	}else if(isset($_POST['update'])){
 
 		$username = mysqli_real_escape_string($db, $_SESSION['login_user']);
-		$password = mysqli_real_escape_string($db, $_POST['confirm_password']);
+		$password = mysqli_real_escape_string($db, crypt($_POST['confirm_password'], '$1$' . $_POST['confirm_password']));
 
 		$sql = "SELECT * FROM users 
 				WHERE username = '$username' 

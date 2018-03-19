@@ -308,7 +308,7 @@
 										</div>
 										<label for="psi" class="col-md-2 control-label">PSI</label>
 										<div class="col-md-3">
-											<input type="text" name="update_psi" class="form-control">
+											<input type="text" name="update_psi" value="<?php echo $delivery_row['psi']; ?>" class="form-control">
 										</div>
 									</div>
 									<div class="form-group">
@@ -360,6 +360,19 @@
 		}else{
 			$new_item_no = mysqli_real_escape_string($db, $_POST['item_no']);
 		}
+
+		if($_POST['update_psi'] != ''){
+			$new_psi_ext = "(" . $new_psi . " PSI)";
+		}else{
+			$new_psi_ext = '';
+		}
+
+		if($delivery_row['psi'] != ''){
+			$item_psi_ext = $delivery_row['item_no'] . " (" . $delivery_row['psi'] . " PSI)";
+		}else{
+			$item_psi_ext = $delivery_row['item_no'];
+		}
+
 		$sql = "UPDATE delivery 
 				SET item_no = '$new_item_no', delivery_receipt_no = '$new_delivery_receipt_no', quantity = '$new_quantity', gate_pass = '$new_gate_pass', psi = '$new_psi' 
 				WHERE delivery_id = '$delivery_id' AND office = '$office'";
@@ -372,11 +385,11 @@
 
 		}else if($new_item_no != $delivery_row['item_no'] && $new_delivery_receipt_no == $delivery_row['delivery_receipt_no'] && $new_gate_pass == $delivery_row['gate_pass'] && $new_quantity == $delivery_row['quantity']){
 			// update item only
-			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update item ".$delivery_row['item_no']." to $new_item_no under DR No. ".$delivery_row['delivery_receipt_no']."','$datetime','$office')";
+			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update item ".$item_psi_ext." to $new_item_no $new_psi_ext under DR No. ".$delivery_row['delivery_receipt_no']."','$datetime','$office')";
 
 		}else if($new_quantity == $delivery_row['quantity'] && $new_item_no != $delivery_row['item_no'] && $new_delivery_receipt_no == $delivery_row['delivery_receipt_no'] && $new_gate_pass == $delivery_row['gate_pass']){
 			// update item quantity only
-			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update ".$delivery_row['item_no']." quantity of ".$delivery_row['quantity']." to $new_quantity pcs under DR No. ".$delivery_row['delivery_receipt_no']."','$datetime','$office')";
+			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update ".$item_psi_ext." quantity of ".$delivery_row['quantity']." to $new_quantity pcs under DR No. ".$delivery_row['delivery_receipt_no']."','$datetime','$office')";
 
 		}else if($new_gate_pass != $delivery_row['gate_pass'] && $new_delivery_receipt_no == $delivery_row['delivery_receipt_no'] && $new_item_no == $delivery_row['item_no'] && $new_quantity == $delivery_row['quantity']){
 			// update gatepass only
@@ -384,7 +397,7 @@
 
 		}else if($new_delivery_receipt_no != $delivery_row['delivery_receipt_no'] && $new_item_no != $delivery_row['item_no'] && $new_gate_pass == $delivery_row['gate_pass'] && $new_quantity == $delivery_row['quantity']){
 			// update dr no and item only
-			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update DR No. ".$delivery_row['delivery_receipt_no']." to $new_delivery_receipt_no and item ".$delivery_row['item_no']." to $new_item_no','$datetime','$office')";
+			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update DR No. ".$delivery_row['delivery_receipt_no']." to $new_delivery_receipt_no and item ".$item_psi_ext." to $new_item_no $new_psi_ext','$datetime','$office')";
 
 		}else if($new_delivery_receipt_no != $delivery_row['delivery_receipt_no'] && $new_item_no == $delivery_row['item_no'] && $new_gate_pass == $delivery_row['gate_pass'] && $new_quantity != $delivery_row['quantity']){
 			// update dr no and quantity only
@@ -396,23 +409,23 @@
 
 		}else if($new_item_no != $delivery_row['item_no'] && $new_delivery_receipt_no == $delivery_row['delivery_receipt_no'] && $new_gate_pass == $delivery_row['gate_pass'] && $new_quantity != $delivery_row['quantity']){
 			// update item and quantity only
-			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update ".$delivery_row['item_no']." to $new_item_no and quantity to $new_quantity pcs under DR No. ".$delivery_row['delivery_receipt_no']."','$datetime','$office')";
+			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update ".$item_psi_ext." to $new_item_no $new_psi_ext and quantity to $new_quantity pcs under DR No. ".$delivery_row['delivery_receipt_no']."','$datetime','$office')";
 
 		}else if($new_item_no != $delivery_row['item_no'] && $new_delivery_receipt_no == $delivery_row['delivery_receipt_no'] && $new_gate_pass != $delivery_row['gate_pass'] && $new_quantity == $delivery_row['quantity']){
 			// update item and gate pass only
-			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update ".$delivery_row['item_no']." to $new_item_no and gate pass no. ".$delivery_row['gate_pass']." to $new_gate_pass under DR No. ".$delivery_row['delivery_receipt_no']."','$datetime','$office')";
+			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update ".$item_psi_ext." to $new_item_no $new_psi_ext and gate pass no. ".$delivery_row['gate_pass']." to $new_gate_pass under DR No. ".$delivery_row['delivery_receipt_no']."','$datetime','$office')";
 
 		}else if($new_item_no == $delivery_row['item_no'] && $new_delivery_receipt_no == $delivery_row['delivery_receipt_no'] && $new_gate_pass != $delivery_row['gate_pass'] && $new_quantity != $delivery_row['quantity']){
 			// update gatepass and quantity only
-			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update gate pass no. ".$delivery_row['gate_pass']." to $new_gate_pass and quantity of ".$delivery_row['item_no']." to $new_quantity pcs under DR No. ".$delivery_row['delivery_receipt_no']."','$datetime','$office')";
+			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update gate pass no. ".$delivery_row['gate_pass']." to $new_gate_pass and quantity of ".$item_psi_ext." to $new_quantity pcs under DR No. ".$delivery_row['delivery_receipt_no']."','$datetime','$office')";
 
 		}else if($new_item_no != $delivery_row['item_no'] && $new_delivery_receipt_no != $delivery_row['delivery_receipt_no'] && $new_gate_pass == $delivery_row['gate_pass'] && $new_quantity != $delivery_row['quantity']){
 			// update dr no, item and quantity only
-			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update DR No. ".$delivery_row['delivery_receipt_no']." to $new_delivery_receipt_no, item ".$delivery_row['item_no']." to $new_item_no and quantity to $new_quantity pcs','$datetime','$office')";
+			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update DR No. ".$delivery_row['delivery_receipt_no']." to $new_delivery_receipt_no, item ".$item_psi_ext." to $new_item_no $new_psi_ext and quantity to $new_quantity pcs','$datetime','$office')";
 
 		}else if($new_item_no != $delivery_row['item_no'] && $new_delivery_receipt_no != $delivery_row['delivery_receipt_no'] && $new_gate_pass != $delivery_row['gate_pass'] && $new_quantity == $delivery_row['quantity']){
 			// update dr no, item and gate pass only
-			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update DR No. ".$delivery_row['delivery_receipt_no']." to $new_delivery_receipt_no, item ".$delivery_row['item_no']." to $new_item_no and gate pass no. ".$delivery_row['gate_pass']." to $new_gate_pass','$datetime','$office')";
+			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update DR No. ".$delivery_row['delivery_receipt_no']." to $new_delivery_receipt_no, item ".$item_psi_ext." to $new_item_no $new_psi_ext and gate pass no. ".$delivery_row['gate_pass']." to $new_gate_pass','$datetime','$office')";
 
 		}else if($new_item_no == $delivery_row['item_no'] && $new_delivery_receipt_no != $delivery_row['delivery_receipt_no'] && $new_gate_pass != $delivery_row['gate_pass'] && $new_quantity != $delivery_row['quantity']){
 			// update dr. quantity and gate pass only
@@ -420,11 +433,11 @@
 
 		}else if($new_item_no != $delivery_row['item_no'] && $new_delivery_receipt_no == $delivery_row['delivery_receipt_no'] && $new_gate_pass != $delivery_row['gate_pass'] && $new_quantity != $delivery_row['quantity']){
 			// update item, quantity and gate pass only
-			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update item ".$delivery_row['item_no']." to $new_item_no, quantity to $new_quantity pcs and gate pass no. ".$delivery_row['gate_pass']." to $new_gate_pass under DR No. ".$delivery_row['delivery_receipt_no']."','$datetime','$office')";
+			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update item ".$item_psi_ext." to $new_item_no $new_psi_ext, quantity to $new_quantity pcs and gate pass no. ".$delivery_row['gate_pass']." to $new_gate_pass under DR No. ".$delivery_row['delivery_receipt_no']."','$datetime','$office')";
 
 		}else if($new_item_no != $delivery_row['item_no'] && $new_delivery_receipt_no != $delivery_row['delivery_receipt_no'] && $new_gate_pass != $delivery_row['gate_pass'] && $new_quantity != $delivery_row['quantity']){
 			// update all fields
-			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update DR No. ".$delivery_row['delivery_receipt_no']." to $new_delivery_receipt_no, item ".$delivery_row['item_no']." to $new_item_no, quantity to $new_quantity pcs and gate pass no. ".$delivery_row['gate_pass']." to $new_gate_pass','$datetime','$office')";
+			$history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Delivery','Update Delivery Order' ,'$new_item_no','Update DR No. ".$delivery_row['delivery_receipt_no']." to $new_delivery_receipt_no, item ".$item_psi_ext." to $new_item_no $new_psi_ext, quantity to $new_quantity pcs and gate pass no. ".$delivery_row['gate_pass']." to $new_gate_pass','$datetime','$office')";
 
 		}
 		

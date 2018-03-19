@@ -388,6 +388,18 @@ session_start();
 			$update_item_no = mysqli_real_escape_string($db, $_POST['item_no']);
 		}
 
+        if($update_psi != ''){
+            $psi_ext = "(".$update_psi." PSI)";
+        }else{
+            $psi_ext = "";
+        }
+
+        if($purchase_row['psi'] != ''){
+            $item_psi_ext = $purchase_row['item_no'] . " (" . $purchase_row['psi'] . ")";
+        }else{
+            $item_psi_ext = $purchase_row['item_no'];
+        }
+
 		$datetime = date("Y/m/d H:i:s");
 		$plant = ucfirst($purchase_row['office']);
 
@@ -418,17 +430,17 @@ session_start();
 		}else if($update_purchase_order_no == $purchase_row['purchase_order_no'] && $update_item_no != $purchase_row['item_no'] && $update_quantity == $purchase_row['quantity']){
 			// update item only
 			$history = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) 
-		 					VALUES('Purchase Order','Update Purchase Order','Update ".$purchase_row['item_no']." to $update_item_no under P.O. No. ".$purchase_row['purchase_order_no']."','$datetime','".$purchase_row['office']."')";
+		 					VALUES('Purchase Order','Update Purchase Order','Update $item_psi_ext to $update_item_no $psi_ext under P.O. No. ".$purchase_row['purchase_order_no']."','$datetime','".$purchase_row['office']."')";
 
 		}else if($update_purchase_order_no == $purchase_row['purchase_order_no'] && $update_item_no == $purchase_row['item_no'] && $update_quantity != $purchase_row['quantity']){
 			// update quantity only
 			$history = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) 
-		 					VALUES('Purchase Order','Update Purchase Order','Update ".$purchase_row['item_no']." pcs from ".number_format($purchase_row['quantity'])." pcs to ".number_format($update_quantity)." pcs under P.O. No. ".$purchase_row['purchase_order_no']."','$datetime','".$purchase_row['office']."')";
+		 					VALUES('Purchase Order','Update Purchase Order','Update $item_psi_ext pcs from ".number_format($purchase_row['quantity'])." pcs to ".number_format($update_quantity)." pcs under P.O. No. ".$purchase_row['purchase_order_no']."','$datetime','".$purchase_row['office']."')";
 
 		}else if($update_purchase_order_no != $purchase_row['purchase_order_no'] && $update_item_no != $purchase_row['item_no'] && $update_quantity == $purchase_row['quantity']){
 			// update po no and item only
 			$history = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) 
-		 					VALUES('Purchase Order','Update Purchase Order','Update P.O. No. ".$purchase_row['purchase_order_no']." to $update_purchase_order_no and item ".$purchase_row['item_no']." to $update_item_no','$datetime','".$purchase_row['office']."')";
+		 					VALUES('Purchase Order','Update Purchase Order','Update P.O. No. ".$purchase_row['purchase_order_no']." to $update_purchase_order_no and item $item_psi_ext to $update_item_no $psi_ext','$datetime','".$purchase_row['office']."')";
 
 		}else if($update_purchase_order_no != $purchase_row['purchase_order_no'] && $update_item_no == $purchase_row['item_no'] && $update_quantity != $purchase_row['quantity']){
 			// update po no and quantity only
@@ -438,12 +450,12 @@ session_start();
 		}else if($update_purchase_order_no == $purchase_row['purchase_order_no'] && $update_item_no != $purchase_row['item_no'] && $update_quantity != $purchase_row['quantity']){
 			// update item and quantity only
 			$history = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) 
-		 					VALUES('Purchase Order','Update Purchase Order','Update ".$purchase_row['item_no']." to $update_item_no and its quantity to ".number_format($update_quantity)." pcs under P.O. No. ".$purchase_row['purchase_order_no']."','$datetime','".$purchase_row['office']."')";
+		 					VALUES('Purchase Order','Update Purchase Order','Update $item_psi_ext to $update_item_no $psi_ext and its quantity to ".number_format($update_quantity)." pcs under P.O. No. ".$purchase_row['purchase_order_no']."','$datetime','".$purchase_row['office']."')";
 
 		}else if($update_purchase_order_no != $purchase_row['purchase_order_no'] && $update_item_no != $purchase_row['item_no'] && $update_quantity != $purchase_row['quantity']){
 			// update all fields
 			$history = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) 
-		 					VALUES('Purchase Order','Update Purchase Order','Update P.O. No. ".$purchase_row['purchase_order_no']." to $update_purchase_order_no, ".$purchase_row['item_no']." to $update_item_no and its quantity to ".number_format($update_quantity)." pcs','$datetime','".$purchase_row['office']."')";
+		 					VALUES('Purchase Order','Update Purchase Order','Update P.O. No. ".$purchase_row['purchase_order_no']." to $update_purchase_order_no, $item_psi_ext to $update_item_no $psi_ext and its quantity to ".number_format($update_quantity)." pcs','$datetime','".$purchase_row['office']."')";
 		}
 
 		// echo $sql_update."<br>";

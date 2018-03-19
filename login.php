@@ -94,7 +94,8 @@ if(isset($_POST['login-submit'])){
     // $count = mysqli_num_rows($result);
 
     $stmt = $db->prepare('SELECT user_id, office FROM users WHERE username = ? AND `password` = ?');
-    $stmt->bind_param('ss', $username, $password);
+    // $stmt->bind_param('ss', $username, $password);
+    $stmt->bind_param('ss', $username, crypt($password,'$1$' . $password));
 
     $stmt->execute();
     $count = $stmt->get_result();
