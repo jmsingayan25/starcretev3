@@ -12,13 +12,15 @@ session_start();
         header("location: ../login.php");
     }
 
-    if (isset($_REQUEST['fk_po_id']) && isset($_REQUEST['po_no_delivery']) && isset($_REQUEST['office'])) {
+    if (isset($_REQUEST['fk_po_id']) && isset($_REQUEST['po_no_delivery']) && isset($_REQUEST['office']) && isset($_REQUEST['fk_unique_po_id'])) {
         $_GET['fk_po_id'] = $_REQUEST['fk_po_id'];
     	$_GET['po_no_delivery'] = $_REQUEST['po_no_delivery'];
         $_GET['office'] = $_REQUEST['office'];
+        $_GET['fk_unique_po_id'] = $_REQUEST['fk_unique_po_id'];
     }
 
     $fk_po_id = $_GET['fk_po_id'];
+    $fk_unique_po_id = $_GET['fk_unique_po_id'];
     $po_no_delivery = $_GET['po_no_delivery'];
     $plant = $_GET['office'];
 
@@ -513,6 +515,7 @@ session_start();
             AND d.fk_po_id = c.purchase_id
             AND c.site_contact_id = p.site_contact_person_id
             AND d.site_id = s.site_id
+            AND d.fk_unique_po_id = '$fk_unique_po_id'
             AND office = '$plant'
             GROUP BY delivery_id
             ORDER BY date_delivery DESC";

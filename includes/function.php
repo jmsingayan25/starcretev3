@@ -249,7 +249,7 @@
 		// $order['fk_po_id'] = $row['fk_po_id'];
 		// $order['update_code'] = $row['update_code'];
 
-		$sql = "SELECT delivery_id, delivery_receipt_no, item_no, quantity, site_id, site_contact_id, gate_pass, po_no_delivery, date_delivery, office, remarks, fk_po_id, psi
+		$sql = "SELECT delivery_id, delivery_receipt_no, item_no, quantity, site_id, site_contact_id, gate_pass, po_no_delivery, date_delivery, office, remarks, fk_po_id, psi, fk_unique_po_id
 				FROM delivery
 				WHERE delivery_id = '$delivery_id'";
 
@@ -269,6 +269,7 @@
 		$order['office'] = $row['office'];
 		$order['remarks'] = $row['remarks'];
 		$order['fk_po_id'] = $row['fk_po_id'];
+		$order['fk_unique_po_id'] = $row['fk_unique_po_id'];
 
 		return $order;
 	}

@@ -16,21 +16,15 @@
         $_GET['page'] = 0;
     }
 
-    if(!isset($_POST['start_date'])){
-        $_POST['start_date'] = '';
+    if (isset($_REQUEST['fk_po_id']) && isset($_REQUEST['po_no_delivery']) && isset($_REQUEST['fk_unique_po_id'])) {
+        $_GET['fk_po_id'] = $_REQUEST['fk_po_id'];
+        $_GET['po_no_delivery'] = $_REQUEST['po_no_delivery'];
+        $_GET['fk_unique_po_id'] = $_REQUEST['fk_unique_po_id'];
     }
 
-    if(!isset($_POST['end_date'])){
-        $_POST['end_date'] = '';
-    }
-
-    if (isset($_REQUEST['fk_po_id']) && isset($_REQUEST['po_no_delivery'])) {
-        $_POST['fk_po_id'] = $_REQUEST['fk_po_id'];
-        $_POST['po_no_delivery'] = $_REQUEST['po_no_delivery'];
-    }
-
-    $fk_po_id = $_POST['fk_po_id'];
-    $po_no_delivery = $_POST['po_no_delivery'];
+    $fk_po_id = $_GET['fk_po_id'];
+    $fk_unique_po_id = $_GET['fk_unique_po_id'];
+    $po_no_delivery = $_GET['po_no_delivery'];
 
     $user_query = $db->prepare("SELECT * FROM users WHERE username = ?");
     $user_query->bind_param('s', $_SESSION['login_user']);
@@ -503,6 +497,7 @@
             AND d.fk_po_id = c.purchase_id
             AND c.site_contact_id = p.site_contact_person_id
             AND d.site_id = s.site_id
+            AND d.fk_unique_po_id = '$fk_unique_po_id'
             AND office = '$office'
             GROUP BY delivery_id
             ORDER BY date_delivery DESC";

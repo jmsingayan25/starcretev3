@@ -552,7 +552,7 @@
     	$pagination.= "</ul></div>\n"; 
     }
 
-    $query = "SELECT p.purchase_id, p.item_no, p.purchase_order_no, s.site_name, s.site_address, p.item_no, p.quantity, p.balance, l.unit, GROUP_CONCAT(DISTINCT c.site_contact_name ORDER BY c.site_contact_name ASC SEPARATOR ', ') as site_contact_name, DATE_FORMAT(p.date_purchase,'%m/%d/%y') as date_purchase, p.office, p.remarks, p.psi
+    $query = "SELECT p.purchase_id, p.item_no, p.purchase_order_no, s.site_name, s.site_address, p.item_no, p.quantity, p.balance, l.unit, GROUP_CONCAT(DISTINCT c.site_contact_name ORDER BY c.site_contact_name ASC SEPARATOR ', ') as site_contact_name, DATE_FORMAT(p.date_purchase,'%m/%d/%y') as date_purchase, p.office, p.remarks, p.psi, p.purchase_unique_id
                 FROM purchase_order p, batch_list l, site s, site_contact_person c, purchase_order_contact pc
                 WHERE p.item_no = l.item_no
                 AND p.purchase_id = pc.purchase_id
@@ -589,7 +589,7 @@
                 if($row['balance'] <= 1350){
 ?>
                     <td style="cursor: pointer; color: red;">
-                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>'">
+                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&fk_unique_po_id=<?php echo $row['purchase_unique_id']; ?>'">
                             <strong><?php echo $row['purchase_order_no']; ?></strong>
                         </div>
                     </td>
@@ -598,7 +598,7 @@
                 }else{
 ?>
                     <td style="cursor: pointer;">
-                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>'">
+                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&fk_unique_po_id=<?php echo $row['purchase_unique_id']; ?>'">
                             <strong><?php echo $row['purchase_order_no']; ?></strong>
                         </div>
                     </td>
@@ -608,7 +608,7 @@
             }else{
 ?>
                 <td style="cursor: pointer;">
-                    <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>'">
+                    <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&fk_unique_po_id=<?php echo $row['purchase_unique_id']; ?>'">
                         <strong><?php echo $row['purchase_order_no']; ?></strong>
                     </div>
                 </td>

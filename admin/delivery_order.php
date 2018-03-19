@@ -567,7 +567,7 @@ session_start();
         $pagination.= "</ul></div>\n"; 
     }
 
-    $query = "SELECT d.delivery_id, d.delivery_receipt_no, d.item_no, d.quantity, d.gate_pass, d.po_no_delivery, DATE_FORMAT(d.date_delivery,'%m/%d/%y') as date_delivery , d.office, d.remarks, d.fk_po_id, s.site_name, s.site_address, c.client_name, GROUP_CONCAT(DISTINCT p.site_contact_person_id SEPARATOR ', ') as site_contact_person_id, d.psi
+    $query = "SELECT d.delivery_id, d.delivery_receipt_no, d.item_no, d.quantity, d.gate_pass, d.po_no_delivery, DATE_FORMAT(d.date_delivery,'%m/%d/%y') as date_delivery , d.office, d.remarks, d.fk_po_id, s.site_name, s.site_address, c.client_name, GROUP_CONCAT(DISTINCT p.site_contact_person_id SEPARATOR ', ') as site_contact_person_id, d.psi, d.fk_unique_po_id
                 FROM delivery d, site s, site_contact_person p, client c, site_contact_number sc, purchase_order_contact poc
                 ".$string." ".$string_date."
                 AND s.client_id = c.client_id
@@ -594,7 +594,7 @@ session_start();
                 <td><?php echo $hash; ?></td>
                 <td><strong><?php echo $row['delivery_receipt_no']; ?></strong></td>
                 <td style="cursor: pointer;">
-                    <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['po_no_delivery'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo $row['fk_po_id']; ?>&po_no_delivery=<?php echo $row['po_no_delivery']; ?>&office=<?php echo $search_plant; ?>'">
+                    <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['po_no_delivery'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo $row['fk_po_id']; ?>&po_no_delivery=<?php echo $row['po_no_delivery']; ?>&office=<?php echo $search_plant; ?>&fk_unique_po_id=<?php echo $row['fk_unique_po_id']; ?>'">
                         <strong><?php echo $row['po_no_delivery']; ?></strong>
                     </div>
                 </td>

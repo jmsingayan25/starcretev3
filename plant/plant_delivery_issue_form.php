@@ -411,6 +411,7 @@
 		$contact_no = $purchase_row['contact_no'];
 		$gate_pass_no = mysqli_real_escape_string($db, $_POST['gate_pass_no']);
 		$po_no = $purchase_row['purchase_order_no'];
+		$unique_po_id = $purchase_row['purchase_unique_id'];
 		$datetime = date("Y/m/d H:i:s");
 		$plant = ucfirst($purchase_row['office']);
 
@@ -420,8 +421,8 @@
 			$ext = "";
 		}
 
-		$delivery_insert = "INSERT INTO delivery(delivery_receipt_no, item_no, psi, quantity, site_id, gate_pass, po_no_delivery, date_delivery, office, remarks, fk_po_id) 
-							VALUES('$delivery_no','$item_no', '$psi','$quantity','$site_id','$gate_pass_no','$po_no','$datetime','$office','Ongoing Delivery','$purchase_id')";
+		$delivery_insert = "INSERT INTO delivery(delivery_receipt_no, item_no, psi, quantity, site_id, gate_pass, po_no_delivery, date_delivery, office, remarks, fk_po_id, fk_unique_po_id) 
+							VALUES('$delivery_no','$item_no', '$psi','$quantity','$site_id','$gate_pass_no','$po_no','$datetime','$office','Ongoing Delivery','$purchase_id','$unique_po_id')";
 
 		$history_query = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) 
 		 					VALUES('Delivery','Issued DR No.','Issued DR No. $delivery_no with P.O. No. $po_no and ".$_POST['quantity']." pcs of $item_no $ext and ready to deliver to $site_name','$datetime','$office')";

@@ -548,7 +548,7 @@
         $pagination.= "</ul></div>\n"; 
     }
 
-    $query = "SELECT d.delivery_id, d.delivery_receipt_no, d.item_no, d.quantity, d.gate_pass, d.po_no_delivery, DATE_FORMAT(d.date_delivery,'%m/%d/%y') as date_delivery , d.office, d.remarks, d.fk_po_id, s.site_name, s.site_address, GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name ASC SEPARATOR ', ') as site_contact_name, c.client_name, d.psi
+    $query = "SELECT d.delivery_id, d.delivery_receipt_no, d.item_no, d.quantity, d.gate_pass, d.po_no_delivery, DATE_FORMAT(d.date_delivery,'%m/%d/%y') as date_delivery , d.office, d.remarks, d.fk_po_id, s.site_name, s.site_address, GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name ASC SEPARATOR ', ') as site_contact_name, c.client_name, d.psi, d.fk_unique_po_id
                 FROM delivery d, site s, site_contact_person p, client c, site_contact_number sc, purchase_order_contact pc
                 ".$string." ".$string_date."
                 AND s.client_id = c.client_id
@@ -575,7 +575,7 @@
             	<td><?php echo $hash; ?></td>
                 <td><strong><?php echo $row['delivery_receipt_no']; ?></strong></td>
                 <td style="cursor: pointer;">
-                    <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['po_no_delivery'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo $row['fk_po_id']; ?>&po_no_delivery=<?php echo $row['po_no_delivery']; ?>'">
+                    <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['po_no_delivery'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo $row['fk_po_id']; ?>&po_no_delivery=<?php echo $row['po_no_delivery']; ?>&fk_unique_po_id=<?php echo $row['fk_unique_po_id']; ?>'">
                         <strong><?php echo $row['po_no_delivery']; ?></strong>
                     </div>
                 </td>
@@ -851,6 +851,7 @@ if(isset($_POST['delivered'])){
 		$row_quantity = $order['quantity'];
 		$row_item_no = $order['item_no'];
 		$row_site_id = $order['site_id'];
+        $row_unique_po_id = $order['fk_unique_po_id'];
         if($order['psi'] != ''){
             $row_psi = "(" . $order['psi'] . " PSI)";
         }else{
@@ -910,7 +911,8 @@ if(isset($_POST['delivered'])){
 
             $update_deliveries = "UPDATE  purchase_order_deliveries 
                                     SET status = 'Closed' 
-                                    WHERE purchase_order_id = '$row_fk_po_id'";
+                                    WHERE purchase_order_id = '$row_fk_po_id'
+                                    ";
 
             $insert_delivered_po = "INSERT INTO purchase_order_deliveries (purchase_order_id, purchase_order_no, quantity, reason, status, date_closed) VALUES ('$row_fk_po_id','$row_po_no_delivery','$row_quantity','Delivered','Closed','$datetime')";
 
