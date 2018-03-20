@@ -301,8 +301,7 @@
                         </a>
                         <ul class="sub">
                             <li><a class="" href="plant_purchase_order.php">Pending P.O.</a></li>  
-                            <li><a class="" href="plant_purchase_deliver_order.php">Delivered P.O.</a></li>                        
-                            <li><a class="" href="plant_cancelled_order.php">Cancelled P.O.</a></li>
+                            <li><a class="" href="plant_purchase_closed_order.php">Closed P.O.</a></li>
                         </ul>
                     </li>  
                     <li class="sub-menu">
@@ -356,16 +355,24 @@
                                     <div class="row" style="margin-bottom: 5px;">
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="start_date">Start Date:</label><input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">
+                                                <label for="start_date">Start Date:</label>
+                                                <div class="tooltips" data-original-title="Start date of trnasaction" data-placement="top">
+                                                    <input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="end_date">End Date:</label><input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">
+                                                <label for="end_date">End Date:</label>
+                                                <div class="tooltips" data-original-title="End date of transaction">
+                                                    <input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="input-group col-md-5" style="margin: 38px 0px 0px 0px;">
-                                            <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                            <div class="tooltips" data-original-title="Search P.O. No., Item or Supplier">
+                                                <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">                                 
+                                            </div>
                                             <span class="input-group-btn">
                                                 <button class="btn btn-info" type="submit" name="search_table">
                                                     <i class="fa fa-search"></i>
@@ -411,8 +418,6 @@
                                     </thead>
                                     <tbody>
 <?php
-
-    if(isset($_GET['search_table'])){
 
         if($_GET['search'] == ''){
             $search_word = "";
@@ -553,7 +558,7 @@
         $result = mysqli_query($db, $query);
         // $count = 1;
         if(mysqli_num_rows($result) > 0){
-            $hash = 1;
+            $hash = $start + 1;
             while($row = mysqli_fetch_assoc($result)){
 ?>
                 <tr>
@@ -568,11 +573,10 @@
                     <td>
                         <form action="plant_received_pending_issue.php" method="post">
                             <input type="hidden" name="post_purchase_order_aggregates_id" value="<?php echo $row['purchase_order_aggregates_id'] ?>">
-                            <button class="btn btn-success btn-md">Issue DR No.</button>
+                            <button class="btn btn-sm" style="background-color: #388e3c; color: white;"><strong>Issue DR No.</strong></button>
                         </form>
                     </td>
                 </tr>
-
 <?php
                 $hash++;
             }
@@ -584,10 +588,6 @@
                 </tr>
 <?php
         }
-    }else{
-
-    }
-
 ?>
                                     </tbody>
                                 </table>

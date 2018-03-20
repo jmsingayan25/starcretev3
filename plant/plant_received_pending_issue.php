@@ -259,8 +259,7 @@
                         </a>
                         <ul class="sub">
                             <li><a class="" href="plant_purchase_order.php">Pending P.O.</a></li>  
-                            <li><a class="" href="plant_purchase_deliver_order.php">Delivered P.O.</a></li>                        
-                            <li><a class="" href="plant_cancelled_order.php">Cancelled P.O.</a></li>
+                            <li><a class="" href="plant_purchase_closed_order.php">Closed P.O.</a></li>
                         </ul>
                     </li>  
                     <li class="sub-menu">
@@ -384,8 +383,8 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-4 col-md-offset-2">
-                                            <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary">
-                                            <a href="plant_delivery_order.php" class="btn btn-warning">Cancel</a>
+                                            <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" style="font-weight: bold;">
+                                            <a href="plant_received_pending.php" class="btn btn-warning"><strong>Cancel</strong></a>
                                         </div>
                                     </div>
                                 </div>

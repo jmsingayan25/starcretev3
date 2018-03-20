@@ -339,7 +339,7 @@
                         </a>
                         <ul class="sub">
                             <li><a class="" href="purchase_order_form.php">Purchase Order Form</a></li>
-                            <!-- <li><a class="" href="purchase_aggregates_order_form.php">P.O. Aggregates Form</a></li>                           -->
+                            <li><a class="" href="purchase_aggregates_order_form.php">P.O. Aggregates Form</a></li>                          
                         </ul>
                     </li>
                 </ul>
@@ -368,16 +368,24 @@
 	                                <div class="row" style="margin-bottom: 5px;">
 	                                    <div class="col-md-2">
 	                                        <div class="form-group">
-	                                            <label for="start_date">Start Date:</label><input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">
+	                                            <label for="start_date">Start Date:</label>
+                                                <div class="tooltips" data-original-title="Start date of transaction">
+                                                    <input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">                                                  
+                                                </div>
 	                                        </div> 
 	                                    </div>
 	                                    <div class="col-md-2">
 	                                        <div class="form-group">
-	                                            <label for="end_date">End Date:</label><input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">
+	                                            <label for="end_date">End Date:</label>
+                                                <div class="tooltips" data-original-title="End date of transaction">
+                                                    <input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">                                                    
+                                                </div>
 	                                        </div>
 	                                    </div>
 	                                    <div class="input-group col-md-5" style="margin: 38px 0px 0px 0px;">
-	                                        <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+	                                        <div class="tooltips" data-original-title="Search Transmittal No., Office, Delivered by or Status">
+                                                <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">                                            
+                                            </div>
 	                                        <span class="input-group-btn">
 	                                            <button class="btn btn-info" type="submit" name="search_table">
 	                                                <i class="fa fa-search"></i>

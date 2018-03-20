@@ -330,7 +330,7 @@ session_start();
                         </a>
                         <ul class="sub">
                             <li><a class="" href="purchase_order_form.php">Purchase Order Form</a></li>
-                            <!-- <li><a class="" href="purchase_aggregates_order_form.php">P.O. Aggregates Form</a></li>                         -->
+                            <li><a class="" href="purchase_aggregates_order_form.php">P.O. Aggregates Form</a></li>                        
                         </ul>
                     </li>
                 </ul>
@@ -347,7 +347,7 @@ session_start();
                         <h3 class="page-header"><a href="purchase_aggregates_order.php?office=<?php echo $search_plant; ?>"><?php echo $plant; ?> P.O. Aggregates</a></h3>
                         <ol class="breadcrumb">
                             <li><i class="fa fa-building"></i><?php echo $plant; ?></li>     
-                            <li><i class="fa fa-address-book"></i>Pending Order</li>             
+                            <li><i class="icon_document"></i><a href="purchase_aggregates_order.php" style="color: blue;">Pending P.O.</a></li>             
                         </ol>
                     </div>
                 </div>
@@ -358,18 +358,26 @@ session_start();
                             <form action="purchase_aggregates_order.php" method="get" class="form-inline">
                                 <header class="panel-heading">
                                     <div class="row" style="margin-bottom: 5px;">
-                                    	<div class="col-md-2">
+                                        <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="start_date">Start Date:</label><input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">
-                                            </div>   
+                                                <label for="start_date">Start Date:</label>
+                                                <div class="tooltips" data-original-title="Start date of transaction" data-placement="top">
+                                                    <input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="end_date">End Date:</label><input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">
+                                                <label for="end_date">End Date:</label>
+                                                <div class="tooltips" data-original-title="End date of transaction" data-placement="top">
+                                                    <input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">
+                                                </div>
                                             </div>
-                                        </div>
+                                        </div>  
                                         <div class="input-group col-md-5" style="margin: 38px 0px 0px 0px;">
-                                            <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                            <div class="tooltips" data-original-title="Search P.O. No., Item or Supplier" data-placement="top">
+                                                <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                            </div>
                                             <span class="input-group-btn">
                                                 <button class="btn btn-info" type="submit" name="search_table">
                                                     <i class="fa fa-search"></i>
@@ -424,8 +432,9 @@ session_start();
     }
 
     if($_GET['search'] != ''){
-        $string_ext = " AND (p.item_no LIKE '%".$search_word."%' 
-                            OR p.supplier_name LIKE '%".$search_word."%')";
+        $string_ext = " AND (p.purchase_order_aggregates_no LIKE '%".$search_word."%' 
+                                OR p.item_no LIKE '%".$search_word."%' 
+                                OR p.supplier_name LIKE '%".$search_word."%')";
     }else{
         $string_ext = "";
     }
