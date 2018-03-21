@@ -335,7 +335,7 @@ session_start();
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="purchase_order_form.php">Purchase Order Form</a></li>
+                            <li><a class="" href="purchase_order_form.php">Add New P.O.</a></li>
                             <!-- <li><a class="" href="purchase_aggregates_order_form.php">P.O. Aggregates Form</a></li>                         -->
                         </ul>
                     </li>       

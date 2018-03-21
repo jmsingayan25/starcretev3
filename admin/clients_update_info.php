@@ -202,7 +202,7 @@
                         <span class="menu-arrow arrow_carrot-right"></span>
                     </a>
                     <ul class="sub">
-                        <li><a class="" href="purchase_order_form.php">Purchase Order Form</a></li>
+                        <li><a class="" href="purchase_order_form.php">Add New P.O.</a></li>
                         <!-- <li><a class="" href="purchase_aggregates_order_form.php">P.O. Aggregates Form</a></li>                           -->
                     </ul>
                 </li>     
@@ -253,7 +253,7 @@
 								</div>
 								<div class="form-group">
 									<div class="col-md-offset-8 col-md-4">
-										<input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" style="font-weight: bold;">
+										<input type="submit" name="submit" id="submit" value="Save" class="btn btn-primary" style="font-weight: bold;">
                                         <a href="clients.php" class="btn btn-warning"><strong>Cancel</strong></a>
 										<!-- <input type="reset" name="reset" id="reset" value="Reset" class="btn btn-default" style="font-weight: bold;"> -->
 									</div>

@@ -319,7 +319,7 @@
                         <span class="menu-arrow arrow_carrot-right"></span>
                     </a>
                     <ul class="sub">
-                        <li><a class="" href="purchase_order_form.php">Purchase Order Form</a></li>
+                        <li><a class="" href="purchase_order_form.php">Add New P.O.</a></li>
                         <!-- <li><a class="" href="purchase_aggregates_order_form.php">P.O. Aggregates Form</a></li>                           -->
                     </ul>
                 </li>     
@@ -571,7 +571,7 @@
                                                 <div class="col-md-12">
                                                      <form action="client_sites.php" method="post">
                                                         <input type="hidden" name="post_client_id" value="<?php echo $row['client_id']; ?>">
-                                                        <button class="btn btn-sm btn-block" style="background-color: #388e3c; color: white;"><span class="  fa fa-info-circle"></span> <strong>View Projects</strong></button>
+                                                        <button class="btn btn-sm btn-block" style="background-color: #388e3c; color: white;"><span class="  fa fa-info-circle"></span> <strong>Projects</strong></button>
                                                         <!-- <div class="tooltips" data-original-title="View Sites">
                                                             <button class="btn btn-default btn-xs" style="margin-bottom: 5px;"><span class="fa fa-eye"></span></button>
                                                         </div> -->
