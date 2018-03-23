@@ -60,7 +60,7 @@ session_start();
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>On Delivery Order - Delivery Order</title>
+    <title>Ongoing Delivery - Delivery Page</title>
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -477,7 +477,7 @@ session_start();
             AND poc.site_contact_id = p.site_contact_person_id
             AND d.site_id = s.site_id 
             AND s.site_id = p.site_id ".$string_date." ".$string_ext." 
-            AND remarks = 'On Delivery'
+            AND remarks = 'Ongoing Delivery'
             GROUP BY delivery_id";
     // echo $sql;
     $sql_result = mysqli_query($db, $sql); 

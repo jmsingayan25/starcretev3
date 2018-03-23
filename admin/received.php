@@ -418,7 +418,7 @@ session_start();
                                             <th class="col-md-1">Volume</th>
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="Supplier" disabled></th>
                                             <th class="col-md-1">Date Received</th>
-                                            <th class="col-md-1">Remarks</th>
+                                            <th class="col-md-1">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -565,11 +565,11 @@ session_start();
 ?>
                         <tr>
                             <td><?php echo $hash; ?></td>
-                            <td class='col-md-1'><strong><?php echo $row['delivery_no_received']; ?></strong></td>
-                            <td class='col-md-1'><strong><?php echo $row['po_aggregates_no_received']; ?></strong></td>
-                            <td class='col-md-1'><strong><?php echo $row['item_no']; ?></strong></td>
-                            <td class='col-md-1'><strong><?php echo $row['truck_no']; ?></strong></td>
-                            <td class='col-md-1'>
+                            <td><strong><?php echo $row['delivery_no_received']; ?></strong></td>
+                            <td><strong><?php echo $row['po_aggregates_no_received']; ?></strong></td>
+                            <td><strong><?php echo $row['item_no']; ?></strong></td>
+                            <td><strong><?php echo $row['truck_no']; ?></strong></td>
+                            <td>
                                 <strong><?php echo number_format($row['volume']); ?>
 <?php
                             if($row['unit'] == 'm3'){
@@ -580,8 +580,8 @@ session_start();
 ?>
                                 </strong>
                             </td>
-                            <td class='col-md-1'><strong><?php echo $row['supplier_name']; ?></strong></td>
-                            <td class='col-md-1'><strong><?php echo $row['date_po_aggregates1']; ?></strong></td>
+                            <td><strong><?php echo $row['supplier_name']; ?></strong></td>
+                            <td><strong><?php echo $row['date_po_aggregates1']; ?></strong></td>
                             <td style="color: #388e3c;"><strong><?php echo $row['remarks']; ?></strong></td>
                         </tr>
 <?php   

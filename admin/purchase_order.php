@@ -583,7 +583,7 @@ session_start();
         $pagination.= "</ul></div>\n"; 
     }
                 
-    $query = "SELECT o.purchase_id, o.purchase_order_no, o.item_no, o.quantity, o.delivered, o.backload, o.balance, o.office, o.remarks, l.unit, s.site_name, s.site_address, GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name ASC SEPARATOR ', ') as site_contact_name, DATE_FORMAT(o.date_purchase,'%m/%d/%y') as date_purchase, o.psi
+    $query = "SELECT o.purchase_id, o.purchase_order_no, o.item_no, o.quantity, o.delivered, o.backload, o.balance, o.office, o.remarks, l.unit, s.site_name, s.site_address, GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name ASC SEPARATOR ', ') as site_contact_name, DATE_FORMAT(o.date_purchase,'%m/%d/%y') as date_purchase, o.psi, o.purchase_unique_id
                 FROM purchase_order o, purchase_order_contact c, batch_list l, site_contact_person p, site s
                 ".$string." ".$string_date."
                 AND o.site_id = s.site_id
@@ -643,8 +643,8 @@ session_start();
                 <td><strong><?php echo $row['site_name']; ?></strong></td>
                 <td><strong><?php echo $row['site_address']; ?></strong></td>
                 <td>
-                    <a data-toggle="collapse" data-target="#contacts<?php echo $hash; ?>" style="cursor: default; color: inherit;">Click to view</a>
-                    <div id="contacts<?php echo $hash; ?>" class="collapse">
+                    <!-- <a data-toggle="collapse" data-target="#contacts<?php echo $hash; ?>" style="cursor: default; color: inherit;">Click to view</a>
+                    <div id="contacts<?php echo $hash; ?>" class="collapse"> -->
                 
 <?php
 
@@ -676,7 +676,6 @@ session_start();
                 } 
             }
 ?>
-                    </div>
                 </td>
                 <td><strong><?php echo $row['date_purchase']; ?></strong></td>
                 <td>
@@ -707,8 +706,8 @@ session_start();
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" name="update" id="update" value="<?php echo $row['purchase_id']; ?>" class="btn btn-primary">Submit</button>
-                                        <button type="button" class="btn" data-dismiss="modal">Close</button>
+                                        <button type="submit" name="update" id="update" value="<?php echo $row['purchase_id']; ?>" class="btn btn-primary"><strong>Submit</strong></button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal"><strong>Close</strong></button>
                                     </div>
                                 </div>
                             </div>
@@ -718,7 +717,7 @@ session_start();
 
     $sql_select = "SELECT * FROM delivery
                     WHERE po_no_delivery = '". $row['purchase_order_no']."'
-                    AND fk_po_id = '".$row['purchase_id']."'
+                    AND fk_unique_po_id = '".$row['purchase_unique_id']."'
                     AND remarks = 'Ongoing Delivery'";
     // echo $sql_select;
     $sql_select_result = mysqli_query($db, $sql_select);
@@ -761,7 +760,7 @@ session_start();
                                     </div>
                                     <div class="modal-footer">
                                         <button type="submit" name="closed" id="closed" value="<?php echo $row['purchase_id']; ?>" class="btn btn-primary"><strong>Submit</strong></button>
-                                        <button type="button" class="btn" data-dismiss="modal"><strong>Close</strong></button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal"><strong>Close</strong></button>
                                     </div>
                                 </div>
                             </div>
@@ -808,8 +807,6 @@ vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4></td>
                     </div>
                 </div>
             </div>   
-
-
         </section>
         <div class="text-right">
             <div class="credits">
@@ -868,7 +865,7 @@ vertical-align: middle;'><h4><p class='text-muted'>No data found</p></h4></td>
         $insert_closed = "INSERT INTO purchase_order_deliveries(purchase_order_id, purchase_order_no, quantity, reason, status, date_closed) VALUES ('$purchase_id','$po_no','$balance','$reason','Closed', '$datetime')";
         
         $history = "INSERT INTO history(table_report,transaction_type,item_no,detail,history_date,office) 
-                        VALUES('Purchase Order','Closed P.O. No.','$item_no','P.O. No. $po_no with balance of ".number_format($balance)." pcs of $item_no $psi order by $client has been closed','$datetime','$plant')";
+                        VALUES('Purchase Order','Closed P.O. No.','$item_no','P.O. No. $po_no with balance of ".number_format($balance)." pcs of $item_no $psi order by $client has been closed with a reason of $reason','$datetime','$plant')";
 
         $sql_po_id = "SELECT * FROM purchase_order_deliveries WHERE purchase_order_id = '$purchase_id'";
         $sql_po_id_result = mysqli_query($db, $sql_po_id);

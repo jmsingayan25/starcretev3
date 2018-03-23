@@ -339,7 +339,7 @@
                         </a>
                         <ul class="sub">
                             <li><a class="" href="purchase_order_form.php">Add New P.O.</a></li>
-                            <li><a class="" href="purchase_aggregates_order_form.php">P.O. Aggregates Form</a></li>                          
+                            <li><a class="" href="purchase_aggregates_order_form.php">Add New P.O. Agg</a></li>                          
                         </ul>
                     </li>
                 </ul>

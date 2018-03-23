@@ -49,7 +49,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Contact Person New Number - Clients</title>
+    <title>Contact Person New Number - Projects</title>
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -289,7 +289,7 @@
                                 <div class="form-group">
                                     <div class="col-md-offset-6 col-md-6">
                                         <input type="submit" name="submit" id="submit" value="Save" class="btn btn-primary" style="font-weight: bold;">
-                                        <a href="client_sites_update_info.php" class="btn btn-warning"><strong>Cancel</strong></a>
+                                        <a href="client_sites_update_info.php" class="btn btn-default"><strong>Cancel</strong></a>
                                         <!-- <a href="delivery_transaction.php" class="btn btn-warning">Cancel</a> -->
                                         <!-- <input type="reset" name="reset" id="reset" value="Reset" class="btn btn-default" style="font-weight: bold;"> -->
                                     </div>

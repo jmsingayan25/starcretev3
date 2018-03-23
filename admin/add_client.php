@@ -31,7 +31,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Add New Client - Clients</title>
+    <title>New Client - Clients</title>
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -250,7 +250,7 @@
 									<div class="form-group">
 										<div class="col-md-offset-8 col-md-4">
 											<input type="submit" name="submit" id="submit" value="Save" class="btn btn-primary" style="font-weight: bold;">
-											<a href="clients.php" class="btn btn-warning"><strong>Cancel</strong></a>
+											<a href="clients.php" class="btn btn-default"><strong>Cancel</strong></a>
 											
 											<!-- <input type="reset" name="reset" id="reset" value="Reset" class="btn btn-default" style="font-weight: bold;"> -->
 										</div>
