@@ -206,7 +206,9 @@ session_start();
                         </a>
                         <ul class="sub">
                             <li><a class="" href="purchase_order.php?office=bravo">Purchase Order</a></li>                          
+                            <li><a class="" href="purchase_aggregates_order.php?office=bravo">P.O. Aggregates</a></li>                          
                             <li><a class="" href="delivery_order.php?office=bravo">Delivery Page</a></li>
+                            <li><a class="" href="received.php?office=bravo">Received Aggregates</a></li>
                         </ul>
                     </li>  
                     <li class="sub-menu">
@@ -216,10 +218,12 @@ session_start();
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="purchase_order.php?office=delta">Purchase Order</a></li>                          
-                             <li><a class="" href="delivery_order.php?office=delta">Delivery Page</a></li>
+                            <li><a class="" href="purchase_order.php?office=delta">Purchase Order</a></li>                         
+                            <li><a class="" href="purchase_aggregates_order.php?office=delta">P.O. Aggregates</a></li>                          
+                            <li><a class="" href="delivery_order.php?office=delta">Delivery Page</a></li>
+                            <li><a class="" href="received.php?office=delta">Received Aggregates</a></li>
                         </ul>
-                    </li>   
+                    </li>      
                     <li class="sub-menu">
                         <a href="javascript:;" class="">
                             <i class="fa fa-file"></i>
@@ -227,8 +231,8 @@ session_start();
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="purchase_order_form.php">Add New P.O.</a></li>                        
-                            <li><a class="" href="purchase_aggregates_order_form.php">P.O. Aggregates Form</a></li>                        
+                            <li><a class="" href="purchase_order_form.php">Add New P.O.</a></li>
+                            <li><a class="" href="purchase_aggregates_order_form.php">Add New P.O. Aggregates</a></li>                        
                         </ul>
                     </li>      
                 </ul>
@@ -294,9 +298,9 @@ session_start();
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-offset-8 col-md-4">
-                                            <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary">
+                                            <input type="submit" name="submit" id="submit" value="Done" class="btn btn-primary" style="font-weight: bold;">
                                             <!-- <a href="delivery_transaction.php" class="btn btn-warning">Cancel</a> -->
-                                            <input type="reset" name="reset" id="reset" value="Reset" onclick="window.location.reload(true);" class="btn btn-warning">
+                                            <input type="reset" name="reset" id="reset" value="Reset" onclick="window.location.reload(true);" class="btn btn-default" style="font-weight: bold;">
                                         </div>
                                     </div>
                                 </div>
@@ -389,8 +393,8 @@ session_start();
 
         $history_query = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) 
                             VALUES('Purchase Order Aggregates','Issued P.O. No.','$item','Head Office ordered ".number_format($quantity)." ".getTruck($db,$item)." of $item to $supplier with P.O No. $po_no','$datetime','$plant')";
-        echo $query . "<br>";
-        echo $history_query . "<br>";
+        // echo $query . "<br>";
+        // echo $history_query . "<br>";
 
         // $query = $db->prepare("INSERT INTO purchase_order_aggregates(item_no, quantity, received, price, office, date_po_aggregates, supplier_name, purchase_order_aggregates_no, remarks) VALUES(?,?,?,?,?,?,?,?,?)");
         // $query->bind_param('ssissssss',$item,$quantity,$received,$price,$plant,$datetime,$supplier,$po_no,$pending);
@@ -400,12 +404,12 @@ session_start();
         // $history_query->bind_param('ssssss',$table,$transaction,$item,$sentence,$datetime,$plant);
         // $history_query->execute();
 
-        // if(mysqli_query($db,$query) && mysqli_query($db,$history_query)){
-        //     phpAlert("Order completed!!");
-        //     echo "<meta http-equiv='refresh' content='0'>";
-        // }else{
-        //     phpAlert("Something went wrong!!");
-        // }
+        if(mysqli_query($db,$query) && mysqli_query($db,$history_query)){
+            phpAlert("Order completed!!");
+            echo "<meta http-equiv='refresh' content='0'>";
+        }else{
+            phpAlert("Something went wrong!!");
+        }
     }
 
 ?>

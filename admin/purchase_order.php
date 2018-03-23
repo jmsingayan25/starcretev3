@@ -643,6 +643,9 @@ session_start();
                 <td><strong><?php echo $row['site_name']; ?></strong></td>
                 <td><strong><?php echo $row['site_address']; ?></strong></td>
                 <td>
+                    <a data-toggle="collapse" data-target="#contacts<?php echo $hash; ?>" style="cursor: default; color: inherit;">Click to view</a>
+                    <div id="contacts<?php echo $hash; ?>" class="collapse">
+                
 <?php
 
             $contact_sql = "SELECT DISTINCT p.site_contact_id, c.site_contact_name
@@ -673,6 +676,7 @@ session_start();
                 } 
             }
 ?>
+                    </div>
                 </td>
                 <td><strong><?php echo $row['date_purchase']; ?></strong></td>
                 <td>

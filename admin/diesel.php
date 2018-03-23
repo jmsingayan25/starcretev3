@@ -112,6 +112,20 @@
     ======================================================= -->
 <script>
 
+    var timer = null;
+
+    function goAway() {
+        clearTimeout(timer);
+        timer = setTimeout(function() {
+            window.location.reload(true);
+        }, 60000);
+    }
+
+    window.addEventListener('mousemove', goAway, true);
+    window.addEventListener('keypress', goAway, true);
+
+    goAway();
+
 	$(document).ready(function(){
         $('.filterable .btn-filter').click(function(){
             var $panel = $(this).parents('.filterable'),
@@ -337,7 +351,7 @@
                             				</tr>
                             				<tr class="filters">
 												<th class="col-md-1"><input type="text" class="form-control" placeholder="Truck No." disabled></th>
-												<th class="col-md-1">Driver / Optr.</th>
+												<th class="col-md-1"><input type="text" class="form-control" placeholder="Driver / Optr." disabled></th>
 												<th class="col-md-1">Quantity (IN)</th>
 												<th class="col-md-1">Quantity (OUT)</th>
 												<th class="col-md-1">Current Stock</th>

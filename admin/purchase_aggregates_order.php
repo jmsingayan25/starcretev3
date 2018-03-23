@@ -308,7 +308,10 @@ session_start();
                         </a>
                         <ul class="sub">
                             <li><a class="" href="purchase_order.php?office=bravo">Purchase Order</a></li>                          
+                            <li><a class="" href="purchase_aggregates_order.php?office=bravo">P.O. Aggregates</a></li>                          
                             <li><a class="" href="delivery_order.php?office=bravo">Delivery Page</a></li>
+                            <li><a class="" href="received.php?office=bravo">Received Aggregates</a></li>
+
                         </ul>
                     </li>  
                     <li class="sub-menu">
@@ -318,8 +321,10 @@ session_start();
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="purchase_order.php?office=delta">Purchase Order</a></li>                          
-                             <li><a class="" href="delivery_order.php?office=delta">Delivery Page</a></li>
+                            <li><a class="" href="purchase_order.php?office=delta">Purchase Order</a></li>                         
+                            <li><a class="" href="purchase_aggregates_order.php?office=delta">P.O. Aggregates</a></li>                          
+                            <li><a class="" href="delivery_order.php?office=delta">Delivery Page</a></li>
+                            <li><a class="" href="received.php?office=delta">Received Aggregates</a></li>
                         </ul>
                     </li>      
                     <li class="sub-menu">
@@ -330,7 +335,7 @@ session_start();
                         </a>
                         <ul class="sub">
                             <li><a class="" href="purchase_order_form.php">Add New P.O.</a></li>
-                            <li><a class="" href="purchase_aggregates_order_form.php">P.O. Aggregates Form</a></li>                        
+                            <li><a class="" href="purchase_aggregates_order_form.php">Add New P.O. Aggregates</a></li>                        
                         </ul>
                     </li>
                 </ul>
