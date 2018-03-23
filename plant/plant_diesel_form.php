@@ -171,7 +171,7 @@
         var warning = document.getElementById('stock_warning');
         var ok = document.getElementById('stock_ok');
 
-        if(balance <= 7500){
+        if(balance <= Number(7500)){
             warning.style.display = 'block';
             ok.style.display = 'none';
         }else{
@@ -236,6 +236,12 @@
                             <span>History</span>
                         </a>
                     </li>
+                    <li class="active">
+                        <a class="" href="plant_diesel.php">
+                            <i class="fa fa-building"></i>
+                            <span>Diesel</span>
+                        </a>
+                    </li>
                     <li class="sub-menu">
                         <a href="javascript:;" class="">
                             <i class="fa fa-building"></i>
@@ -255,7 +261,7 @@
                         </a>
                         <ul class="sub">
                             <li><a class="" href="plant_delivery_issue.php">Existing P.O. <span class='badge'><?php echo getCountPlantPo($db, $office); ?></span></a></li>       
-                            <li><a class="" href="plant_delivery_order.php">On Delivery Order <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>        
+                            <li><a class="" href="plant_delivery_order.php">Ongoing Delivery <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>        
                             <li><a class="" href="plant_delivery_delivered.php">Delivered Order</a></li>
                             <li><a class="" href="plant_delivery_backloaded.php">Backloaded Order</a></li>
                         </ul>
@@ -340,7 +346,7 @@
 
     if(isset($_POST['submit'])){
 
-        $liter = mysqli_real_escape_string($db, $_POST['quantity_out']);
+        $liter = mysqli_real_escape_string($db, str_replace(",", "", $_POST['quantity_out']));
         $destination = mysqli_real_escape_string($db, $_POST['destination']);
         $truck = mysqli_real_escape_string($db, $_POST['truck_no']);
         $operator = mysqli_real_escape_string($db, $_POST['operator']);
@@ -370,7 +376,7 @@
             }
         }else{
             phpAlert('Something went wrong. Please try again.');
-            echo "<meta http-equiv='refresh' content='0'>";
+            // echo "<meta http-equiv='refresh' content='0'>";
         }
     }
 ?>

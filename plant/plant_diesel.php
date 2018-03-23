@@ -238,6 +238,12 @@
                             <span>History</span>
                         </a>
                     </li>
+                    <li class="active">
+                        <a class="" href="plant_diesel.php">
+                            <i class="fa fa-building"></i>
+                            <span>Diesel</span>
+                        </a>
+                    </li>
                     <li class="sub-menu">
                         <a href="javascript:;" class="">
                             <i class="fa fa-building"></i>
@@ -246,8 +252,7 @@
                         </a>
                         <ul class="sub">
                             <li><a class="" href="plant_purchase_order.php">Pending P.O.</a></li> 
-                            <li><a class="" href="plant_purchase_deliver_order.php">Delivered P.O.</a></li>                         
-                            <li><a class="" href="plant_cancelled_order.php">Cancelled P.O.</a></li>
+                            <li><a class="" href="plant_purchase_closed_order.php">Closed P.O.</a></li>
                         </ul>
                     </li>  
                     <li class="sub-menu">
@@ -258,7 +263,7 @@
                         </a>
                         <ul class="sub">
                             <li><a class="" href="plant_delivery_issue.php">Existing P.O. <span class='badge'><?php echo getCountPlantPo($db, $office); ?></span></a></li>       
-                            <li><a class="" href="plant_delivery_order.php">On Delivery Order <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>        
+                            <li><a class="" href="plant_delivery_order.php">Ongoing Delivery <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>        
                             <li><a class="" href="plant_delivery_delivered.php">Delivered Order</a></li>
                             <li><a class="" href="plant_delivery_backloaded.php">Backloaded Order</a></li>
                         </ul>
@@ -359,7 +364,7 @@
                             				</tr>
                             				<tr class="filters">
 												<th class="col-md-1"><input type="text" class="form-control" placeholder="Truck No." disabled></th>
-												<th class="col-md-1">Driver / Optr.</th>
+												<th class="col-md-1"><input type="text" class="form-control" placeholder="Driver / Optr." disabled></th>
 												<th class="col-md-1">Quantity (IN)</th>
 												<th class="col-md-1">Quantity (OUT)</th>
 												<th class="col-md-1">Current Stock</th>

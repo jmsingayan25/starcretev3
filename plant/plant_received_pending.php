@@ -293,6 +293,12 @@
                             <span>History</span>
                         </a>
                     </li>
+                    <li class="">
+                        <a class="" href="plant_diesel.php">
+                            <i class="fa fa-building"></i>
+                            <span>Diesel</span>
+                        </a>
+                    </li>
                     <li class="sub-menu">
                         <a href="javascript:;" class="">
                             <i class="fa fa-building"></i>
@@ -312,15 +318,15 @@
                         </a>
                         <ul class="sub">
                             <li><a class="" href="plant_delivery_issue.php">Existing P.O. <span class='badge'><?php echo getCountPlantPo($db, $office); ?></span></a></li>   
-                            <li><a class="" href="plant_delivery_order.php">On Delivery Order <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>                   
+                            <li><a class="" href="plant_delivery_order.php">Ongoing Delivery <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>                   
                             <li><a class="" href="plant_delivery_delivered.php">Delivered Order</a></li>
                             <li><a class="" href="plant_delivery_backloaded.php">Backloaded Order</a></li>
                         </ul>
                     </li> 
                     <li class="sub-menu">
-                        <a href="javascript:;" class="">
+                        <a href="javascript:;" class="active">
                             <i class="fa fa-building"></i>
-                            <span>Received</span>
+                            <span>Received Agg</span>
                             <span class="menu-arrow arrow_carrot-right"></span>
                         </a>
                         <ul class="sub">
