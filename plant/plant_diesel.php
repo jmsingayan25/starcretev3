@@ -37,7 +37,13 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Starcrete Manufacturing Corporation</title>
+<?php 
+    if($office == 'bravo'){
+        echo "Diesel - Starcrete Manufacturing Corporation";
+    }else{
+        echo "Diesel - Quality Star Concrete Products, Inc.";
+    }
+?>  
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -151,6 +157,20 @@
         });
     });
 
+    function warningStock(){
+
+        var stock = Number(document.getElementById("hidden_stock").value);
+        var stock_display = document.getElementById("warning_stock");
+        var triangle = document.getElementById("triangle");
+
+        if(stock <= 5000){
+            stock_display.style.color = "red";
+            triangle.style.display = "";
+        }else{
+            stock_display.style.color = "";
+            triangle.style.display = "none";
+        }
+    }
 </script>
 
 <style>
@@ -189,7 +209,7 @@
 
 </style>
 </head>
-<body>
+<body onload="warningStock();">
 <!-- container section start -->
     <section id="container" class="">
         <header class="header dark-bg">
@@ -335,10 +355,14 @@
                                 	<div class="col-md-12" style="margin-bottom: 5px;">
 										<div class="col-md-2">
 											Select Date:
-                                			<input type="date" name="date_view" class="form-control" value="<?php if(isset($_GET['date_view'])) { echo htmlentities ($_GET['date_view']); }?>" onblur="this.form.submit();">	
+                                			<input type="date" name="date_view" class="form-control" value="<?php if(isset($_GET['date_view'])) { echo htmlentities ($_GET['date_view']); }?>">
 										</div>
-                                        <div class="col-md-1 col-md-offset-8">
-                                            <button type="button" class="btn btn-info btn-md" onclick="location.href='plant_diesel_form.php'" style="margin-top: 30px; margin-left: 40px;"><span class="fa fa-plus"></span> <strong>Add Transaction</strong></button>
+                                        <div class="col-md-1">
+                                            <button type="submit" class="btn btn-md btn-info" style="margin-top: 35px; margin-left: -20px;"><strong>Go</strong></button>    
+                                        </div>
+                                        <div class="col-md-4 col-md-offset-5">
+                                            <button type="button" class="btn btn-info btn-md" onclick="location.href='plant_diesel_incoming_form.php'" style="margin-top: 35px; margin-left: 30px;"><span class="fa fa-plus"></span> <strong>Add Incoming Diesel</strong></button>
+                                            <button type="button" class="btn btn-info btn-md" onclick="location.href='plant_diesel_form.php'" style="margin-top: 35px;"><span class="fa fa-plus"></span> <strong>Add Transaction</strong></button>
                                         </div>
                                 	</div>
                                 </div>
@@ -350,16 +374,14 @@
                             			<thead>
                             				<tr class="filterable">
                             					<th colspan="7">
+                                                    <input type="hidden" id="hidden_stock" value="<?php echo getDieselStock($db, $search_plant); ?>">
                             						<?php 
 	                            						$date_view = date_create($_GET['date_view']); 
                             							$today = date('Y-m-d');
                             							$today = date_create($today);
-
-                            							echo "Available stock as of today, " . date_format($today,"F d, Y") . ": " . number_format(getDieselStock($db, $search_plant)) . " liters <br>"; 
-                            							echo "Search Date: " . date_format($date_view,"F d, Y");
-                            							
-                            						?>
-                            						<button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
+                                                    ?>
+                            						<span>Available stock as of today, <?php echo date_format($today,"F d, Y"); ?>: <span id="warning_stock"><?php echo number_format(getDieselStock($db, $search_plant)); ?> liters <span id="triangle" class="fa fa-exclamation-triangle" style="display: none;"></span></span></span><br>
+                                                    <span>Search Date: <?php echo date_format($date_view,"F d, Y"); ?><button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button></span>
                             					</th>
                             				</tr>
                             				<tr class="filters">

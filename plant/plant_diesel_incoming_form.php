@@ -34,17 +34,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>
-
-<?php 
-    if($office == 'bravo'){
-        echo "Diesel Form - Starcrete Manufacturing Corporation";
-    }else{
-        echo "Diesel Form - Quality Star Concrete Products, Inc.";
-    }
-?>
-    
-</title>
+    <title>Diesel Form</title>
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -63,7 +53,7 @@
     <link href="css/widgets.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/style-responsive.css" rel="stylesheet" />
-    <link href="css/xcharts.min.css" rel=" stylesheet">	
+    <link href="css/xcharts.min.css" rel=" stylesheet"> 
     <link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 
      <!-- javascripts -->
@@ -114,86 +104,10 @@
     ======================================================= -->
 
 <script>
-    
-    $(function() {
-        
-        // var $form = $( "#form" );
-        // var $input = $form.find( "#quantity" );
-
-        // $input.on( "keyup", function( event ) {
-
-        var $form = $( "#form" );
-        var $input = $form.find( "#quantity_out" );
-
-        $form.on( "keyup", "#quantity_out", function( event ) {
-            
-            
-            // When user select text in the document, also abort.
-            var selection = window.getSelection().toString();
-            if ( selection !== '' ) {
-                return;
-            }
-            
-            // When the arrow keys are pressed, abort.
-            if ( $.inArray( event.keyCode, [38,40,37,39] ) !== -1 ) {
-                return;
-            }
-            
-            
-            var $this = $( this );
-            
-            // Get the value.
-            var input = $this.val();
-            
-            var input = input.replace(/[\D\s\._\-]+/g, "");
-                    input = input ? parseInt( input, 10 ) : 0;
-
-                    $this.val( function() {
-                        return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
-                    } );
-        } );      
-    });
-
-    function compareValues(input) {
-        
-        var number = input.replace(",","");
-        number = Number(number);
-        var balance = Number(document.getElementById('stock').value);
-        var submit = document.getElementById('submit');
-        // var letters = /^[0-9a-zA-Z]+$/; 
-
-        setTimeout(function () {
-            if(number > balance || number <= 0){
-                submit.disabled = true;
-                // a.style.display = "block";
-            }else{
-                submit.disabled = false;
-                // a.style.display = "none";
-            }
-        }, 0);
-        // alert(ordered);
-    }
-
-    function warning(){
-        var balance = document.getElementById('stock').value;
-        balance = balance.replace(",","");
-        balance = Number(balance);
-        var warning = document.getElementById('stock_warning');
-        var ok = document.getElementById('stock_ok');
-
-        if(balance <= Number(5000)){
-            warning.style.display = 'block';
-            ok.style.display = 'none';
-        }else{
-            warning.style.display = 'none';
-            ok.style.display = 'block';
-        }
-    }
-
 </script>
 <style>
 .page_links a{
-	color: inherit;
+    color: inherit;
 }
 </style>
 </head>
@@ -298,101 +212,14 @@
                         <ol class="breadcrumb">
                             <li><i class="fa fa-building"></i><?php echo $plant; ?></li>
                             <li><i class="icon_document"></i><a href="plant_diesel.php">Diesel</a></li>             
-                            <li><i class="icon_document"></i><a href="plant_diesel_form.php" style="color: blue;">Diesel Form</a></li>             
+                            <li><i class="icon_document"></i><a href="plant_diesel_incoming_form.php" style="color: blue;">Incoming Diesel Form</a></li>             
                         </ol>
                     </div>
                 </div>
                 <div class="row">
-                	<div class="col-md-6 col-md-offset-3">
-                		<form action="plant_diesel_form.php" method="post" id="form" name="form" class="form-horizontal" onsubmit="return confirm('Proceed?')">
-                			<section class="panel">
-	                			<header class="panel-heading">
-	                				Details
-	                			</header>
-	                			<div class="panel-body">
-                					<input type="hidden" id="stock" name="stock" value="<?php echo getStock($db, 'Diesel', $search_plant); ?>">
-	                				<div class="form-group">
-	                					<label for="quantity_out" class="col-md-4 control-label">Quantity (OUT)<span class="required" style="color: red;">*</span></label>
-                                        <div class="col-md-8">
-                                            <input type="text" id="quantity_out" name="quantity_out" class="form-control" onkeyup="compareValues(this.value);" required>
-                                            <span class="help-block" id="stock_warning" style="color: red; display: none;"><strong>Warning!</strong> Available Stock: <?php echo number_format(getStock($db, 'Diesel', $search_plant)) . " liters"; ?></span>
-                                            <span class="help-block" id="stock_ok" style="display: none;">Available Stock: <?php echo number_format(getStock($db, 'Diesel', $search_plant)) . " liters"; ?></span>
-
-                                        </div>
-
-	                				</div>
-                                    <div class="form-group">
-                                        <label for="destination" class="col-md-4 control-label">Destination<span class="required" style="color: red;">*</span></label>
-                                        <div class="col-md-8">
-                                            <input type="text" name="destination" class="form-control" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="truck_no" class="col-md-4 control-label">Truck No.<span class="required" style="color: red;">*</span></label>
-                                        <div class="col-md-8">
-                                            <input type="text" name="truck_no" class="form-control" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="operator" class="col-md-4 control-label">Operator / Driver<span class="required" style="color: red;">*</span></label>
-                                        <div class="col-md-8">
-                                            <input type="text" name="operator" class="form-control" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-md-offset-2 col-md-10">
-                                            <input type="submit" name="submit" id="submit" value="Done" class="btn btn-primary" style="font-weight: bold;">
-                                            <a href="plant_diesel.php" class="btn btn-default"><strong>Cancel</strong></a>
-                                        </div>
-                                    </div>
-	                			</div>
-                                <footer class="panel-footer">
-                                    <p class="help-block"><span class="required" style="color: red;">*</span> - required</p>
-                                </footer>
-	                		</section>
-                		</form>
-                	</div>
-                </div>	
+                </div>
             </section>
         </section>
     </section>
 </body>
 </html>
-<?php
-
-    if(isset($_POST['submit'])){
-
-        $liter = mysqli_real_escape_string($db, str_replace(",", "", $_POST['quantity_out']));
-        $destination = mysqli_real_escape_string($db, $_POST['destination']);
-        $truck = mysqli_real_escape_string($db, $_POST['truck_no']);
-        $operator = mysqli_real_escape_string($db, $_POST['operator']);
-        $datetime = date("Y-m-d H:i:s");
-        
-        // $stock = "SELECT stock FROM item_stock WHERE item_no = 'Diesel' AND office = '$office'";
-        // $result = mysqli_query($db, $stock);
-        // $row = mysqli_fetch_assoc($result);  
-
-        $diesel_update = "UPDATE item_stock SET stock = stock - '$liter', last_update = '$datetime' WHERE item_no = 'Diesel' AND office = '$office'";
-        
-        if(mysqli_query($db, $diesel_update)){  
-
-            $stock = getStock($db, 'Diesel', $office);
-
-            $query = "INSERT INTO diesel(office, quantity_out, balance, destination, truck_no, operator, delivery_date)
-                    VALUES ('$office','$liter','".$stock."','$destination','$truck','$operator','$datetime')";
-
-            $history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Diesel','Delivered','Diesel','Truck no. $truck operated by $operator delivered $liter liters of diesel to $destination','$datetime', '".ucfirst($office)."')";
-
-            if(mysqli_query($db, $query) && mysqli_query($db, $history)){
-                phpAlert("Transaction complete!!");
-                echo "<meta http-equiv='refresh' content='0'>";
-            }else{
-                phpAlert('Something went wrong. Please try again.');
-                echo "<meta http-equiv='refresh' content='0'>";
-            }
-        }else{
-            phpAlert('Something went wrong. Please try again.');
-            // echo "<meta http-equiv='refresh' content='0'>";
-        }
-    }
-?>

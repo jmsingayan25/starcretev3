@@ -57,9 +57,9 @@
     <title>
 <?php 
     if($office == 'bravo'){
-        echo "Home - Starcrete Manufacturing Corporation";
+        echo "History - Starcrete Manufacturing Corporation";
     }else{
-        echo "Home - Quality Star Concrete Products, Inc.";
+        echo "History - Quality Star Concrete Products, Inc.";
     }
 ?>        
     </title>

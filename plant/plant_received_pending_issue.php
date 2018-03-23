@@ -71,7 +71,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Received Deliveries</title>
+    <title>Issue DR No. on Received Deliveries - Received Agg</title>
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -353,11 +353,11 @@
                                                             echo getUnit($db, $item);
                                                         }
                             
-                                                        if(getTruck($db, $item) == 'liter'){
-                                                            echo "";
-                                                        }else{
-                                                            echo " per ". getTruck($db, $item); 
-                                                        } 
+                                                        // if(getTruck($db, $item) == 'liter'){
+                                                        //     echo "";
+                                                        // }else{
+                                                        //     echo " 1 - " . getTruck($db, $item); 
+                                                        // } 
                                                         ?>)</label>
                                         <div class="col-md-6">
                                             <input type="text" id="volume" name="volume" class="form-control" onkeyup="compareValues(this.value);" autocomplete="off">
@@ -392,8 +392,8 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-4 col-md-offset-2">
-                                            <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary" style="font-weight: bold;">
-                                            <a href="plant_received_pending.php" class="btn btn-warning"><strong>Cancel</strong></a>
+                                            <input type="submit" name="submit" id="submit" value="Done" class="btn btn-primary" style="font-weight: bold;">
+                                            <a href="plant_received_pending.php" class="btn btn-default"><strong>Cancel</strong></a>
                                         </div>
                                     </div>
                                 </div>

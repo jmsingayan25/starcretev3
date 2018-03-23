@@ -55,7 +55,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>On Delivery - Delivery Order</title>
+    <title>Ongoing Delivery - Delivery Order</title>
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -458,7 +458,7 @@
             AND d.fk_po_id = pc.purchase_id
             AND pc.site_contact_id = p.site_contact_person_id
             AND d.site_id = s.site_id ".$string_date." ".$string_ext." 
-            AND remarks = 'On Delivery'
+            AND remarks = 'Ongoing Delivery'
             GROUP BY d.delivery_id";
     // echo $sql;
     $sql_result = mysqli_query($db, $sql); 
@@ -644,8 +644,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" name="update" id="update" value="<?php echo $row['delivery_id']; ?>" class="btn btn-primary">Submit</button>
-                                        <button type="button" class="btn" data-dismiss="modal">Close</button>
+                                        <button type="submit" name="update" id="update" value="<?php echo $row['delivery_id']; ?>" class="btn btn-primary"><strong>Submit</strong></button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal"><strong>Close</strong></button>
                                     </div>
                                 </div>
                             </div>
@@ -767,7 +767,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <input type="submit" id="delivered" name="delivered" value="Confirm" class="btn btn-primary" style="font-weight: bold;">
-                                    <button type="button" class="btn" data-dismiss="modal"><strong>Close</strong></button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><strong>Close</strong></button>
                                 </div>
                             </div>
                         </div>
