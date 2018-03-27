@@ -396,7 +396,7 @@ session_start();
                                         </div>  
                                         <div class="input-group col-md-5" style="margin: 38px 0px 0px 0px;">
                                             <div class="tooltips" data-original-title="Search P.O. No., Item, Project Name, Address or Contact" data-placement="top">
-                                                <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                                <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>" autocomplete="off">
                                             </div>
                                             <span class="input-group-btn">
                                                 <button class="btn btn-info" type="submit" name="search_table">
@@ -643,8 +643,8 @@ session_start();
                 <td><strong><?php echo $row['site_name']; ?></strong></td>
                 <td><strong><?php echo $row['site_address']; ?></strong></td>
                 <td>
-                    <!-- <a data-toggle="collapse" data-target="#contacts<?php echo $hash; ?>" style="cursor: default; color: inherit;">Click to view</a>
-                    <div id="contacts<?php echo $hash; ?>" class="collapse"> -->
+                    <a data-toggle="collapse" data-target="#contacts<?php echo $hash; ?>" style="cursor: default; color: inherit;">Click to view</a>
+                    <div id="contacts<?php echo $hash; ?>" class="collapse">
                 
 <?php
 
@@ -676,6 +676,7 @@ session_start();
                 } 
             }
 ?>
+                    </div>
                 </td>
                 <td><strong><?php echo $row['date_purchase']; ?></strong></td>
                 <td>

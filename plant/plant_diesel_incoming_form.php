@@ -34,7 +34,15 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Diesel Form</title>
+    <title>
+<?php 
+    if($office == 'bravo'){
+        echo "Incoming Diesel Form - Starcrete Manufacturing Corporation";
+    }else{
+        echo "Incoming Diesel Form - Quality Star Concrete Products, Inc.";
+    }
+?>
+    </title>
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -104,6 +112,46 @@
     ======================================================= -->
 
 <script>
+
+    $(function() {
+        
+        // var $form = $( "#form" );
+        // var $input = $form.find( "#quantity" );
+
+        // $input.on( "keyup", function( event ) {
+
+        var $form = $( "#form" );
+        var $input = $form.find( "#quantity_in" );
+
+        $form.on( "keyup", "#quantity_in", function( event ) {
+            
+            
+            // When user select text in the document, also abort.
+            var selection = window.getSelection().toString();
+            if ( selection !== '' ) {
+                return;
+            }
+            
+            // When the arrow keys are pressed, abort.
+            if ( $.inArray( event.keyCode, [38,40,37,39] ) !== -1 ) {
+                return;
+            }
+            
+            
+            var $this = $( this );
+            
+            // Get the value.
+            var input = $this.val();
+            
+            var input = input.replace(/[\D\s\._\-]+/g, "");
+                    input = input ? parseInt( input, 10 ) : 0;
+
+                    $this.val( function() {
+                        return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
+                    } );
+        } );      
+    });
+
 </script>
 <style>
 .page_links a{
@@ -111,7 +159,7 @@
 }
 </style>
 </head>
-<body onload="compareValues('');warning();">
+<body>
 <!-- container section start -->
     <section id="container" class="">
         <header class="header dark-bg">
@@ -217,9 +265,104 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <form action="plant_diesel_incoming_form.php" method="post" id="form" name="form" class="form-horizontal" onsubmit="return confirm('Proceed?')">
+                            <section class="panel">
+                                <header class="panel-heading">
+                                    Details
+                                </header>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="po_no" class="col-md-3 control-label">P.O. No.<span class="required" style="color: red;">*</span></label>
+                                        <div class="col-md-8">
+                                            <input type="text" name="po_no" class="form-control" autocomplete="off" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="dr_no" class="col-md-3 control-label">DR No. <span class="required" style="color: red;">*</span></label>
+                                        <div class="col-md-8">
+                                            <input type="text" name="dr_no" class="form-control" autocomplete="off" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="quantity_in" class="col-md-3 control-label">Quantity (IN)<span class="required" style="color: red;">*</span></label>
+                                        <div class="col-md-8">
+                                            <input type="text" name="quantity_in" id="quantity_in" class="form-control" autocomplete="off" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="supplier" class="col-md-3 control-label">Supplier<span class="required" style="color: red;">*</span></label>
+                                        <div class="col-md-8">
+                                            <input type="text" name="supplier" class="form-control" autocomplete="off" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="truck_no" class="col-md-3 control-label">Truck No.<span class="required" style="color: red;">*</span></label>
+                                        <div class="col-md-8">
+                                            <input type="text" name="truck_no" class="form-control" autocomplete="off" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-offset-8 col-md-4">
+                                            <input type="submit" name="submit" id="submit" value="Done" class="btn btn-primary" style="font-weight: bold;">
+                                            <a href="plant_diesel.php" class="btn btn-default"><strong>Cancel</strong></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <footer class="panel-footer">
+                                    <p class="help-block"><span class="required" style="color: red;">*</span> - required</p>
+                                </footer>
+                            </section>
+                        </form>
+                    </div>
                 </div>
             </section>
         </section>
     </section>
 </body>
 </html>
+<?php
+
+    if(isset($_POST['submit'])){
+
+        $po_no = mysqli_real_escape_string($db, $_POST['po_no']);
+        $dr_no = mysqli_real_escape_string($db, $_POST['dr_no']);
+        $quantity_in = mysqli_real_escape_string($db, str_replace(",", "", $_POST['quantity_in']));
+        $supplier = mysqli_real_escape_string($db, $_POST['supplier']);
+        $truck_no = mysqli_real_escape_string($db, $_POST['truck_no']);
+        $datetime = date("Y-m-d H:i:s");
+
+        // $update_diesel = "UPDATE item_stock SET stock = stock + $quantity_in 
+        //                     WHERE item_no = 'Diesel' AND office = '$office'";
+
+        $diesel_query = "SELECT item_no FROM item_stock WHERE item_no = 'Diesel' AND office = '$office'";
+        $diesel_query_result = mysqli_query($db, $diesel_query);
+
+        if(mysqli_num_rows($diesel_query_result) > 0){
+            $stock = "UPDATE item_stock SET stock = stock + '$quantity_in', last_update = '$datetime' 
+                        WHERE item_no = 'Diesel' AND office = '$office'";
+        }else{
+            $stock = "INSERT INTO item_stock(item_no, stock, office, last_update) 
+                        VALUES('Diesel','$quantity_in','$office','$datetime')";
+        }
+        mysqli_query($db, $stock);
+
+        $insert_diesel = "INSERT INTO diesel(office, quantity_in, balance, truck_no, operator, delivery_date)
+                            VALUES('$office','$quantity_in','".getStock($db, 'Diesel', $office)."','$truck_no','$supplier','$datetime')";
+
+        $history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) 
+                        VALUES('Received','Received ','Diesel','".ucfirst($office)." received ".number_format($quantity_in)." liter(s) of Diesel from $supplier with P.O No. $po_no and DR. No. $dr_no','$datetime','$office')";
+
+        // echo $stock . "<br>";
+        // echo $insert_diesel . "<br>";
+        // echo $history . "<br>";
+
+        if(mysqli_query($db, $insert_diesel) && mysqli_query($db, $history)){
+            phpAlert('Incoming diesel successfully added');
+        }else{
+            phpAlert(mysqli_error($db));
+        }
+    }
+
+
+?>

@@ -38,9 +38,9 @@
 
 <?php 
     if($office == 'bravo'){
-        echo "Diesel Form - Starcrete Manufacturing Corporation";
+        echo "Outgoing Diesel Form - Starcrete Manufacturing Corporation";
     }else{
-        echo "Diesel Form - Quality Star Concrete Products, Inc.";
+        echo "Outgoing Diesel Form - Quality Star Concrete Products, Inc.";
     }
 ?>
     
@@ -298,7 +298,7 @@
                         <ol class="breadcrumb">
                             <li><i class="fa fa-building"></i><?php echo $plant; ?></li>
                             <li><i class="icon_document"></i><a href="plant_diesel.php">Diesel</a></li>             
-                            <li><i class="icon_document"></i><a href="plant_diesel_form.php" style="color: blue;">Diesel Form</a></li>             
+                            <li><i class="icon_document"></i><a href="plant_diesel_form.php" style="color: blue;">Outgoing Diesel Form</a></li>             
                         </ol>
                     </div>
                 </div>
@@ -312,9 +312,9 @@
 	                			<div class="panel-body">
                 					<input type="hidden" id="stock" name="stock" value="<?php echo getStock($db, 'Diesel', $search_plant); ?>">
 	                				<div class="form-group">
-	                					<label for="quantity_out" class="col-md-4 control-label">Quantity (OUT)<span class="required" style="color: red;">*</span></label>
+	                					<label for="quantity_out" class="col-md-3 control-label">Quantity (OUT)<span class="required" style="color: red;">*</span></label>
                                         <div class="col-md-8">
-                                            <input type="text" id="quantity_out" name="quantity_out" class="form-control" onkeyup="compareValues(this.value);" required>
+                                            <input type="text" id="quantity_out" name="quantity_out" class="form-control" onkeyup="compareValues(this.value);" autocomplete="off" required>
                                             <span class="help-block" id="stock_warning" style="color: red; display: none;"><strong>Warning!</strong> Available Stock: <?php echo number_format(getStock($db, 'Diesel', $search_plant)) . " liters"; ?></span>
                                             <span class="help-block" id="stock_ok" style="display: none;">Available Stock: <?php echo number_format(getStock($db, 'Diesel', $search_plant)) . " liters"; ?></span>
 
@@ -322,25 +322,25 @@
 
 	                				</div>
                                     <div class="form-group">
-                                        <label for="destination" class="col-md-4 control-label">Destination<span class="required" style="color: red;">*</span></label>
+                                        <label for="destination" class="col-md-3 control-label">Destination<span class="required" style="color: red;">*</span></label>
                                         <div class="col-md-8">
-                                            <input type="text" name="destination" class="form-control" required>
+                                            <input type="text" name="destination" class="form-control" autocomplete="off" required>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="truck_no" class="col-md-4 control-label">Truck No.<span class="required" style="color: red;">*</span></label>
+                                        <label for="truck_no" class="col-md-3 control-label">Truck No.<span class="required" style="color: red;">*</span></label>
                                         <div class="col-md-8">
-                                            <input type="text" name="truck_no" class="form-control" required>
+                                            <input type="text" name="truck_no" class="form-control" autocomplete="off" required>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="operator" class="col-md-4 control-label">Operator / Driver<span class="required" style="color: red;">*</span></label>
+                                        <label for="operator" class="col-md-3 control-label">Operator / Driver<span class="required" style="color: red;">*</span></label>
                                         <div class="col-md-8">
-                                            <input type="text" name="operator" class="form-control" required>
+                                            <input type="text" name="operator" class="form-control" autocomplete="off" required>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div class="col-md-offset-2 col-md-10">
+                                        <div class="col-md-offset-8 col-md-4">
                                             <input type="submit" name="submit" id="submit" value="Done" class="btn btn-primary" style="font-weight: bold;">
                                             <a href="plant_diesel.php" class="btn btn-default"><strong>Cancel</strong></a>
                                         </div>

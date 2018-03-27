@@ -166,6 +166,10 @@
                  $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="3" style="height: 100%;background: white; text-align:center; vertical-align:middle;"><h4><p class="text-muted">No data found</p></h4></td></tr>'));
             }
         });
+
+        $( "#search" ).autocomplete({
+            source: 'ajax/list_client_name.php'
+        });
     });
 
     function filterTable() {
@@ -190,6 +194,7 @@
             } 
         }
     }
+
 
 </script>
 <style>
@@ -351,7 +356,7 @@
                                 <div class="row">
                                     <div class="input-group col-md-8" style="margin: 5px 0px 5px 0px;">
                                         <div class="tooltips" data-original-title="Search Client or Address" data-placement="top">
-                                            <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                            <input type="text" name="search" id="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>" autocomplete="off">
                                         </div>
                                         <span class="input-group-btn">
                                             <button class="btn btn-info" type="submit" name="search_client">

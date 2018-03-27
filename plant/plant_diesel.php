@@ -37,6 +37,8 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
+    <title>
+        
 <?php 
     if($office == 'bravo'){
         echo "Diesel - Starcrete Manufacturing Corporation";
@@ -44,7 +46,7 @@
         echo "Diesel - Quality Star Concrete Products, Inc.";
     }
 ?>  
-
+    </title>
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- bootstrap theme -->
@@ -114,6 +116,20 @@
     ======================================================= -->
 <script>
 
+    var timer = null;
+
+    function goAway() {
+        clearTimeout(timer);
+        timer = setTimeout(function() {
+            window.location.reload(true);
+        }, 60000);
+    }
+
+    window.addEventListener('mousemove', goAway, true);
+    window.addEventListener('keypress', goAway, true);
+
+    goAway();
+    
 	$(document).ready(function(){
         $('.filterable .btn-filter').click(function(){
             var $panel = $(this).parents('.filterable'),
@@ -220,7 +236,13 @@
             <!--logo start-->
 
             <!--logo end-->
-            <a href='index.php' class='logo'>Starcrete <span class='lite'>Manufacturing Corporation</span></a>
+<?php
+    if($office == 'delta'){
+        echo "<a href='index.php' class='logo'>Quality Star <span class='lite'>Concrete Products, Inc.</span></a>";
+    }else{
+        echo "<a href='index.php' class='logo'>Starcrete <span class='lite'>Manufacturing Corporation</span></a>";
+    }
+?>
             <div class="top-nav notification-row">                
                 <!-- notificatoin dropdown start-->
                 <ul class="nav pull-right top-menu">
@@ -360,9 +382,9 @@
                                         <div class="col-md-1">
                                             <button type="submit" class="btn btn-md btn-info" style="margin-top: 35px; margin-left: -20px;"><strong>Go</strong></button>    
                                         </div>
-                                        <div class="col-md-4 col-md-offset-5">
-                                            <button type="button" class="btn btn-info btn-md" onclick="location.href='plant_diesel_incoming_form.php'" style="margin-top: 35px; margin-left: 30px;"><span class="fa fa-plus"></span> <strong>Add Incoming Diesel</strong></button>
-                                            <button type="button" class="btn btn-info btn-md" onclick="location.href='plant_diesel_form.php'" style="margin-top: 35px;"><span class="fa fa-plus"></span> <strong>Add Transaction</strong></button>
+                                        <div class="col-md-5 col-md-offset-4">
+                                            <button type="button" class="btn btn-info btn-md" onclick="location.href='plant_diesel_incoming_form.php'" style="margin-top: 35px; margin-left: 95px;"><span class="fa fa-plus"></span> <strong>Add Incoming Diesel</strong></button>
+                                            <button type="button" class="btn btn-info btn-md" onclick="location.href='plant_diesel_form.php'" style="margin-top: 35px;"><span class="fa fa-plus"></span> <strong>Add Outgoing Diesel</strong></button>
                                         </div>
                                 	</div>
                                 </div>
