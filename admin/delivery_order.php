@@ -364,7 +364,7 @@ session_start();
                                 <div class="row" style="margin-bottom: 5px;">
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <label for="start_date">Start Date:</label>
+                                            <label for="start_date">From:</label>
                                             <div class="tooltips" data-original-title="Start date of transaction" data-placement="top">
                                                 <input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">
                                             </div>
@@ -372,7 +372,7 @@ session_start();
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <label for="end_date">End Date:</label>
+                                            <label for="end_date">To:</label>
                                             <div class="tooltips" data-original-title="End date of transaction" data-placement="top">
                                                 <input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">
                                             </div>
@@ -388,21 +388,19 @@ session_start();
                                             </button>
                                         </span>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="input-group col-md-12" style="margin: 5px 0px 0px 0px;">
-                                        <label for="view_count" class="col-md-2 control-label" style="margin-right: -80px;">Number of rows:</label>
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <select id="view_count" name="view_count" class="form-control" onchange="this.form.submit()">
-                                                    <option value="25" <?php if(isset($_GET['view_count']) && $_GET['view_count'] == "25") echo 'selected="selected"';?>>25</option>
-                                                    <option value="50"<?php if(isset($_GET['view_count']) && $_GET['view_count'] == "50") echo 'selected="selected"';?>>50</option>
-                                                    <option value="75"<?php if(isset($_GET['view_count']) && $_GET['view_count'] == "75") echo 'selected="selected"';?>>75</option>
-                                                    <option value="100"<?php if(isset($_GET['view_count']) && $_GET['view_count'] == "100") echo 'selected="selected"';?>>100</option>
-                                                </select>
+                                    <div class="input-group col-md-2" style="white-space: nowrap; margin: 38px 0px 0px 60px;">
+                                            <label for="view_count" class="col-md-8 control-label">Number of rows:</label>
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <select id="view_count" name="view_count" class="form-control" onchange="this.form.submit()">
+                                                        <option value="25" <?php if(isset($_GET['view_count']) && $_GET['view_count'] == "25") echo 'selected="selected"';?>>25</option>
+                                                        <option value="50"<?php if(isset($_GET['view_count']) && $_GET['view_count'] == "50") echo 'selected="selected"';?>>50</option>
+                                                        <option value="75"<?php if(isset($_GET['view_count']) && $_GET['view_count'] == "75") echo 'selected="selected"';?>>75</option>
+                                                        <option value="100"<?php if(isset($_GET['view_count']) && $_GET['view_count'] == "100") echo 'selected="selected"';?>>100</option>
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </div> 
                                 </div>
                             </header>
                         </form>

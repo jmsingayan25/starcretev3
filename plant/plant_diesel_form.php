@@ -381,7 +381,7 @@
             $query = "INSERT INTO diesel(office, quantity_out, balance, destination, truck_no, operator, delivery_date)
                     VALUES ('$office','$liter','".$stock."','$destination','$truck','$operator','$datetime')";
 
-            $history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Diesel','Delivered','Diesel','Truck no. $truck operated by $operator delivered $liter liters of diesel to $destination','$datetime', '".ucfirst($office)."')";
+            $history = "INSERT INTO history(table_report, transaction_type, item_no, detail, history_date, office) VALUES('Diesel','Delivered','Diesel','Truck no. $truck operated by $operator delivered $liter liters of Diesel to $destination','$datetime', '".ucfirst($office)."')";
 
             if(mysqli_query($db, $query) && mysqli_query($db, $history)){
                 phpAlert("Transaction complete!!");

@@ -137,7 +137,9 @@ session_start();
                     $this.val( function() {
                         return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
                     } );
-        } );      
+        } );   
+
+
     });    
 
     $(document).ready(function() {
@@ -149,6 +151,10 @@ session_start();
             b.options[0].selected="selected";
             c.style.display = 'none';
         });
+
+        // $( "#item_no" ).autocomplete({
+        //     source: 'ajax/list_item_no.php'
+        // });
     });
 
 	function add_row(){
@@ -494,6 +500,7 @@ session_start();
 	}
 ?>
 													</select>
+                                                    <!-- <input type="text" name="item_no[]" id="item_no" class="form-control" autocomplete="off"> -->
 												</div>
 											</td>
                                             <td class="col-md-1">

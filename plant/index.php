@@ -364,37 +364,35 @@
                         <form action="index.php" method="get" class="form-inline">
                              <header class="panel-heading">
                                 <div class="row" style="margin-bottom: 5px;">
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="start_date">Start Date:</label>
-                                                <div class="tooltips" data-original-title="Start date of transaction" data-placement="top">
-                                                    <input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">
-                                                </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="start_date">From:</label>
+                                            <div class="tooltips" data-original-title="Start date of transaction" data-placement="top">
+                                                <input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">
                                             </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="end_date">End Date:</label>
-                                                <div class="tooltips" data-original-title="End date of transaction" data-placement="top">
-                                                    <input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">
-                                                </div>
-                                            </div>
-                                        </div>  
-                                        <div class="input-group col-md-5" style="margin: 38px 0px 0px 0px;">
-                                            <div class="tooltips" data-original-title="Search Transaction or Description" data-placement="top">
-                                                <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
-                                            </div>
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-info" type="submit" name="search_table">
-                                                    <i class="fa fa-search"></i>
-                                                </button>
-                                            </span>
-                                            
                                         </div>
                                     </div>
-                                <div class="row">
-                                    <div class="input-group col-md-12" style="margin: 5px 0px 0px 0px;">
-                                        <label for="view_count" class="col-md-2 control-label" style="margin-right: -80px;">Number of rows:</label>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="end_date">To:</label>
+                                            <div class="tooltips" data-original-title="End date of transaction" data-placement="top">
+                                                <input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">
+                                            </div>
+                                        </div>
+                                    </div>  
+                                    <div class="input-group col-md-5" style="margin: 38px 0px 0px 0px;">
+                                        <div class="tooltips" data-original-title="Search Transaction or Description" data-placement="top">
+                                            <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">
+                                        </div>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-info" type="submit" name="search_table">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </span>
+                                        
+                                    </div>
+                                    <div class="input-group col-md-2" style="white-space: nowrap; margin: 38px 0px 0px 60px;">
+                                        <label for="view_count" class="col-md-8 control-label">Number of rows:</label>
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <select id="view_count" name="view_count" class="form-control" onchange="this.form.submit()">
@@ -405,8 +403,8 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </div> 
-                                </div> 
+                                    </div>
+                                </div>
                             </header>
                         </form>
                         <div class="table-responsive filterable">
