@@ -86,20 +86,20 @@
 
 if(isset($_POST['login-submit'])){
 
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    // $sql = "SELECT user_id FROM users WHERE username = '$username' AND `password` = '$password'";
+    $username = mysqli_real_escape_string($db, $_POST['username']);
+    $password = mysqli_real_escape_string($db, crypt($_POST['password'],'$1$' . $_POST['password']));
+    $sql = "SELECT user_id, office FROM users WHERE username = '$username' AND `password` = '$password'";
 
-    // $result = mysqli_query($db,$sql);
-    // $count = mysqli_num_rows($result);
+    $result = mysqli_query($db,$sql);
+    $count = mysqli_num_rows($result);
 
-    $stmt = $db->prepare('SELECT user_id, office FROM users WHERE username = ? AND `password` = ?');
+    // $stmt = $db->prepare('SELECT user_id, office FROM users WHERE username = ? AND `password` = ?');
     // $stmt->bind_param('ss', $username, $password);
-    $stmt->bind_param('ss', $username, crypt($password,'$1$' . $password));
+    // $stmt->bind_param('ss', $username, crypt($password,'$1$' . $password));
 
-    $stmt->execute();
-    $count = $stmt->get_result();
-    if(mysqli_num_rows($count) == 1) {
+    // $stmt->execute();
+    // $count = $stmt->get_result();
+    if($count == 1) {
 
         if(!empty($_POST["remember"])) {
             setcookie ("username",$_POST["username"],time()+ (10 * 365 * 24 * 60 * 60));
@@ -113,7 +113,7 @@ if(isset($_POST['login-submit'])){
             }
         }
 
-        $row = mysqli_fetch_assoc($count);
+        $row = mysqli_fetch_assoc($result);
         session_start();
         $_SESSION['login_user'] = $username;
         $_SESSION['login_office'] = $row['office'];
@@ -121,6 +121,8 @@ if(isset($_POST['login-submit'])){
             header("location: admin/index.php");
         }else if($row['office'] != 'head'){
             header("location: plant/index.php");
+        }else{
+            header("location: login.php");
         }
     }else{
         phpAlert("Your Username or Password is invalid");

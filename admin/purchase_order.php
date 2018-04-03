@@ -250,14 +250,22 @@ session_start();
 .page_links a{
     color: inherit;
 }
-
-/*tbody:before {
-    content: "-";
-    display: block;
-    line-height: 0em;
-    color: transparent;
-}*/
-
+.grow {
+  /*padding: 5px 5px 5px 5px;*/
+  /*border-radius: 10px;*/
+  height: 49px;
+  /*width: 22%;*/
+  /*margin: 5px 1% 5px 1%;*/
+  /*float: left;*/
+  position: relative;
+  transition: height 0.5s;
+  -webkit-transition: height 0.5s;
+  /*text-align: center;*/
+  overflow: hidden;
+}
+.grow:hover {
+  height: auto;
+}
 </style>
 </head>
 <body>
@@ -646,6 +654,7 @@ session_start();
                 <td>
                     <a data-toggle="collapse" data-target="#contacts<?php echo $hash; ?>" style="cursor: default; color: inherit;">Click to view</a>
                     <div id="contacts<?php echo $hash; ?>" class="collapse">
+                        <!-- <div class="grow"> -->
                 
 <?php
 

@@ -52,7 +52,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Starcrete Manufacturing Corporation</title>
+    <title>Transmittal - Starcrete Manufacturing Corporation</title>
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -327,7 +327,7 @@
                     </li>
                     <li class="active">
                         <a class="" href="transmittal.php">
-                            <i class="fa fa-file"></i>
+                            <i class="fa fa-building"></i>
                             <span>Transmittal</span>
                         </a>
                     </li>   
@@ -356,7 +356,7 @@
                     <div class="col-md-12">
                         <!-- <h3 class="page-header"><i class="fa fa-home"></i> History</h3> -->
                         <ol class="breadcrumb">
-                            <li><i class="fa fa-home"></i>Transmittal</li>						  	
+                            <li><i class="fa fa-building"></i>Transmittal</li>						  	
                         </ol>
                     </div>
                 </div>
@@ -368,7 +368,7 @@
 	                                <div class="row" style="margin-bottom: 5px;">
 	                                    <div class="col-md-2">
 	                                        <div class="form-group">
-	                                            <label for="start_date">Start Date:</label>
+	                                            <label for="start_date">From:</label>
                                                 <div class="tooltips" data-original-title="Start date of transaction">
                                                     <input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">                                                  
                                                 </div>
@@ -376,7 +376,7 @@
 	                                    </div>
 	                                    <div class="col-md-2">
 	                                        <div class="form-group">
-	                                            <label for="end_date">End Date:</label>
+	                                            <label for="end_date">To:</label>
                                                 <div class="tooltips" data-original-title="End date of transaction">
                                                     <input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">                                                    
                                                 </div>
@@ -392,21 +392,19 @@
 	                                            </button>
 	                                        </span>
 	                                    </div>
-	                                </div>
-	                                <div class="row">
-	                                    <div class="input-group col-md-12" style="margin: 5px 0px 0px 0px;">
-	                                        <label for="view_count" class="col-md-2 control-label" style="margin-right: -80px;">Number of rows:</label>
-	                                        <div class="form-group">
-	                                            <div class="col-md-12">
-	                                                <select id="view_count" name="view_count" class="form-control" onchange="this.form.submit()">
-	                                                    <option value="25" <?php if(isset($_GET['view_count']) && $_GET['view_count'] == "25") echo 'selected="selected"';?>>25</option>
-	                                                    <option value="50"<?php if(isset($_GET['view_count']) && $_GET['view_count'] == "50") echo 'selected="selected"';?>>50</option>
-	                                                    <option value="75"<?php if(isset($_GET['view_count']) && $_GET['view_count'] == "75") echo 'selected="selected"';?>>75</option>
-	                                                    <option value="100"<?php if(isset($_GET['view_count']) && $_GET['view_count'] == "100") echo 'selected="selected"';?>>100</option>
-	                                                </select>
-	                                            </div>
-	                                        </div>
-	                                    </div>
+                                        <div class="input-group col-md-2" style="white-space: nowrap; margin: 38px 0px 0px 60px;">
+                                            <label for="view_count" class="col-md-8 control-label">Number of rows:</label>
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <select id="view_count" name="view_count" class="form-control" onchange="this.form.submit()">
+                                                        <option value="25" <?php if(isset($_GET['view_count']) && $_GET['view_count'] == "25") echo 'selected="selected"';?>>25</option>
+                                                        <option value="50"<?php if(isset($_GET['view_count']) && $_GET['view_count'] == "50") echo 'selected="selected"';?>>50</option>
+                                                        <option value="75"<?php if(isset($_GET['view_count']) && $_GET['view_count'] == "75") echo 'selected="selected"';?>>75</option>
+                                                        <option value="100"<?php if(isset($_GET['view_count']) && $_GET['view_count'] == "100") echo 'selected="selected"';?>>100</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div> 
 	                                </div>
 	                            </header>
 	                        </form>
@@ -474,34 +472,177 @@
     		AND from_office != '$office' ".$string_ext." ".$string_date."
     		GROUP BY transmittal_no, office, from_office, delivered_by, transmittal_unique_id
     		ORDER BY transmittal_date DESC";
-    		// echo $sql;
-    $result = mysqli_query($db, $sql);
+
+    $sql_result = mysqli_query($db, $sql); 
+    $total = mysqli_num_rows($sql_result);
+
+    $adjacents = 3;
+    $targetpage = "transmittal.php"; //your file name
+    $page = $_GET['page'];
+
+    if($page){ 
+        $start = ($page - 1) * $limit; //first item to display on this page
+    }else{
+        $start = 0;
+    }
+
+    /* Setup page vars for display. */
+    if ($page == 0) $page = 1; //if no page var is given, default to 1.
+    $prev = $page - 1; //previous page is current page - 1
+    $next = $page + 1; //next page is current page + 1
+    $lastpage = ceil($total/$limit); //lastpage.
+    $lpm1 = $lastpage - 1; //last page minus 1  
+
+    /* CREATE THE PAGINATION */
+    $counter = 0;
+    $pagination = "";
+    if($lastpage > 1){ 
+        $pagination .= "<div class='pagination'> <ul class='pagination'>";
+        if ($page > $counter+1) {
+            $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$prev&search=$search_word&start_date=$start_date&end_date=$end_date\">Previous</a></li>"; 
+        }
+
+        if ($lastpage < 7 + ($adjacents * 2)) { 
+            for ($counter = 1; $counter <= $lastpage; $counter++){
+                if ($counter == $page)
+                $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
+                else
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&search=$search_word&start_date=$start_date&end_date=$end_date\">$counter</a></li>"; 
+            }
+        }
+        elseif($lastpage > 5 + ($adjacents * 2)){ //enough pages to hide some
+            //close to beginning; only hide later pages
+            if($page < 1 + ($adjacents * 2)) {
+                for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++){
+                    if ($counter == $page)
+                    $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
+                    else
+                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&search=$search_word&start_date=$start_date&end_date=$end_date\">$counter</a></li>"; 
+                }
+                $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&search=$search_word&start_date=$start_date&end_date=$end_date\">$lpm1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&search=$search_word&start_date=$start_date&end_date=$end_date\">$lastpage</a></li>"; 
+            }
+            //in middle; hide some front and some back
+            elseif($lastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2)){
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&search=$search_word&start_date=$start_date&end_date=$end_date\">1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&search=$search_word&start_date=$start_date&end_date=$end_date\">2</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
+                for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++){
+                    if ($counter == $page)
+                    $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
+                    else
+                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&search=$search_word&start_date=$start_date&end_date=$end_date\">$counter</a></li>"; 
+                }
+                $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&search=$search_word&start_date=$start_date&end_date=$end_date\">$lpm1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&search=$search_word&start_date=$start_date&end_date=$end_date\">$lastpage</a></li>"; 
+            }
+            //close to end; only hide early pages
+            else{
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&search=$search_word&start_date=$start_date&end_date=$end_date\">1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&search=$search_word&start_date=$start_date&end_date=$end_date\">2</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
+                for ($counter = $lastpage - (2 + ($adjacents * 2)); $counter <= $lastpage; $counter++){
+                    if ($counter == $page)
+                    $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
+                    else
+                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&search=$search_word&start_date=$start_date&end_date=$end_date\">$counter</a></li>"; 
+                }
+            }
+        }
+
+        //next button
+        if ($page < $counter - 1) 
+            $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$next&search=$search_word&start_date=$start_date&end_date=$end_date\">Next</a></li>";
+        else
+            $pagination.= "";
+        $pagination.= "</ul></div>\n"; 
+    }
+
+    $query = "SELECT transmittal_no, transmittal_unique_id, delivered_by, DATE_FORMAT(transmittal_date,'%m/%d/%y') as transmittal_date, remarks, from_office, COUNT(transmittal_id) as count
+            FROM transmittal
+            WHERE office = '$office'
+            AND from_office != '$office' ".$string_ext." ".$string_date."
+            GROUP BY transmittal_no, office, from_office, delivered_by, transmittal_unique_id
+            ORDER BY transmittal_date DESC LIMIT $start, $limit";
+
+    $result = mysqli_query($db, $query);
     if(mysqli_num_rows($result) > 0){
 
-    	$hash = 1;
+    	$hash = $start + 1;
     	while ($row = mysqli_fetch_assoc($result)) {
-?>
 
+            $count_sql = "SELECT count(transmittal_id) as count FROM transmittal 
+            WHERE transmittal_unique_id = '".$row['transmittal_unique_id']."' AND remarks = 'Received' AND office = '$office' AND from_office = '".$row['from_office']."'";
+
+            $count_sql_result = mysqli_query($db, $count_sql);
+            $row1 = mysqli_fetch_assoc($count_sql_result);
+
+?>
+            <tr>
+                <td><?php echo $hash; ?></td>                     
+                <td><strong><?php echo $row['transmittal_no']; ?></strong></td>                     
+                <td><strong><?php echo ucfirst($row['from_office']); ?></strong></td>                     
+                <td><strong><?php echo $row['delivered_by']; ?></strong></td>                     
+                <td><strong><?php echo $row['transmittal_date']; ?></strong></td>                     
+                <td>
+                    <strong>
+<?php
+                    if($row['count'] == $row1['count']){
+                        echo "Received";
+                    }else{
+                        echo "Pending";
+                    }
+?>
+                    </strong>
+                </td>                     
+                <td>
+                    <form action="transmittal_item.php" method="post">
+                        <input type="submit" name="received" value="View <?php echo $row['count'] ?> Item(s)" class="btn btn-sm" style="background-color: #388e3c; color: white; font-weight: bold;">
+                        <input type="hidden" name="pass_transmittal_no" value="<?php echo $row['transmittal_no']; ?>">
+                        <input type="hidden" name="pass_from_office" value="<?php echo $row['from_office']; ?>">
+                        <!-- <input type="hidden" name="pass_to_office" value="<?php echo $row['office']; ?>"> -->
+                        <input type="hidden" name="pass_id" value="<?php echo $row['transmittal_unique_id']; ?>">
+                    </form>
+                </td>                     
+            </tr>
 <?php
 			$hash++;
     	}
     }else{
 ?>
-		<tr>
-            <td colspan="7" style='height: 100%; background: white; text-align:center; 
-        vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
-        </tr>
+    		<tr>
+                <td colspan="7" style='height: 100%; background: white; text-align:center; 
+            vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
+            </tr>
 <?php
     }
 ?>
-	                        			<tr>
-	                        				
-	                        			</tr>
 	                        		</tbody>
 	                        	</table>
 	                        </div>
 	                    </section>
 	                </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="table_row_count">
+<?php
+                        if(isset($hash)){
+                            echo "Showing " . ($start+1)  . " to " . ($start + $hash - $start - 1) . " of " . $total . " entries"; 
+                        }
+?>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="table_page">
+<?php
+                        echo $pagination; 
+?>      
+                        </div>
+                    </div>
+                </div>   
             </section>
         </section>
     </section>
