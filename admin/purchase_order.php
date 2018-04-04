@@ -372,7 +372,7 @@ session_start();
                     <div class="col-lg-12 page_links">
                         <h3 class="page-header"><a href="purchase_order.php?office=<?php echo $search_plant; ?>"><?php echo $plant; ?> Purchase Order</a></h3>
                         <ol class="breadcrumb">
-                            <li><i class="fa fa-building"></i><?php echo $plant; ?></li>
+                            <li><i class="fa fa-building"></i><?php echo ucfirst($plant); ?></li>
                             <li><i class="icon_document"></i><a href="purchase_order.php?office=<?php echo $search_plant; ?>" style="color: blue;">Pending P.O.</a></li>                            
                             <li><i class="icon_document"></i><a href="purchase_closed_order.php?office=<?php echo $search_plant; ?>">Closed P.O.</a></li>                          
                             <!-- <li><i class="icon_document"></i><a href="purchase_deliver_order.php?office=<?php echo $search_plant; ?>">Delivered P.O.</a></li>						  	 -->
@@ -450,7 +450,7 @@ session_start();
                                             <th class="col-md-2"><input type="text" class="form-control" placeholder="Address" disabled></th>
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="Contact" disabled></th>
                                             <th class="col-md-1">Date Order</th>
-                                            <th class="col-md-1">Action</th>
+                                            <!-- <th class="col-md-1">Action</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -626,15 +626,33 @@ session_start();
             $count = mysqli_query($db, $sql_delivery);
             if(mysqli_num_rows($count) > 0){
                 if($row['balance'] <= 1350){
-                    echo "<td style='color: red;'><strong>" . $row['purchase_order_no'] . "</strong></td>
-                          <td style='color: red;'><strong>" . $row['item_no'] . " " . $row['psi'] . "</strong></td>";
+?>
+                    <td style="cursor: pointer; color: red;">
+                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='purchase_order_details.php?purchase_order_no=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>&purchase_unique_id=<?php echo $row['purchase_unique_id']; ?>'">
+                            <strong><?php echo $row['purchase_order_no']; ?></strong>
+                        </div>
+                    </td>
+                    <td style="color: red;"><strong><?php echo $row['item_no'] . " " . $row['psi']?></strong></td>
+<?php
                 }else{
-                    echo "<td><strong>" . $row['purchase_order_no'] . "</strong></td>
-                          <td><strong>" . $row['item_no'] . " " . $row['psi'] . "</strong></td>";
+?>
+                    <td style="cursor: pointer;">
+                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='purchase_order_details.php?purchase_order_no=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>&purchase_unique_id=<?php echo $row['purchase_unique_id']; ?>'">
+                            <strong><?php echo $row['purchase_order_no']; ?></strong>
+                        </div>
+                    </td>
+                    <td><strong><?php echo $row['item_no'] . " " . $row['psi']?></strong></td>
+<?php
                 }
             }else{
-                echo "<td><strong>" . $row['purchase_order_no'] . "</strong></td>
-                          <td><strong>" . $row['item_no'] . " " . $row['psi'] . "</strong></td>";
+?>
+                <td style="cursor: pointer;">
+                    <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='purchase_order_details.php?purchase_order_no=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>&purchase_unique_id=<?php echo $row['purchase_unique_id']; ?>'">
+                        <strong><?php echo $row['purchase_order_no']; ?></strong>
+                    </div>
+                </td>
+                <td><strong><?php echo $row['item_no'] . " " . $row['psi']?></strong></td>
+<?php
             }
 ?>
                 <td><strong><?php echo number_format((float)$row['quantity'])." pcs"; ?></strong></td>
@@ -689,7 +707,7 @@ session_start();
                     </div>
                 </td>
                 <td><strong><?php echo $row['date_purchase']; ?></strong></td>
-                <td>
+                <!-- <td>
                     <form action="purchase_order.php" method="post">
                         <button type="button" class="btn btn-sm btn-block" style="margin-bottom: 5px; background-color: #ffa000; color: white;" data-toggle='modal' data-target='#purchaseOrderUpdateRow<?php echo $hash; ?>'><span class="fa fa-edit"></span> <strong>Update</strong></button>
 
@@ -726,22 +744,16 @@ session_start();
                     </form>
 <?php
 
-    $unique_id = array();
     $sql_select = "SELECT * FROM delivery
                     WHERE po_no_delivery = '". $row['purchase_order_no']."'
                     AND fk_unique_po_id = '".$row['purchase_unique_id']."'
                     AND remarks = 'Ongoing Delivery'";
-    // echo $sql_select;
+
     $sql_select_result = mysqli_query($db, $sql_select);
     if(mysqli_num_rows($sql_select_result) <= 0){
-        $sql_select_row = mysqli_fetch_assoc($sql_select_result);
-        if($row['purchase_unique_id'] == $sql_select_row['fk_unique_po_id']){
-            $unique_id[] = $row['fk_unique_po_id'];
-        }
 ?>
 
                     <form action="purchase_order.php" method="post">
-                        <!-- <button type="submit" id="cancel" name="cancel" value="<?php echo $row['purchase_id']; ?>" class="btn btn-sm btn-block" style="background-color: #d32f2f; color: white;" onclick="return confirm('Proceed cancelling item <?php echo $row['item_no'] . " " . $row['psi']; ?> under P.O. No. <?php echo $row['purchase_order_no']; ?>?')"; ><span class="fa fa-close"></span> <strong>Cancel Order</strong></button> -->
                         <button type="button" class="btn btn-sm btn-block" style="margin-bottom: 5px; background-color: #d32f2f; color: white;" data-toggle='modal' data-target='#purchaseOrderClosedRow<?php echo $hash; ?>'><span class="fa fa-edit"></span> <strong>Close</strong></button>
 
                         <div class="modal fade" id="purchaseOrderClosedRow<?php echo $hash;?>" role="dialog">
@@ -756,18 +768,9 @@ session_start();
                                         </div>
                                     </div>
                                     <div class="modal-body" style="text-align: left;">
-                                        <!-- <h4 class="modal-title" style="text-align: center">Closed P.O. No. <?php echo $row['purchase_order_no'] . " " . $row['item_no'] . " " . $row['psi']; ?></h4> -->
-                                        <!-- <hr> -->
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <!-- <label for="radiooption">
-                                                        <input type="radio" name="radiooption" id="radiooption" value="served_only" onchange="disableTextArea(this.value)" checked> Served Only
-                                                    </label>
-                                                    <br>
-                                                    <label for="radiooption">
-                                                        <input type="radio" name="radiooption" id="radiooption" value="closed_only" onchange="disableTextArea(this.value)"> Reason for closing P.O. No. <strong><?php echo $row['purchase_order_no'] . " " . $row['item_no'] . " " . $row['psi']; ?></strong>
-                                                    </label> -->
                                                     <label for="radiooption">Reason for closing P.O. No. <strong><?php echo $row['purchase_order_no'] . " " . $row['item_no'] . " " . $row['psi'] . " (Balance: " . number_format((float)$row['balance']) . " pcs)"; ?></strong></label>
                                                     <textarea name="reason" id="reason" rows="5" class="form-control inputArea" placeholder="Type here..." required></textarea>
                                                 </div>
@@ -785,7 +788,7 @@ session_start();
 <?php
     }
 ?>
-                </td>
+                </td> -->
             </tr>
 <?php
             $hash++;

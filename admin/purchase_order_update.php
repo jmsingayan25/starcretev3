@@ -12,9 +12,9 @@ session_start();
         header("location: ../login.php");
     }
 
-	if(isset($_SESSION['post_purchase_id']) && isset($_SESSION['post_office'])){
+	if(isset($_SESSION['post_purchase_id'])){
 		$_SESSION['purchase_id'] = $_SESSION['post_purchase_id'];
-        $_SESSION['office'] = $_SESSION['post_office'];
+        // $_SESSION['office'] = $_SESSION['post_office'];
 	}
 
 	$user_query = $db->prepare("SELECT * FROM users WHERE username = ?");
@@ -27,14 +27,14 @@ session_start();
 	$position = $user['position'];
 
 	$purchase_id = $_SESSION['purchase_id'];
-    $search_plant = $_SESSION['office'];
+    
 
 	$search_sql = "SELECT *, s.site_id, s.site_address FROM purchase_order p, site s 
 					WHERE p.site_id = s.site_id
 					AND p.purchase_id = '$purchase_id'";
 	$search_result = mysqli_query($db, $search_sql);
 	$purchase_row = mysqli_fetch_assoc($search_result);
-
+    $search_plant = $purchase_row['office'];
 ?>
 <html lang="en">
 <head>
