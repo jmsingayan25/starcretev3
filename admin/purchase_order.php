@@ -329,7 +329,7 @@ session_start();
                         <a href="javascript:;" class="">
                             <i class="fa fa-building"></i>
                             <span>Bravo</span>
-                            <span class="menu-arrow arrow_carrot-right"></span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
                         </a>
                         <ul class="sub">
                             <li><a class="" href="purchase_order.php?office=bravo">Purchase Order</a></li>                          
@@ -340,7 +340,7 @@ session_start();
                         <a href="javascript:;" class="">
                             <i class="fa fa-building"></i>
                             <span>Delta</span>
-                            <span class="menu-arrow arrow_carrot-right"></span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
                         </a>
                         <ul class="sub">
                             <li><a class="" href="purchase_order.php?office=delta">Purchase Order</a></li>                          
@@ -351,7 +351,7 @@ session_start();
                         <a href="javascript:;" class="">
                             <i class="fa fa-file"></i>
                             <span>Forms</span>
-                            <span class="menu-arrow arrow_carrot-right"></span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
                         </a>
                         <ul class="sub">
                             <li><a class="" href="purchase_order_form.php">Add New P.O.</a></li>
@@ -726,6 +726,7 @@ session_start();
                     </form>
 <?php
 
+    $unique_id = array();
     $sql_select = "SELECT * FROM delivery
                     WHERE po_no_delivery = '". $row['purchase_order_no']."'
                     AND fk_unique_po_id = '".$row['purchase_unique_id']."'
@@ -733,6 +734,10 @@ session_start();
     // echo $sql_select;
     $sql_select_result = mysqli_query($db, $sql_select);
     if(mysqli_num_rows($sql_select_result) <= 0){
+        $sql_select_row = mysqli_fetch_assoc($sql_select_result);
+        if($row['purchase_unique_id'] == $sql_select_row['fk_unique_po_id']){
+            $unique_id[] = $row['fk_unique_po_id'];
+        }
 ?>
 
                     <form action="purchase_order.php" method="post">

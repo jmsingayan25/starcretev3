@@ -232,7 +232,7 @@
                         <a href="javascript:;" class="">
                             <i class="fa fa-building"></i>
                             <span>Bravo</span>
-                            <span class="menu-arrow arrow_carrot-right"></span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
                         </a>
                         <ul class="sub">
                             <li><a class="" href="batch_daily_report.php?office=bravo">Batch Report</a></li>
@@ -244,7 +244,7 @@
                         <a href="javascript:;" class="">
                             <i class="fa fa-building"></i>
                             <span>Delta</span>
-                            <span class="menu-arrow arrow_carrot-right"></span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
                         </a>
                         <ul class="sub">
                             <li><a class="" href="batch_daily_report.php?office=delta">Batch Report</a></li>
@@ -256,7 +256,7 @@
                         <a href="javascript:;" class="">
                             <i class="fa fa-file"></i>
                             <span>Forms</span>
-                            <span class="menu-arrow arrow_carrot-right"></span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
                         </a>
                         <ul class="sub">
                             <li><a class="" href="purchase_order_form.php">Add New P.O.</a></li>

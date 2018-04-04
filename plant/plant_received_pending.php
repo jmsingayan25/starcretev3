@@ -303,7 +303,7 @@
                         <a href="javascript:;" class="">
                             <i class="fa fa-building"></i>
                             <span>Purchase Order</span>
-                            <span class="menu-arrow arrow_carrot-right"></span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
                         </a>
                         <ul class="sub">
                             <li><a class="" href="plant_purchase_order.php">Pending P.O.</a></li>  
@@ -314,7 +314,7 @@
                         <a href="javascript:;" class="">
                             <i class="fa fa-building"></i>
                             <span>Delivery Order</span>
-                            <span class="menu-arrow arrow_carrot-right"></span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
                         </a>
                         <ul class="sub">
                             <li><a class="" href="plant_delivery_issue.php">Existing P.O. <span class='badge'><?php echo getCountPlantPo($db, $office); ?></span></a></li>   
@@ -327,7 +327,7 @@
                         <a href="javascript:;" class="active">
                             <i class="fa fa-building"></i>
                             <span>Received Agg</span>
-                            <span class="menu-arrow arrow_carrot-right"></span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
                         </a>
                         <ul class="sub">
                             <li><a class="" href="plant_received_pending.php">Pending Deliveries</a></li>
