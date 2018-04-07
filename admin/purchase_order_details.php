@@ -353,10 +353,16 @@ session_start();
     // echo $sql_select;
     $sql_select_result = mysqli_query($db, $sql_select);
     if(mysqli_num_rows($sql_select_result) <= 0){
+        $disabled = "";
+        $info = " <span title='Button not disable. No Item(s) in ONGOING DELIVERY Status' class='fa fa-info-circle fa-lg' style='color: #d32f2f;'></span>";
+    }else{
+        $disabled = "disabled";
+        $info = " <span title='Button disable. An Item(s) is in ONGOING DELIVERY Status' class='fa fa-info-circle fa-lg' style='color: #d32f2f;'></span>";
+    }
 ?>
 
                     <form action="purchase_order_details.php" method="post">
-                        <button type="button" class="btn btn-sm" style="background-color: #d32f2f; color: white;" data-toggle='modal' data-target='#purchaseOrderClosedRow'><span class="fa fa-edit"></span> <strong>Click to Close P.O. No. <?php echo $purchase_order_no; ?></strong></button>
+                        <button type="button" class="btn btn-sm" style="background-color: #d32f2f; color: white;" data-toggle='modal' data-target='#purchaseOrderClosedRow' <?php echo $disabled; ?>><span class="fa fa-edit"></span> <strong>Click to Close P.O. No. <?php echo $purchase_order_no; ?></strong></button><?php echo $info; ?>
 
                         <div class="modal fade" id="purchaseOrderClosedRow" role="dialog">
                             <div class="modal-dialog modal-sm">
@@ -396,9 +402,7 @@ session_start();
                             </div>
                         </div>
                     </form>
-<?php
-    }
-?>
+
                                             </span>     
                                         </div>
                                     </div>
@@ -448,8 +452,8 @@ session_start();
             <tr>
                 <td><?php echo $hash; ?></td>
                 <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
-                <td><strong><?php echo $row['quantity']; ?></strong></td>
-                <td><strong><?php echo $row['balance']; ?></strong></td>
+                <td><strong><?php echo number_format($row['quantity']); ?></strong></td>
+                <td><strong><?php echo number_format($row['balance']); ?></strong></td>
                 <td><strong><?php echo $row['site_name']; ?></strong></td>
                 <td><strong><?php echo $row['site_address']; ?></strong></td>
                 <td><strong><?php echo $row['date_purchase']; ?></strong></td>
@@ -593,6 +597,7 @@ session_start();
 
         if(mysqli_num_rows($result_update) > 0){
             $_SESSION['post_purchase_id'] = $_POST['update'];
+            $_SESSION['post_purchase_unique_id'] = $purchase_unique_id;
             // $_SESSION['post_office'] = $_GET;
             header("location: purchase_order_update.php");
             // echo $purchase_id;
@@ -662,8 +667,6 @@ session_start();
                 // echo $update_deliveries . "<br>";
                 mysqli_query($db, $update_deliveries);
             }
-
-
         }
 
         $item = json_encode($item_array);
@@ -700,7 +703,6 @@ session_start();
         if(mysqli_query($db, $history)){
             echo "<script> alert('P.O. No. $po_no has been closed'); window.location.href='purchase_order.php?office=$plant' </script>";            
         }
-
     }
 
 ?>

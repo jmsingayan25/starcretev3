@@ -238,6 +238,23 @@
 .page_links a{
     color: inherit;
 }
+
+.grow {
+  /*padding: 5px 5px 5px 5px;*/
+  /*border-radius: 10px;*/
+  height: 49px;
+  /*width: 22%;*/
+  /*margin: 5px 1% 5px 1%;*/
+  /*float: left;*/
+  position: relative;
+  transition: height 0.5s;
+  -webkit-transition: height 0.5s;
+  /*text-align: center;*/
+  overflow: hidden;
+}
+.grow:hover {
+  height: auto;
+}
 </style>
 </head>
 <body>
@@ -582,6 +599,8 @@
                 <td><strong><?php echo $row['site_name']; ?></strong></td>
                 <td><strong><?php echo $row['site_address']; ?></strong></td>
                 <td>
+                    <a data-toggle="collapse" data-target="#contacts<?php echo $hash; ?>" style="cursor: default; color: inherit;">Click to view</a>
+                    <div id="contacts<?php echo $hash; ?>" class="collapse">
                                 
 <?php
 
@@ -613,6 +632,7 @@
                 } 
             }
 ?>
+                    </div>
                 </td>
                 <td><strong><?php echo $row['date_delivery1']; ?></strong></td>
                 <td style="color: #388e3c;"><strong><?php echo $row['remarks']; ?></strong></td>

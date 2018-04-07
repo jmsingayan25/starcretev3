@@ -593,6 +593,26 @@
                                                     </form>
                                                 </div>
                                             </div>
+<?php
+
+    $project_po = "SELECT * FROM purchase_order
+                    WHERE site_id = '".$row['site_id']."'";
+
+    $project_po_result = mysqli_query($db, $project_po);
+    if(mysqli_num_rows($project_po_result) > 0){
+?>
+                                            <div class="row" style="margin-bottom: 2px;">
+                                                <div class="col-md-12">
+                                                    <form action="client_sites_list_po.php" method="post">
+                                                        <input type="hidden" name="post_site_id" value="<?php echo $row['site_id']; ?>">
+                                                        <button class="btn btn-sm btn-block" style="background-color: #388e3c; color: white;"><span class="fa fa-info-circle"></span> <strong>List of P.O.</strong></button>
+                                                    </form>
+                                                </div>
+                                            </div>
+<?php 
+    }
+?>
+                                            
                                         </td>
                                         <!-- <td class="col-md-1">
                                             <form action="client_sites.php" method="post">

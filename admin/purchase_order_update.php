@@ -12,8 +12,9 @@ session_start();
         header("location: ../login.php");
     }
 
-	if(isset($_SESSION['post_purchase_id'])){
+	if(isset($_SESSION['post_purchase_id']) && isset($_SESSION['post_purchase_unique_id'])){
 		$_SESSION['purchase_id'] = $_SESSION['post_purchase_id'];
+        $_SESSION['purchase_unique_id'] = $_SESSION['post_purchase_unique_id'];
         // $_SESSION['office'] = $_SESSION['post_office'];
 	}
 
@@ -27,6 +28,7 @@ session_start();
 	$position = $user['position'];
 
 	$purchase_id = $_SESSION['purchase_id'];
+    $purchase_unique_id = $_SESSION['purchase_unique_id'];
     
 
 	$search_sql = "SELECT *, s.site_id, s.site_address FROM purchase_order p, site s 
@@ -347,7 +349,7 @@ session_start();
 									<div class="form-group">
 										<div class="col-md-offset-8 col-md-4">
 											<input type="submit" name="submit" id="submit" value="Done" class="btn btn-primary" style="font-weight: bold;">
-											<a href="purchase_order.php" class="btn btn-default"><strong>Cancel</strong></a>
+											<a href="purchase_order_details.php" class="btn btn-default"><strong>Cancel</strong></a>
 										</div>
 									</div>
 								</form>
@@ -417,8 +419,11 @@ session_start();
 		}
 
 		// $address_update = "UPDATE site SET site_address = '$update_address' WHERE site_id = '$site_id'";
+        $sql_po_update = "UPDATE purchase_order SET purchase_order_no = '$update_purchase_order_no' 
+                            WHERE purchase_unique_id = '$purchase_unique_id'";
 
-		$sql_update = "UPDATE purchase_order SET purchase_order_no = '$update_purchase_order_no', item_no = '$update_item_no', psi = '$update_psi'  WHERE purchase_id = '$purchase_id'";
+		$sql_update = "UPDATE purchase_order SET item_no = '$update_item_no', psi = '$update_psi'  
+                        WHERE purchase_id = '$purchase_id'";
 
         $delivery_update = "UPDATE delivery SET po_no_delivery = '$update_purchase_order_no' WHERE fk_po_id = '$purchase_id'";
 
@@ -464,7 +469,7 @@ session_start();
 		// echo $history;
 		
 		// echo "<script> alert('Purchase Order No. succesfully updated')</script>";
-		if(mysqli_query($db, $sql_update) && mysqli_query($db, $update_quantity_balance) && mysqli_query($db, $delivery_update)){
+		if(mysqli_query($db, $sql_po_update) && mysqli_query($db, $sql_update) && mysqli_query($db, $update_quantity_balance) && mysqli_query($db, $delivery_update)){
 			if(mysqli_query($db, $history)){
 				echo "<script>alert('P.O. No. $update_purchase_order_no details has been updated'); window.location.href='purchase_order.php'</script>";
 				unset($_SESSION['post_purchase_id']);
