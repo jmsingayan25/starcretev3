@@ -239,7 +239,7 @@ session_start();
                             <li><a class="" href="received.php?office=delta">Received Aggregates</a></li>
                         </ul>
                     </li>   
-                    <li class="active">
+                    <li>
                         <a class="" href="transmittal.php">
                             <i class="fa fa-building"></i>
                             <span>Transmittal</span>
@@ -288,7 +288,7 @@ session_start();
                                         <label for="plant" class="col-md-4 control-label">Plant<span class="required" style="color: red;">*</span></label>
                                         <div class="col-md-8">
                                             <label class="radio-inline">
-                                                <input type="radio" id="plant" name="plant" value="bravo" checked> Bravo
+                                                <input type="radio" id="plant" name="plant" value="bravo" required> Bravo
                                             </label>
                                             <label class="radio-inline">
                                                 <input type="radio" id="plant" name="plant" value="delta"> Delta
@@ -365,6 +365,17 @@ session_start();
                         </div>
                     </div>
                 </form>
+                <div class="text-right">
+                    <div class="credits">
+                        <!-- 
+                        All the links in the footer should remain intact. 
+                        You can delete the links only if you purchased the pro version.
+                        Licensing information: https://bootstrapmade.com/license/
+                        Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
+                        -->
+                        <a href="https://bootstrapmade.com/free-business-bootstrap-themes-website-templates/">Business Bootstrap Themes</a> by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                    </div>
+                </div>
             </section>
         </section>
     </section>

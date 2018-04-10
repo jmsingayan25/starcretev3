@@ -239,15 +239,16 @@
                                     <div class="row" style="margin-bottom: 5px;">
 										<div class="form-group">
 											<div class="col-md-12" style="margin-top: 5px;">
-												<label for="date_view" class="col-md-2 control-label" style="margin-right: -80px;"><strong>Select Date:</strong></label>
+												<label for="date_view" class="col-md-1 control-label" style="white-space: nowrap;"><strong>Select Date:</strong></label>
 												<div class="col-md-2">
-												<input type="date" name="date_view" class="form-control" value="<?php if(isset($_GET['date_view'])) { echo htmlentities ($_GET['date_view']); }?>" onblur="this.form.submit();">
+												<input type="date" name="date_view" class="form-control" value="<?php if(isset($_GET['date_view'])) { echo htmlentities ($_GET['date_view']); }?>">
+                                               <!--  <input type="date" name="date_view" class="form-control" value="<?php if(isset($_GET['date_view'])) { echo htmlentities ($_GET['date_view']); }?>" onblur="this.form.submit();"> -->
 																										
 												</div>
 											</div>
-											<!-- <div class="col-md-1">
-												<input type="submit" name="submit" id="submit" value="Search" class="btn btn-primary">
-											</div> -->
+											<div class="col-md-1">
+												<input type="submit" name="submit" id="submit" value="Go" class="btn btn-primary" style="font-weight: bold; margin-top: -5px; margin-left: -20px;">
+											</div>
 										</div>
                                     </div>
                                 </header>
@@ -561,6 +562,17 @@
                             	</table>
                             </div>
                         </section>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <div class="credits">
+                        <!-- 
+                        All the links in the footer should remain intact. 
+                        You can delete the links only if you purchased the pro version.
+                        Licensing information: https://bootstrapmade.com/license/
+                        Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
+                        -->
+                        <a href="https://bootstrapmade.com/free-business-bootstrap-themes-website-templates/">Business Bootstrap Themes</a> by <a href="https://bootstrapmade.com/">BootstrapMade</a>
                     </div>
                 </div>
             </section>

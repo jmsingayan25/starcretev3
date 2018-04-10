@@ -228,7 +228,7 @@ session_start();
 </style>
 </head>
 <body>
-<!-- container section start -->
+    <!-- container section start -->
     <section id="container" class="">
         <header class="header dark-bg">
             <div class="toggle-nav">
@@ -323,7 +323,7 @@ session_start();
         </aside>
         <!--sidebar end-->
 
-         <!--main content start-->
+        <!--main content start-->
         <section id="main-content">
             <section class="wrapper">            
                 <!--overview start-->
@@ -680,6 +680,17 @@ session_start();
                                 </table>
                             </div>
                         </section>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <div class="credits">
+                        <!-- 
+                        All the links in the footer should remain intact. 
+                        You can delete the links only if you purchased the pro version.
+                        Licensing information: https://bootstrapmade.com/license/
+                        Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
+                        -->
+                        <a href="https://bootstrapmade.com/free-business-bootstrap-themes-website-templates/">Business Bootstrap Themes</a> by <a href="https://bootstrapmade.com/">BootstrapMade</a>
                     </div>
                 </div>
             </section>

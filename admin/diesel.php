@@ -336,7 +336,7 @@
                         	<form action="diesel.php" method="get" class="form-inline">
 	                            <header class="panel-heading">
 	                                <div class="row" style="margin-bottom: 5px;">
-	                                	<div class="col-md-12" style="margin-bottom: 5px;">
+	                                	<!-- <div class="col-md-12" style="margin-bottom: 5px;">
 											<div class="col-md-2">
 												Select Date:
 	                                			<input type="date" name="date_view" class="form-control" value="<?php if(isset($_GET['date_view'])) { echo htmlentities ($_GET['date_view']); }?>">	
@@ -344,11 +344,21 @@
                                             <div class="col-md-1">
                                                 <button type="submit" class="btn btn-md btn-info" style="margin-top: 35px; margin-left: -20px;"><strong>Go</strong></button>    
                                             </div>
-	                                	</div>
+	                                	</div> -->
+                                        <div class="form-group">
+                                            <div class="col-md-12" style="margin-top: 5px;">
+                                                <label for="date_view" class="col-md-3 control-label" style="white-space: nowrap;"><strong>Select Date:</strong></label>
+                                                <div class="col-md-8">
+                                                    <input type="date" name="date_view" class="form-control" value="<?php if(isset($_GET['date_view'])) { echo htmlentities ($_GET['date_view']); }?>">                                                                                  
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <input type="submit" name="submit" id="submit" value="Go" class="btn btn-primary" style="font-weight: bold; margin-top: -5px; margin-left: -20px;">
+                                            </div>
+                                        </div>
 	                                </div>
 	                            </header>
 	                        </form>
-                            <div class="panel-body">
                             	<div class="table-responsive filterable">
                             		<table class="table table-striped table-bordered">
                             			<thead>
@@ -419,8 +429,18 @@
                             			</tbody>
                             		</table>
                             	</div>
-                            </div>
                         </section>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <div class="credits">
+                        <!-- 
+                        All the links in the footer should remain intact. 
+                        You can delete the links only if you purchased the pro version.
+                        Licensing information: https://bootstrapmade.com/license/
+                        Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
+                        -->
+                        <a href="https://bootstrapmade.com/free-business-bootstrap-themes-website-templates/">Business Bootstrap Themes</a> by <a href="https://bootstrapmade.com/">BootstrapMade</a>
                     </div>
                 </div>
             </section>

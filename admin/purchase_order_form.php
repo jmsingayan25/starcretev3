@@ -407,7 +407,7 @@ session_start();
 									<label for="plant" class="col-md-4 control-label">Plant<span class="required" style="color: red;">*</span></label>
 									<div class="col-lg-8">
 										<label class="radio-inline">
-											<input type="radio" id="plant" name="plant" value="bravo" checked> Bravo
+											<input type="radio" id="plant" name="plant" value="bravo" required> Bravo
 										</label>
 										<label class="radio-inline">
 											<input type="radio" id="plant" name="plant" value="delta"> Delta

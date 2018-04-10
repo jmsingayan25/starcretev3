@@ -16,6 +16,10 @@
     	$_SESSION['post_site_id'] = $_REQUEST['post_site_id'];
     }
 
+    if(!isset($_GET['page']) || $_GET['page'] == ''){
+        $_GET['page'] = 0;
+    }
+
     $site_id = $_SESSION['post_site_id'];
 
     $user_query = $db->prepare("SELECT * FROM users WHERE username = ?");
@@ -26,7 +30,6 @@
 
     $office = $user['office'];
     $position = $user['position'];
-    $limit = 25;
 
     $client = getClientInfoBySiteId($db, $site_id);
     $client_id = $client['client_id'];
@@ -36,6 +39,8 @@
     $project = getSiteInfo($db, $site_id);
     $project_name = $project['site_name'];
     $project_address = $project['site_address'];
+
+    $limit = 25;
 
 ?>
 <html lang="en">
@@ -350,19 +355,24 @@
 	            <div class="row">
 	            	<div class="col-md-9">
 	                    <section class="panel">
-	                         <header class="panel-heading">
+	                         <!-- <header class="panel-heading">
 	                         	<div class="row">
 	                                <div class="col-md-12">
 		                                <span>Project Name: <strong><?php echo $project_name; ?></strong></span><br>
 		                                <span>Project Address: <strong><?php echo $project_address; ?></strong></span>
 	                                </div>
 	                            </div>
-	                        </header>
+	                        </header> -->
+                            <!-- <div class="panel-body"> -->
 	                        <div class="table-responsive filterable">
 	                            <table class="table table-striped table-bordered">
 	                                <thead>
 	                                	<tr class="filterable">
-                                            <th colspan="7"><button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button></th>
+                                            <th colspan="7">
+                                                <span>Project Name: <strong><?php echo $project_name; ?></strong></span><br>
+                                                <span>Project Address: <strong><?php echo $project_address; ?></strong></span>
+                                                <button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
+                                            </th>
                                         </tr>
 	                                	<tr class="filters">
 	                                		<th class="col-md-1">#</th>
@@ -377,22 +387,118 @@
 	                                <tbody>
 <?php
 
+
+    $sql_page = "SELECT * FROM purchase_order WHERE site_id = '$site_id'";
+
+    $sql_result = mysqli_query($db, $sql_page); 
+    $total = mysqli_num_rows($sql_result);
+
+    $adjacents = 3;
+    $targetpage = "client_sites_list_po.php"; //your file name
+    $page = $_GET['page'];
+
+    if($page){ 
+        $start = ($page - 1) * $limit; //first item to display on this page
+    }else{
+        $start = 0;
+    }
+
+    /* Setup page vars for display. */
+    if ($page == 0) $page = 1; //if no page var is given, default to 1.
+    $prev = $page - 1; //previous page is current page - 1
+    $next = $page + 1; //next page is current page + 1
+    $lastpage = ceil($total/$limit); //lastpage.
+    $lpm1 = $lastpage - 1; //last page minus 1
+
+    /* CREATE THE PAGINATION */
+    $counter = 0;
+    $pagination = "";
+    if($lastpage > 1){ 
+        $pagination .= "<div class='pagination'> <ul class='pagination'>";
+        if ($page > $counter+1) {
+            $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$prev\">Previous</a></li>"; 
+        }
+
+        if ($lastpage < 7 + ($adjacents * 2)) { 
+            for ($counter = 1; $counter <= $lastpage; $counter++){
+                if ($counter == $page)
+                $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
+                else
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter\">$counter</a></li>"; 
+            }
+        }
+        elseif($lastpage > 5 + ($adjacents * 2)){ //enough pages to hide some
+            //close to beginning; only hide later pages
+            if($page < 1 + ($adjacents * 2)) {
+                for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++){
+                    if ($counter == $page)
+                    $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
+                    else
+                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter\">$counter</a></li>"; 
+                }
+                $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1\">$lpm1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage\">$lastpage</a></li>"; 
+            }
+            //in middle; hide some front and some back
+            elseif($lastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2)){
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1\">1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2\">2</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
+                for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++){
+                    if ($counter == $page)
+                    $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
+                    else
+                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter\">$counter</a></li>"; 
+                }
+                $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1\">$lpm1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage\">$lastpage</a></li>"; 
+            }
+            //close to end; only hide early pages
+            else{
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1\">1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2\">2</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
+                for ($counter = $lastpage - (2 + ($adjacents * 2)); $counter <= $lastpage; $counter++){
+                    if ($counter == $page)
+                    $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
+                    else
+                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter\">$counter</a></li>"; 
+                }
+            }
+        }
+
+        //next button
+        if ($page < $counter - 1) 
+            $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$next\">Next</a></li>";
+        else
+            $pagination.= "";
+        $pagination.= "</ul></div>\n"; 
+    }
+
 	$sql = "SELECT *, DATE_FORMAT(date_purchase,'%m/%d/%y') as date_purchase
 			FROM purchase_order 
 			WHERE site_id = '$site_id'
-			ORDER BY date_purchase DESC";
+			ORDER BY date_purchase DESC LIMIT $start, $limit";
 
 	$result = mysqli_query($db, $sql);
 	if(mysqli_num_rows($result) > 0){
 		
-		$hash = 1;
+		$hash = $start + 1;
 		while ($row = mysqli_fetch_assoc($result)) {
+
+            if($row['psi'] != ''){
+                $row['psi'] = " (" . $row['psi'] . " PSI)";
+            }else{
+                $row['psi'] = "";
+            }
 ?>
 			<tr>
 				<td><?php echo $hash; ?></td>
 				<td><strong><?php echo $row['purchase_order_no']; ?></strong></td>
-				<td><strong><?php echo $row['item_no']; ?></strong></td>
-				<td><strong><?php echo number_format($row['quantity']); ?></strong></td>
+				<td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
+				<td><strong><?php echo number_format($row['quantity']) . " pcs"; ?></strong></td>
 				<td><strong><?php echo $row['date_purchase']; ?></strong></td>
 				<td>
 <?php
@@ -426,6 +532,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
 	                                </tbody>
 	                            </table>
 	                        </div>
+                            <!-- </div> -->
 	                    </section>
 	                 </div>
 	                 <div class="col-md-3">
@@ -487,6 +594,35 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
                         </section>
 	                 </div>
 	            </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="table_row_count">
+<?php
+                    if(isset($hash)){
+                        echo "Showing " . ($start+1)  . " to " . ($start + $hash - $start - 1) . " of " . $total . " entries"; 
+                    }
+?>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="table_page">
+<?php
+                    echo $pagination; 
+?>      
+                        </div>
+                    </div>
+                </div>   
+                <div class="text-right">
+                    <div class="credits">
+                        <!-- 
+                        All the links in the footer should remain intact. 
+                        You can delete the links only if you purchased the pro version.
+                        Licensing information: https://bootstrapmade.com/license/
+                        Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
+                        -->
+                        <a href="https://bootstrapmade.com/free-business-bootstrap-themes-website-templates/">Business Bootstrap Themes</a> by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                    </div>
+                </div>
 	        </section>
 	    </section>
 	</section>
