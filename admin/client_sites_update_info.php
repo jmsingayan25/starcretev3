@@ -245,14 +245,14 @@
 									<label for="update_site_name" class="col-md-4 control-label">Project Name</label>
 									<div class="col-md-8">
 										<!-- <input type="text" id="update_site_name" name="update_site_name" class="form-control" autocomplete="off" value="<?php echo $site_name; ?>" required> -->
-                                        <textarea name="update_site_name" class="form-control" required><?php echo $site_name; ?></textarea>
+                                        <textarea name="update_site_name" class="form-control" style="resize: none;" required><?php echo $site_name; ?></textarea>
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="update_site_address" class="col-md-4 control-label">Project Address</label>
 									<div class="col-md-8">
 										<!-- <input type="text" id="update_site_address" name="update_site_address" class="form-control" autocomplete="off" value="<?php echo $site_address; ?>" required> -->
-                                        <textarea name="update_site_address" class="form-control" rows="5" required><?php echo $site_address; ?></textarea>
+                                        <textarea name="update_site_address" class="form-control" rows="5" style="resize: none;" required><?php echo $site_address; ?></textarea>
 									</div>
 								</div>
 								<div class="form-group">

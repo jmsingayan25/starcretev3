@@ -279,14 +279,14 @@
 												<label for="site_name" class="col-md-4 control-label">Project Name<span class="required" style="color: red;">*</span></label>
 												<div class="col-md-8">
 													<!-- <input type="text" name="site_name" class="form-control" required> -->
-													<textarea name="site_name" class="form-control" required></textarea>
+													<textarea name="site_name" class="form-control" style="resize: none;" required></textarea>
 												</div>
 											</div>
 											<div class="form-group">
 												<label for="site_address" class="col-md-4 control-label">Project Address<span class="required" style="color: red;">*</span> </label>
 												<div class="col-md-8">
 													<!-- <input type="textarea" name="site_address" class="form-control" required> -->
-													<textarea name="site_address" class="form-control" rows="5" required></textarea>
+													<textarea name="site_address" class="form-control" rows="5" style="resize: none;" required></textarea>
 												</div>
 											</div>
 											<div class="form-group">

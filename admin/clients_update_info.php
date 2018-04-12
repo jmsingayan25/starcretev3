@@ -241,14 +241,14 @@
 									<label for="update_client_name" class="col-md-4 control-label">Client Name</label>
 									<div class="col-md-8">
 										<!-- <input type="text" id="update_client_name" name="update_client_name" class="form-control" autocomplete="off" value="<?php echo $client_name; ?>" required> -->
-                                        <textarea name="update_client_name" class="form-control" required><?php echo $client_name; ?></textarea>
+                                        <textarea name="update_client_name" class="form-control" style="resize: none;" required><?php echo $client_name; ?></textarea>
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="update_client_address" class="col-md-4 control-label">Client Address</label>
 									<div class="col-md-8">
 										<!-- <input type="text" id="update_client_address" name="update_client_address" class="form-control" autocomplete="off" value="<?php echo $client_address; ?>" required> -->
-                                        <textarea name="update_client_address" class="form-control" rows="5" required><?php echo $client_address; ?></textarea>
+                                        <textarea name="update_client_address" class="form-control" rows="5" style="resize: none;" required><?php echo $client_address; ?></textarea>
 									</div>
 								</div>
 								<div class="form-group">

@@ -237,14 +237,14 @@
 										<label for="client_name" class="col-md-4 control-label">Client Name<span class="required" style="color: red;">*</span></label>
 										<div class="col-md-8">
 											<!-- <input type="text" id="client_name" name="client_name" class="form-control" autocomplete="off" required> -->
-											<textarea name="client_name" class="form-control" required></textarea>
+											<textarea name="client_name" class="form-control" style="resize: none;" required></textarea>
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="client_address" class="col-md-4 control-label">Client Address<span class="required" style="color: red;">*</span></label>
 										<div class="col-md-8">
 											<!-- <input type="text" id="client_address" name="client_address" class="form-control" autocomplete="off" required> -->
-											<textarea name="client_address" class="form-control" rows="5" required></textarea>
+											<textarea name="client_address" class="form-control" rows="5" style="resize: none;" required></textarea>
 										</div>
 									</div>
 									<div class="form-group">

@@ -1,20 +1,26 @@
 <?php
 	ob_start();
- 	session_start();
+	session_start();
 ?>
 <!DOCTYPE html>
 <?php
 
-	include("../includes/config.php");
+    include("../includes/config.php");
     include("../includes/function.php");
 
-    if(!isset($_SESSION['login_user']) && !isset($_SESSION['login_office']) || $_SESSION['login_office'] == 'head') {
+    if(!isset($_SESSION['login_user']) && !isset($_SESSION['login_office']) || $_SESSION['login_office'] != 'head') {
         header("location: ../login.php");
     }
 
-    if(!isset($_GET['date_view'])){
-    	$_GET['date_view'] = '';
+    if(isset($_REQUEST['pass_transmittal_no']) && isset($_REQUEST['pass_to_office']) && isset($_REQUEST['pass_id'])){
+    	$_SESSION['transmittal_no'] = $_REQUEST['pass_transmittal_no'];
+    	$_SESSION['to_office'] = $_REQUEST['pass_to_office'];
+    	$_SESSION['id'] = $_REQUEST['pass_id'];
     }
+
+    $pass_transmittal_no = $_SESSION['transmittal_no'];
+    $pass_to_office = $_SESSION['to_office'];
+    $pass_unique_id = $_SESSION['id'];
 
     $user_query = $db->prepare("SELECT * FROM users WHERE username = ?");
     $user_query->bind_param('s', $_SESSION['login_user']);
@@ -24,8 +30,6 @@
 
     $office = $user['office'];
     $position = $user['position'];
-    $search_plant = $office;
-    $plant = ucfirst($office);
 
 ?>
 <html lang="en">
@@ -37,16 +41,8 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>
-        
-<?php 
-    if($office == 'bravo'){
-        echo "Diesel - Starcrete Manufacturing Corporation";
-    }else{
-        echo "Diesel - Quality Star Concrete Products, Inc.";
-    }
-?>  
-    </title>
+    <title>Received Items - Transmittal</title>
+
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- bootstrap theme -->
@@ -64,7 +60,7 @@
     <link href="css/widgets.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/style-responsive.css" rel="stylesheet" />
-    <link href="css/xcharts.min.css" rel=" stylesheet">	
+    <link href="css/xcharts.min.css" rel=" stylesheet"> 
     <link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 
     <!-- javascripts -->
@@ -129,8 +125,9 @@
     window.addEventListener('keypress', goAway, true);
 
     goAway();
-    
-	$(document).ready(function(){
+
+
+    $(document).ready(function(){
         $('.filterable .btn-filter').click(function(){
             var $panel = $(this).parents('.filterable'),
             $filters = $panel.find('.filters input'),
@@ -168,28 +165,23 @@
             $filteredRows.hide();
             /* Prepend no-result row if all rows are filtered */
             if ($filteredRows.length === $rows.length) {
-                 $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="10" style="min-height: 100%;background: white; text-align:center; vertical-align:middle;"><h4><p class="text-muted">No data found</p></h4></td></tr>'));
+                 $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="7" style="height: 100%;background: white; text-align:center; vertical-align:middle;"><h4><p class="text-muted">No data found</p></h4></td></tr>'));
             }
         });
     });
 
-    function warningStock(){
-
-        var stock = Number(document.getElementById("hidden_stock").value);
-        var stock_display = document.getElementById("warning_stock");
-        var triangle = document.getElementById("triangle");
-
-        if(stock <= 5000){
-            stock_display.style.color = "red";
-            triangle.style.display = "";
-        }else{
-            stock_display.style.color = "";
-            triangle.style.display = "none";
-        }
-    }
 </script>
-
 <style>
+.table_page{
+    /*margin: auto;*/
+    margin-top: -40px;
+    /*width: 100%;*/
+    text-align: center;
+}
+
+.table_row_count{
+    margin-top: -15px;
+}
 
 .filterable .panel-heading .pull-right {
     margin-top: -20px;
@@ -218,15 +210,13 @@
      text-align: left;
      font-weight: bold;
 }
-
 .page_links a{
     color: inherit;
 }
-
 </style>
 </head>
-<body onload="warningStock();">
-<!-- container section start -->
+<body>
+    <!-- container section start -->
     <section id="container" class="">
         <header class="header dark-bg">
             <div class="toggle-nav">
@@ -236,13 +226,7 @@
             <!--logo start-->
 
             <!--logo end-->
-<?php
-    if($office == 'delta'){
-        echo "<a href='index.php' class='logo'>Quality Star <span class='lite'>Concrete Products, Inc.</span></a>";
-    }else{
-        echo "<a href='index.php' class='logo'>Starcrete <span class='lite'>Manufacturing Corporation</span></a>";
-    }
-?>
+            <a href='index.php' class='logo'>Starcrete <span class='lite'>Manufacturing Corporation</span></a>
             <div class="top-nav notification-row">                
                 <!-- notificatoin dropdown start-->
                 <ul class="nav pull-right top-menu">
@@ -274,194 +258,136 @@
             <div id="sidebar"  class="nav-collapse ">
                 <!-- sidebar menu start-->
                 <ul class="sidebar-menu">                
-                    <li class="">
+                    <li>
                         <a class="" href="index.php">
                             <i class="icon_house"></i>
                             <span>History</span>
                         </a>
-                    </li>
-                    <li class="active">
-                        <a class="" href="plant_diesel.php">
-                            <i class="fa fa-building"></i>
-                            <span>Diesel</span>
+                    </li> 
+                    <li>
+                        <a class="" href="clients.php">
+                            <i class="fa fa-address-book"></i>
+                            <span>Clients</span>
                         </a>
                     </li>
                     <li class="sub-menu">
                         <a href="javascript:;" class="">
                             <i class="fa fa-building"></i>
-                            <span>Purchase Order</span>
+                            <span>Bravo</span>
                             <span class="menu-arrow arrow_carrot-down"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="plant_purchase_order.php">Pending P.O.</a></li> 
-                            <li><a class="" href="plant_purchase_closed_order.php">Closed P.O.</a></li>
+                            <li><a class="" href="purchase_order.php?office=bravo">Purchase Order</a></li>                          
+                            <li><a class="" href="delivery_order.php?office=bravo">Delivery Page</a></li>
                         </ul>
                     </li>  
                     <li class="sub-menu">
                         <a href="javascript:;" class="">
                             <i class="fa fa-building"></i>
-                            <span>Delivery Order</span>
+                            <span>Delta</span>
                             <span class="menu-arrow arrow_carrot-down"></span>
                         </a>
                         <ul class="sub">
-                            <li><a class="" href="plant_delivery_issue.php">Existing P.O. <span class='badge'><?php echo getCountPlantPo($db, $office); ?></span></a></li>       
-                            <li><a class="" href="plant_delivery_order.php">Ongoing Delivery <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>        
-                            <li><a class="" href="plant_delivery_delivered.php">Delivered Order</a></li>
-                            <li><a class="" href="plant_delivery_backloaded.php">Backloaded Order</a></li>
+                            <li><a class="" href="purchase_order.php?office=delta">Purchase Order</a></li>                          
+                            <li><a class="" href="delivery_order.php?office=delta">Delivery Page</a></li>
                         </ul>
-                    </li>  
-
+                    </li>
+                    <li class="sub-menu">
+                        <a href="javascript:;" class="">
+                            <i class="fa fa-building"></i>
+                            <span>Transmittal</span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
+                        </a>
+                        <ul class="sub">
+                            <li><a class="" href="transmittal.php">Received Item</a></li>                          
+                            <li><a class="" href="transmittal_transfer.php">Transferred Item</a></li>
+                        </ul>
+                    </li>   
+                    <li class="sub-menu">
+                        <a href="javascript:;" class="">
+                            <i class="fa fa-file"></i>
+                            <span>Forms</span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
+                        </a>
+                        <ul class="sub">
+                            <li><a class="" href="purchase_order_form.php">Add New P.O.</a></li>
+                            <li><a class="" href="purchase_aggregates_order_form.php">Add New P.O. Agg</a></li>                          
+                            <li><a class="" href="transmittal_form.php">Add Transfer Item</a></li>                          
+                        </ul>
+                    </li>
                 </ul>
                 <!-- sidebar menu end-->
             </div>
         </aside>
         <!--sidebar end-->
 
+        <!--main content start-->
         <section id="main-content">
-            <section class="wrapper">            
+            <section class="wrapper">  
                 <!--overview start-->
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 page_links">
                         <!-- <h3 class="page-header"><i class="fa fa-home"></i> History</h3> -->
                         <ol class="breadcrumb">
-                            <li><i class="fa fa-building"></i><?php echo $plant; ?></li>
-                            <li><i class="icon_document"></i><a href="diesel.php?office=<?php echo $search_plant; ?>" style="color: blue;">Diesel</a></li>             
+                            <li><i class="fa fa-building"></i>Transmittal</li>          
+                            <li><i class="fa fa-address-book"></i><a href="transmittal_transfer.php">Transferred Item</a></li>
+                            <li><i class="fa fa-address-book"></i><a href="transmittal_transfer_item.php" style="color: blue;">Items</a></li>                
                         </ol>
                     </div>
-                </div>	
-
+                </div>
                 <div class="row">
-                	<!-- <div class="col-lg-2">
-                		<section class="panel">
-                			<header class="panel-heading">
-                				Diesel Stock
-                			</header>
-                			<div class="panel-body">
-                				<div class="table-responsive">
-                					<table class="table table-striped table-bordered">
-                						<thead>
-                							<tr>
-                								<th class="col-md-1">Plant</th>
-                								<th class="col-md-1">Stock</th>
-                							</tr>
-                						</thead>
-                						<tbody>
-<?php
-
-	$sql = "SELECT CONCAT(FORMAT(stock,0), ' liter') as stock, office 
-			FROM item_stock 
-			WHERE office = '$search_plant'
-			AND item_no = 'Diesel'
-			ORDER BY office ASC";
-	$result = mysqli_query($db, $sql);
-	while($row = mysqli_fetch_assoc($result)){
-?>
-							<tr align="center">
-								<td><strong><?php echo ucfirst($row['office']); ?></strong></td>
-								<td><strong><?php echo $row['stock']; ?></strong></td>
-							</tr>
-<?php
-	}
-?>
-                						</tbody>
-                					</table>
-                				</div>
-                			</div>
-                		</section>
-                	</div> -->
-                    <div class="col-lg-12">
+                    <div class="col-md-8 col-md-offset-2">
                         <section class="panel">
-                        	<form action="plant_diesel.php" method="get" class="form-inline">
-                                <header class="panel-heading">
-                                    <div class="row" style="margin-bottom: 5px;">
-                                        <div class="form-group">
-                                            <div class="col-md-12" style="margin-bottom: 5px; white-space: nowrap;">
-                                                <div class="col-md-3" style="margin: 5px 0px 5px 0px;">
-                                                    Select Date:
-                                                    <input type="date" name="date_view" class="form-control" value="<?php if(isset($_GET['date_view'])) { echo htmlentities ($_GET['date_view']); }?>">
-                                                </div>
-                                                <div class="col-md-1" style="margin: 5px 0px 5px 0px;">
-                                                    <button type="submit" class="btn btn-md btn-info" style=" margin-left: 50px;"><strong>Go</strong></button>    
-                                                </div>
-                                                <div class="col-md-1 col-md-offset-7" style="margin-top: 5px; margin-bottom: 5px;">
-                                                    <button type="button" class="btn btn-info btn-md" onclick="location.href='plant_diesel_incoming_form.php'"><span class="fa fa-plus"></span> <strong>Add Incoming Diesel</strong></button>
-                                                    <button type="button" class="btn btn-info btn-md" onclick="location.href='plant_diesel_form.php'"><span class="fa fa-plus"></span> <strong>Add Outgoing Diesel</strong></button>
-                                                </div>
-                                            </div>
-                                        </div>
+                            <header class="panel-heading">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span><strong>Transmittal No: <?php echo $pass_transmittal_no; ?></strong></span>
                                     </div>
-                                </header>
-                            </form>
-                        	<div class="table-responsive filterable">
-                        		<table class="table table-striped table-bordered">
-                        			<thead>
-                        				<tr class="filterable">
-                        					<th colspan="7">
-                                                <input type="hidden" id="hidden_stock" value="<?php echo getDieselStock($db, $search_plant); ?>">
-                        						<?php 
-                            						$date_view = date_create($_GET['date_view']); 
-                        							$today = date('Y-m-d');
-                        							$today = date_create($today);
-                                                ?>
-                        						<span>Available stock as of today, <?php echo date_format($today,"F d, Y"); ?>: <span id="warning_stock"><?php echo number_format(getDieselStock($db, $search_plant)); ?> liters <span id="triangle" class="fa fa-exclamation-triangle" style="display: none;"></span></span></span><br>
-                                                <span>Search Date: <?php echo date_format($date_view,"F d, Y"); ?><button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button></span>
-                        					</th>
-                        				</tr>
-                        				<tr class="filters">
-											<th class="col-md-1"><input type="text" class="form-control" placeholder="Truck No." disabled></th>
-											<th class="col-md-1"><input type="text" class="form-control" placeholder="Driver / Optr." disabled></th>
-											<th class="col-md-1">Quantity (IN)</th>
-											<th class="col-md-1">Quantity (OUT)</th>
-											<th class="col-md-1">Current Stock</th>
-											<th class="col-md-1"><input type="text" class="form-control" placeholder="Address" disabled></th>
-											<th class="col-md-1">Time</th>
-										</tr>
-                        			</thead>
-                        			<tbody>
+                                    <div class="col-md-6">
+                                        <span><strong>Destination: <?php echo ucfirst($pass_to_office); ?></strong></span>
+                                    </div>
+                                </div>
+                            </header>
+                            <div class="table-responsive filterable">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr class="filterable">
+                                            <th colspan="4">
+                                                <button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
+                                            </th>
+                                        </tr>
+                                        <tr class="filters">
+                                            <th class="col-md-1">#</th>
+                                            <th class="col-md-1"><input class="form-control" placeholder="Item" disabled></th>
+                                            <th class="col-md-1">Quantity</th>
+                                            <th class="col-md-1">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 <?php
+        $sql = "SELECT * FROM transmittal 
+                WHERE transmittal_no = '$pass_transmittal_no' 
+                AND from_office = '$office' 
+                AND office = '$pass_to_office'
+                AND transmittal_unique_id = '$pass_unique_id'";
 
-	if($_GET['date_view'] == ''){
-        $date_view = date('Y-m-d');
-    }else{
-        $date_view = $_GET['date_view'];
-    }
-
-	$query = "SELECT CONCAT(FORMAT(quantity_in,0), ' liters') as quantity_in, CONCAT(FORMAT(quantity_out,0), ' liters') as quantity_out, CONCAT(FORMAT(balance,0), ' liters') as balance, destination, truck_no, operator, delivery_date, office
-		  		FROM diesel
-		  		WHERE office = '$search_plant'
-		  		AND DATE_FORMAT(delivery_date,'%Y-%m-%d') = '$date_view'
-		  		ORDER BY delivery_date DESC";
-// echo $query;
-	$result = mysqli_query($db, $query);
-	if(mysqli_num_rows($result) > 0){
-		while($row = mysqli_fetch_assoc($result)){
-			$date = date_create($row['delivery_date']);
+        $result = mysqli_query($db, $sql);
+        $hash = 1;
+        while($row = mysqli_fetch_assoc($result)){
 ?>
-							<tr>
-								<td><strong><?php echo $row['truck_no']; ?></strong></td>
-								<td><strong><?php echo $row['operator']; ?></strong></td>
-								<td><strong><?php echo $row['quantity_in']; ?></strong></td>
-								<td><strong><?php echo $row['quantity_out']; ?></strong></td>
-								<td><strong><?php echo $row['balance']; ?></strong></td>
-								<td><strong><?php echo $row['destination']; ?></strong></td>
-								<td><strong><?php echo date_format($date,'g:i A'); ?></strong></td>
-							</tr>
-
+                                <tr>
+                                    <td><?php echo $hash; ?></td>
+                                    <td><strong><?php echo $row['item_no']; ?></strong></td>
+                                    <td><strong><?php echo number_format($row['quantity']); ?></strong></td>
+                                    <td><strong><?php echo $row['remarks']; ?></strong></td>
+                                </tr>
 <?php
-		}
-	}else{
+            $hash++;
+        }
 ?>
-							<tr>
-                                <td colspan="7" style='height: 100%; background: white; text-align:center; 
-                            vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
-                            </tr>
-<?php
-	}
-
-?>
-                        			</tbody>
-                        		</table>
-                        	</div>
+                                    </tbody>
+                                </table>
+                            </div>
                         </section>
                     </div>
                 </div>

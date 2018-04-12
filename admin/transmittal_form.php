@@ -239,11 +239,16 @@ session_start();
                             <li><a class="" href="received.php?office=delta">Received Aggregates</a></li>
                         </ul>
                     </li>   
-                    <li>
-                        <a class="" href="transmittal.php">
+                    <li class="sub-menu">
+                        <a href="javascript:;" class="">
                             <i class="fa fa-building"></i>
                             <span>Transmittal</span>
+                            <span class="menu-arrow arrow_carrot-down"></span>
                         </a>
+                        <ul class="sub">
+                            <li><a class="" href="transmittal.php">Received Item</a></li>                          
+                            <li><a class="" href="transmittal_transfer.php">Transferred Item</a></li>
+                        </ul>
                     </li>    
                     <li class="sub-menu">
                         <a href="javascript:;" class="">
@@ -361,6 +366,9 @@ session_start();
                                         </table>
                                     </div>
                                 </div>
+                                <footer class="panel-footer">
+                                    <p class="help-block"><span class="required" style="color: red;">*</span> - required</p>
+                                </footer>
                             </section>
                         </div>
                     </div>

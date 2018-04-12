@@ -288,8 +288,8 @@ session_start();
 									<div class="form-group">
 										<label for="update_po_no" class="col-md-3 control-label">P.O. No.</label>
 										<div class="col-md-6">
-											<input type="text" id="update_po_no" name="update_po_no" value="<?php echo $purchase_row['purchase_order_no']; ?>" class="form-control">
-                                            <!-- <p class="help-block"><?php echo $purchase_row['purchase_order_no']; ?></p> -->
+											<!-- <input type="text" id="update_po_no" name="update_po_no" value="<?php echo $purchase_row['purchase_order_no']; ?>" class="form-control"> -->
+                                            <p class="help-block"><?php echo $purchase_row['purchase_order_no']; ?></p>
 										</div>
 									</div>
                                     <div class="form-group">
@@ -471,12 +471,12 @@ session_start();
 		// echo "<script> alert('Purchase Order No. succesfully updated')</script>";
 		if(mysqli_query($db, $sql_po_update) && mysqli_query($db, $sql_update) && mysqli_query($db, $update_quantity_balance) && mysqli_query($db, $delivery_update)){
 			if(mysqli_query($db, $history)){
-				echo "<script>alert('P.O. No. $update_purchase_order_no details has been updated'); window.location.href='purchase_order.php'</script>";
+				echo "<script>alert('P.O. No. $update_purchase_order_no details has been updated'); window.location.href='purchase_order_details.php'</script>";
 				unset($_SESSION['post_purchase_id']);
 				// echo $history;
 			}else{
 				// echo "<script> alert('No changes has been made');window.location.href='purchase_order.php'</script>";
-                echo "<script>alert('P.O. No. $update_purchase_order_no details has been updated'); window.location.href='purchase_order.php'</script>";
+                echo "<script>alert('P.O. No. $update_purchase_order_no details has been updated'); window.location.href='purchase_order_details.php'</script>";
 				unset($_SESSION['post_purchase_id']);
 			}
 		}else{

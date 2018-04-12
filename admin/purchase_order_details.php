@@ -389,7 +389,7 @@ session_start();
                                                         <input type="radio" name="radiooption" id="radiooption" value="closed_only" onchange="disableTextArea(this.value)"> Reason for closing P.O. No. <strong><?php echo $row['purchase_order_no'] . " " . $row['item_no'] . " " . $row['psi']; ?></strong>
                                                     </label> -->
                                                     <label for="radiooption">Reason for closing P.O. No. <strong><?php echo $purchase_order_no; ?></strong></label>
-                                                    <textarea name="reason" id="reason" rows="5" class="form-control inputArea" placeholder="Type here..." required></textarea>
+                                                    <textarea name="reason" id="reason" rows="5" class="form-control inputArea" placeholder="Type here..." style="resize: none;" required></textarea>
                                                 </div>
                                             </div>
                                         </div>

@@ -71,7 +71,7 @@
     <link href="css/widgets.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/style-responsive.css" rel="stylesheet" />
-    <link href="css/xcharts.min.css" rel=" stylesheet">	
+    <link href="css/xcharts.min.css" rel=" stylesheet"> 
     <link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 
     <!-- javascripts -->
@@ -245,11 +245,10 @@
      text-align: left;
      font-weight: bold;
 }
-
 </style>
 </head>
 <body>
-	<!-- container section start -->
+    <!-- container section start -->
     <section id="container" class="">
         <header class="header dark-bg">
             <div class="toggle-nav">
@@ -369,42 +368,42 @@
                         <!-- <h3 class="page-header"><i class="fa fa-home"></i> History</h3> -->
                         <ol class="breadcrumb">
                             <li><i class="fa fa-building"></i>Transmittal</li>                          
-                            <li><i class="fa fa-address-book"></i><a href="transmittal.php">Received Item</a></li>						  	
+                            <li><i class="fa fa-address-book"></i><a href="transmittal.php">Transferred Item</a></li>                           
                         </ol>
                     </div>
                 </div>
                 <div class="row">
-	                <div class="col-lg-12">
-	                    <section class="panel">
-	                        <form action="transmittal.php" method="get" class="form-inline">
-	                            <header class="panel-heading">
-	                                <div class="row" style="margin-bottom: 5px;">
-	                                    <div class="col-md-2">
-	                                        <div class="form-group">
-	                                            <label for="start_date">From:</label>
+                    <div class="col-md-12">
+                        <section class="panel">
+                            <form action="transmittal_transfer.php" method="get" class="form-inline">
+                                <header class="panel-heading">
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="start_date">From:</label>
                                                 <div class="tooltips" data-original-title="Start date of transaction">
                                                     <input type="date" name="start_date" class="form-control" value="<?php if(isset($_GET['start_date'])) { echo htmlentities ($_GET['start_date']); }?>">                                                  
                                                 </div>
-	                                        </div> 
-	                                    </div>
-	                                    <div class="col-md-2">
-	                                        <div class="form-group">
-	                                            <label for="end_date">To:</label>
+                                            </div> 
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="end_date">To:</label>
                                                 <div class="tooltips" data-original-title="End date of transaction">
                                                     <input type="date" name="end_date" class="form-control" value="<?php if(isset($_GET['end_date'])) { echo htmlentities ($_GET['end_date']); }?>">                                                    
                                                 </div>
-	                                        </div>
-	                                    </div>
-	                                    <div class="input-group col-md-5" style="margin: 38px 0px 0px 0px;">
-	                                        <div class="tooltips" data-original-title="Search Transmittal No., Office, Delivered by or Status">
+                                            </div>
+                                        </div>
+                                        <div class="input-group col-md-5" style="margin: 38px 0px 0px 0px;">
+                                            <div class="tooltips" data-original-title="Search Transmittal No., Office, Delivered by or Status">
                                                 <input type="text" name="search" class="form-control" placeholder="Search..." value="<?php if(isset($_GET['search'])) { echo htmlentities ($_GET['search']); }?>">                                            
                                             </div>
-	                                        <span class="input-group-btn">
-	                                            <button class="btn btn-info" type="submit" name="search_table">
-	                                                <i class="fa fa-search"></i>
-	                                            </button>
-	                                        </span>
-	                                    </div>
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-info" type="submit" name="search_table">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                            </span>
+                                        </div>
                                         <div class="input-group col-md-2" style="white-space: nowrap; margin: 38px 0px 0px 60px;">
                                             <label for="view_count" class="col-md-8 control-label">Number of rows:</label>
                                             <div class="form-group">
@@ -418,31 +417,31 @@
                                                 </div>
                                             </div>
                                         </div> 
-	                                </div>
-	                            </header>
-	                        </form>
-	                        <div class="table-responsive filterable">
-	                        	<table class="table table-striped table-bordered">
-	                        		<thead>
-	                        			<tr class="filterable">
+                                    </div>
+                                </header>
+                            </form>
+                            <div class="table-responsive filterable">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr class="filterable">
                                             <th colspan="7">
                                                 <button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
                                             </th>
                                         </tr>
                                         <tr class="filters">
-	                        				<th class="col-md-1">#</th>
-	                        				<th class="col-md-1"><input class="form-control" placeholder="Transmittal No." disabled></th>
-	                        				<th class="col-md-1">Origin</th>
-	                        				<th class="col-md-1">Delivered by</th>
-	                        				<th class="col-md-1">Date</th>
-	                        				<th class="col-md-1"><input class="form-control" placeholder="Status" disabled></th>
-	                        				<th class="col-md-1">Action</th>
-	                        			</tr>
-	                        		</thead>
-	                        		<tbody>
+                                            <th class="col-md-1">#</th>
+                                            <th class="col-md-1"><input class="form-control" placeholder="Transmittal No." disabled></th>
+                                            <th class="col-md-1"><input class="form-control" placeholder="Destination" disabled></th>
+                                            <th class="col-md-1">Delivered by</th>
+                                            <th class="col-md-1">Date</th>
+                                            <th class="col-md-1">Status</th>
+                                            <th class="col-md-1">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 <?php
 
-	if($_GET['search'] == ''){
+    if($_GET['search'] == ''){
         $search_word = "";
     }else{
         $search_word = $_GET['search'];
@@ -450,9 +449,9 @@
 
     if($_GET['search'] != ''){
         $string_ext = " AND (transmittal_no LIKE '%".$search_word."%'
-							OR remarks LIKE '%".$search_word."%'
-							OR from_office LIKE '%".$search_word."%'
-							OR delivered_by LIKE '%".$search_word."%') ";
+                            OR remarks LIKE '%".$search_word."%'
+                            OR office LIKE '%".$search_word."%'
+                            OR delivered_by LIKE '%".$search_word."%') ";
     }else{
         $string_ext = "";
     }
@@ -479,18 +478,16 @@
         $string_date = "AND DATE_FORMAT(transmittal_date,'%Y-%m-%d') BETWEEN '$start_date' AND '$end_date'";
     }
 
-    $sql = "SELECT transmittal_no, transmittal_unique_id, delivered_by, DATE_FORMAT(transmittal_date,'%m/%d/%y') as transmittal_date, remarks, from_office, COUNT(transmittal_id) as count_id
-    		FROM transmittal
-    		WHERE office = '$office'
-    		AND from_office != '$office' ".$string_ext." ".$string_date."
-    		GROUP BY transmittal_no, office, from_office, delivered_by, transmittal_unique_id
-    		ORDER BY transmittal_date DESC";
-
+    $sql = "SELECT * FROM transmittal 
+            WHERE from_office = '$office' 
+            AND office != '$office'".$string_date." ".$string_ext." 
+            GROUP BY transmittal_unique_id";
+            // echo $sql;
     $sql_result = mysqli_query($db, $sql); 
     $total = mysqli_num_rows($sql_result);
 
     $adjacents = 3;
-    $targetpage = "transmittal.php"; //your file name
+    $targetpage = "transmittal_transfer.php"; //your file name
     $page = $_GET['page'];
 
     if($page){ 
@@ -504,7 +501,7 @@
     $prev = $page - 1; //previous page is current page - 1
     $next = $page + 1; //next page is current page + 1
     $lastpage = ceil($total/$limit); //lastpage.
-    $lpm1 = $lastpage - 1; //last page minus 1  
+    $lpm1 = $lastpage - 1; //last page minus 1
 
     /* CREATE THE PAGINATION */
     $counter = 0;
@@ -573,70 +570,66 @@
         $pagination.= "</ul></div>\n"; 
     }
 
-    $query = "SELECT transmittal_no, transmittal_unique_id, delivered_by, DATE_FORMAT(transmittal_date,'%m/%d/%y') as transmittal_date, remarks, from_office, COUNT(transmittal_id) as count
-            FROM transmittal
-            WHERE office = '$office'
-            AND from_office != '$office' ".$string_ext." ".$string_date."
-            GROUP BY transmittal_no, office, from_office, delivered_by, transmittal_unique_id
+    $sql_transmittal = "SELECT transmittal_no, transmittal_unique_id, office, delivered_by, DATE_FORMAT(transmittal_date,'%m/%d/%y') as transmittal_date, remarks, from_office, count(transmittal_id) as count 
+            FROM transmittal 
+            WHERE from_office = '$office'
+            AND office != '$office'".$string_date." ".$string_ext."
+            GROUP BY transmittal_no, office, from_office, delivered_by, transmittal_unique_id 
             ORDER BY transmittal_date DESC LIMIT $start, $limit";
-
-    $result = mysqli_query($db, $query);
-    if(mysqli_num_rows($result) > 0){
-
-    	$hash = $start + 1;
-    	while ($row = mysqli_fetch_assoc($result)) {
+    // echo $sql_transmittal;
+    $sql_transmittal_result = mysqli_query($db, $sql_transmittal);
+    if(mysqli_num_rows($sql_transmittal_result) > 0){
+        $hash = $start + 1;
+        while ($row = mysqli_fetch_assoc($sql_transmittal_result)) {
 
             $count_sql = "SELECT count(transmittal_id) as count FROM transmittal 
-            WHERE transmittal_unique_id = '".$row['transmittal_unique_id']."' AND remarks = 'Received' AND office = '$office' AND from_office = '".$row['from_office']."'";
+            WHERE transmittal_unique_id = '".$row['transmittal_unique_id']."' AND remarks = 'Received' AND office = '".$row['office']."' AND from_office = '$office'";
 
             $count_sql_result = mysqli_query($db, $count_sql);
+            $count = mysqli_num_rows($count_sql_result);
             $row1 = mysqli_fetch_assoc($count_sql_result);
-
 ?>
             <tr>
-                <td><?php echo $hash; ?></td>                     
-                <td><strong><?php echo $row['transmittal_no']; ?></strong></td>                     
-                <td><strong><?php echo ucfirst($row['from_office']); ?></strong></td>                     
-                <td><strong><?php echo $row['delivered_by']; ?></strong></td>                     
-                <td><strong><?php echo $row['transmittal_date']; ?></strong></td>                     
-                <td>
-                    <strong>
+                <td><?php echo $hash; ?></td>
+                <td><strong><?php echo $row['transmittal_no']; ?></strong></td>
+                <td><strong><?php echo ucfirst($row['office']); ?></strong></td>
+                <td><strong><?php echo $row['delivered_by']; ?></strong></td>
+                <td><strong><?php echo $row['transmittal_date'] ?></strong></td>
+                <td><strong>
 <?php
-                    if($row['count'] == $row1['count']){
-                        echo "Received";
-                    }else{
-                        echo "Pending";
-                    }
+                if($row['count'] == $row1['count']){
+                    echo "Received";
+                }else{
+                    echo "Pending";
+                }
 ?>
-                    </strong>
-                </td>                     
+                </strong></td>
                 <td>
-                    <form action="transmittal_item.php" method="post">
-                        <input type="submit" name="received" value="View <?php echo $row['count'] ?> Item(s)" class="btn btn-sm" style="background-color: #388e3c; color: white; font-weight: bold;">
+                    <form action="transmittal_transfer_item.php" method="post">
+                        <input type="submit" name="transferred" value="View <?php echo $row['count'] ?> Item(s)" class="btn btn-sm" style="background-color: #388e3c; color: white; font-weight: bold;">
                         <input type="hidden" name="pass_transmittal_no" value="<?php echo $row['transmittal_no']; ?>">
-                        <input type="hidden" name="pass_from_office" value="<?php echo $row['from_office']; ?>">
-                        <!-- <input type="hidden" name="pass_to_office" value="<?php echo $row['office']; ?>"> -->
+                        <input type="hidden" name="pass_to_office" value="<?php echo $row['office']; ?>">
                         <input type="hidden" name="pass_id" value="<?php echo $row['transmittal_unique_id']; ?>">
                     </form>
-                </td>                     
+                </td>
             </tr>
 <?php
-			$hash++;
-    	}
+            $hash++;
+        }
     }else{
 ?>
-    		<tr>
+            <tr>
                 <td colspan="7" style='height: 100%; background: white; text-align:center; 
             vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
             </tr>
 <?php
     }
-?>
-	                        		</tbody>
-	                        	</table>
-	                        </div>
-	                    </section>
-	                </div>
+?>  
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">

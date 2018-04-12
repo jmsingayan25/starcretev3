@@ -355,22 +355,26 @@
 	            <div class="row">
 	            	<div class="col-md-9">
 	                    <section class="panel">
-	                         <!-- <header class="panel-heading">
+	                         <header class="panel-heading">
 	                         	<div class="row">
 	                                <div class="col-md-12">
 		                                <span>Project Name: <strong><?php echo $project_name; ?></strong></span><br>
-		                                <span>Project Address: <strong><?php echo $project_address; ?></strong></span>
 	                                </div>
 	                            </div>
-	                        </header> -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <span>Project Address: <strong><?php echo $project_address; ?></strong></span>
+                                    </div>
+                                </div>
+	                        </header>
                             <!-- <div class="panel-body"> -->
 	                        <div class="table-responsive filterable">
 	                            <table class="table table-striped table-bordered">
 	                                <thead>
 	                                	<tr class="filterable">
                                             <th colspan="7">
-                                                <span>Project Name: <strong><?php echo $project_name; ?></strong></span><br>
-                                                <span>Project Address: <strong><?php echo $project_address; ?></strong></span>
+                                                <!-- <span>Project Name: <strong><?php echo $project_name; ?></strong></span><br>
+                                                <span>Project Address: <strong><?php echo $project_address; ?></strong></span> -->
                                                 <button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
                                             </th>
                                         </tr>
