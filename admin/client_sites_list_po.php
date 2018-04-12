@@ -170,7 +170,7 @@
             $filteredRows.hide();
             /* Prepend no-result row if all rows are filtered */
             if ($filteredRows.length === $rows.length) {
-                 $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="7" style="height: 100%;background: white; text-align:center; vertical-align:middle;"><h4><p class="text-muted">No data found</p></h4></td></tr>'));
+                 $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="8" style="height: 100%;background: white; text-align:center; vertical-align:middle;"><h4><p class="text-muted">No data found</p></h4></td></tr>'));
             }
         });
     });
@@ -238,9 +238,9 @@
      text-align: left;
      font-weight: bold;
 }
-.page_links a{
+/*.page_links a{
     color: inherit;
-}
+}*/
 </style>
 </head>
 <body>
@@ -345,9 +345,9 @@
 	                <div class="col-md-12 page_links">
 	                    <ol class="breadcrumb">
 	                        <li><i class="fa fa-address-book"></i><a href="clients.php">Clients</a></li>
-	                        <li><i class="fa fa-building"></i><?php echo $client_name; ?></li>    
-	                        <li><i class="fa fa-address-card"></i><a href="client_sites.php"><?php echo $project_name; ?></a></li>                         
-	                        <li><i class="fa fa-file"></i><a href="client_sites_list_po.php" style="color: blue;">List of P.O. No.</a></li>
+	                        <li><i class="fa fa-building"></i><a href="client_sites.php"><?php echo $client_name; ?></a></li>    
+	                        <li><i class="fa fa-address-card"></i><a href="client_sites_list_po.php"><?php echo $project_name; ?></a></li>                         
+	                        <li><i class="fa fa-file"></i>List of P.O. No.</li>
 	                    </ol>
 	                </div>
 	            </div>
@@ -372,7 +372,7 @@
 	                            <table class="table table-striped table-bordered">
 	                                <thead>
 	                                	<tr class="filterable">
-                                            <th colspan="7">
+                                            <th colspan="8">
                                                 <!-- <span>Project Name: <strong><?php echo $project_name; ?></strong></span><br>
                                                 <span>Project Address: <strong><?php echo $project_address; ?></strong></span> -->
                                                 <button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
@@ -382,7 +382,8 @@
 	                                		<th class="col-md-1">#</th>
 	                                		<th class="col-md-1"><input class="form-control" placeholder="P.O. No." disabled></th>
 	                                		<th class="col-md-1"><input class="form-control" placeholder="Item" disabled></th>
-	                                		<th class="col-md-1">Quantity</th>
+                                            <th class="col-md-1">Quantity</th>
+	                                		<th class="col-md-1">Plant</th>
 	                                		<th class="col-md-1">Date Order</th>
 	                                		<th class="col-md-1">Date Close</th>
 	                                		<th class="col-md-1">Status</th>
@@ -503,6 +504,7 @@
 				<td><strong><?php echo $row['purchase_order_no']; ?></strong></td>
 				<td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
 				<td><strong><?php echo number_format($row['quantity']) . " pcs"; ?></strong></td>
+                <td><strong><?php echo ucfirst($row['office']); ?></strong></td>
 				<td><strong><?php echo $row['date_purchase']; ?></strong></td>
 				<td>
 <?php
@@ -526,10 +528,10 @@
 		}
 	}else{
 ?>
-		<tr>        
-            <td colspan="7" style='height: 100%; background: white; border: none; text-align:center; 
-vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
-        </tr>
+    		<tr>        
+                <td colspan="8" style='height: 100%; background: white; border: none; text-align:center; 
+    vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
+            </tr>
 <?php
 	}
 ?>

@@ -234,9 +234,9 @@
      text-align: left;
      font-weight: bold;
 }
-.page_links a{
+/*.page_links a{
     color: inherit;
-}
+}*/
 .grow {
   /*padding: 5px 5px 5px 5px;*/
   /*border-radius: 10px;*/
@@ -345,10 +345,10 @@
                 <!--overview start-->
                 <div class="row">
                     <div class="col-lg-12 page_links">
-                        <!-- <h3 class="page-header"><i class="icon_document"></i><a href="plant_purchase_deliver_order.php">Delivered P.O.</a></h3> -->
+                        <h3 class="page-header"></i><a href="plant_purchase_deliver_order.php" style="color: inherit;">Closed Purchase Order</a></h3>
                         <ol class="breadcrumb">
                             <li><i class="fa fa-building"></i>Purchase Order</li>
-                            <li><i class="icon_document"></i><a href="plant_purchase_deliver_order.php" style="color: blue;">Closed P.O.</a></li>                           
+                            <li><i class="icon_document"></i>Closed P.O.</li>                           
                         </ol>
                     </div>
                 </div>

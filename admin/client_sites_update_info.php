@@ -117,9 +117,9 @@
 <script>
 </script>
 <style>
-.page_links a{
+/*.page_links a{
     color: inherit;
-}
+}*/
 </style>
 </head>
 <body>
@@ -227,8 +227,8 @@
                         <!-- <li><i class="fa fa-home"></i>Home</li> -->
                         <li><i class="fa fa-address-book"></i><a href="clients.php">Clients</a></li>
                         <li><i class="fa fa-building"></i><a href="client_sites.php"><?php echo $client_name; ?></a></li>
-                        <li><i class="fa fa-building"></i><?php echo $site_name; ?></li>
-                        <li><i class="fa fa-file-text"></i><a href="client_sites_update_info.php" style="color: blue;">Update Info</a></li>                            
+                        <li><i class="fa fa-building"></i><a href="client_sites_update_info.php"><?php echo $site_name; ?></a></li>
+                        <li><i class="fa fa-file-text"></i>Update Info</li>                            
                     </ol>
                 </div>
             </div>

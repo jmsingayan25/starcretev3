@@ -122,9 +122,9 @@
 
 </script>
 <style>
-.page_links a{
+/*.page_links a{
 	color: inherit;
-}
+}*/
 </style>
 </head>
 <body>
@@ -231,10 +231,10 @@
 	                <div class="col-lg-12 page_links">
 	                    <!-- <h3 class="page-header"><i class="fa fa-laptop"></i> New Client</h3> -->
 	                    <ol class="breadcrumb">
-	                        <li><i class="fa fa-address-book"></i><a href="clients.php">Client</a></li>
+	                        <li><i class="fa fa-address-book"></i><a href="clients.php">Clients</a></li>
 	                        <li><i class="fa fa-building"></i><a href="client_sites.php"><?php echo $client_name; ?></a></li>
 	                        <!-- <li><a href="client_sites.php"><i class="icon_document_alt"></i>Sites</a></li> -->
-	                        <li><i class="icon_document"></i><a href="add_site.php" style="color: blue;">New Project</a></li>						  	
+	                        <li><i class="icon_document"></i>New Project</li>						  	
 	                    </ol>
 	                </div>
 	            </div>

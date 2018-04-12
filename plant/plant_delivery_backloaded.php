@@ -235,10 +235,10 @@
      text-align: left;
      font-weight: bold;
 }
-.page_links a{
+/*.page_links a{
     color: inherit;
 }
-
+*/
 .grow {
   /*padding: 5px 5px 5px 5px;*/
   /*border-radius: 10px;*/
@@ -346,10 +346,10 @@
 	            <!--overview start-->
 	            <div class="row">
 	                <div class="col-lg-12 page_links">
-	                    <!-- <h3 class="page-header"><i class="fa fa-laptop"></i><a href="plant_delivery_backloaded.php">Backloaded Order</a></h3> -->
+	                    <h3 class="page-header"><a href="plant_delivery_backloaded.php" style="color: inherit;">Backloaded Order</a></h3>
 	                    <ol class="breadcrumb">
 	                        <li><i class="fa fa-building"></i>Delivery Order</li>
-	                        <li><i class="fa fa-truck"></i><a href="plant_delivery_backloaded.php" style="color: blue;">Backloaded Order</a></li>						  	
+	                        <li><i class="fa fa-truck"></i>Backloaded Order</li>						  	
 	                    </ol>
 	                </div>
 	            </div>

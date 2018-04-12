@@ -225,9 +225,9 @@
 	                <div class="col-lg-12">
 	                    <!-- <h3 class="page-header">Client New Contact</h3> -->
 	                    <ol class="breadcrumb">
-	                        <li><i class="fa fa-address-book"></i><a href="clients.php" style="color: inherit;">Clients</a></li>
-	                        <li><i class="fa fa-building"></i><?php echo $client_name; ?></li>
-	                        <li><i class="icon_document"></i><a href="add_client_contact.php" style="color: blue;">New Contact Person</a></li>						  	
+	                        <li><i class="fa fa-address-book"></i><a href="clients.php">Clients</a></li>
+	                        <li><i class="fa fa-building"></i><a href="add_client_contact.php"><?php echo $client_name; ?></a></li>
+	                        <li><i class="icon_document"></i>New Contact Person</li>						  	
 	                    </ol>
 	                </div>
 	            </div>

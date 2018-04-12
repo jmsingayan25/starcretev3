@@ -239,9 +239,9 @@ session_start();
      text-align: left;
      font-weight: bold;
 }
-.page_links a{
+/*.page_links a{
     color: inherit;
-}
+}*/
 .grow {
   /*padding: 5px 5px 5px 5px;*/
   /*border-radius: 10px;*/
@@ -360,12 +360,12 @@ session_start();
             <!--overview start-->
             <div class="row">
                 <div class="col-lg-12 page_links">
-                    <h3 class="page-header"><a href="delivery_success.php?office=<?php echo $search_plant; ?>"> <?php echo $plant; ?> Delivery Order</a></h3>
+                    <h3 class="page-header"><a href="delivery_success.php?office=<?php echo $search_plant; ?>" style="color: inherit;"> <?php echo $plant; ?> Delivery Order</a></h3>
                     <ol class="breadcrumb">
                         <li><i class="fa fa-building"></i><?php echo $plant; ?></li>
                         <li><i class="icon_document"></i><a href="delivery_order.php?office=<?php echo $search_plant; ?>">Ongoing Delivery <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $search_plant); ?></span></a></li>
                         <li><i class="fa fa-info-circle"></i><a href="delivery_issue.php?office=<?php echo $search_plant; ?>">Existing P.O. <span class='badge'><?php echo countPendingPo($db, $search_plant); ?></span></a></li>
-                        <li><i class="fa fa-truck"></i><a href="delivery_success.php?office=<?php echo $search_plant; ?>" style="color: blue;">Delivered</a></li>
+                        <li><i class="fa fa-truck"></i>Delivered</li>
                         <li><i class="fa fa-reply"></i><a href="delivery_backload.php?office=<?php echo $search_plant; ?>">Backload</a></li>                             
                     </ol>
                 </div>

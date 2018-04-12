@@ -315,7 +315,11 @@
                     <div class="col-md-12">
                         <!-- <h3 class="page-header"><i class="fa fa-laptop"></i> P.O. No. <?php echo $po_no_delivery; ?></h3> -->
                         <ol class="breadcrumb">
-                            <li><i class="fa fa-building"></i><a href="plant_delivery_order.php">Delivery Order</a></li>
+                            <li><i class="fa fa-building"></i>Delivery Order</li>
+                            <li><i class="fa fa-exclamation-circle"></i><a href="plant_delivery_issue.php">Existing P.O. <span class='badge'><?php echo getCountPlantPo($db, $office); ?></span></a></li>  
+                            <li><i class="fa fa-truck"></i><a href="plant_delivery_order.php">Ongoing Delivery <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></a></li>   
+                            <li><i class="fa fa-truck"></i><a href="plant_delivery_delivered.php">Delivered Order</a></li> 
+                            <li><i class="fa fa-truck"></i><a href="plant_delivery_backloaded.php">Backloaded Order</a></li>
                             <li><i class="icon_document"></i>Details</li>                          
                         </ol>
                     </div>

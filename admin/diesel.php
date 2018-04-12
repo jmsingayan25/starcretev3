@@ -345,47 +345,61 @@
                                                 <button type="submit" class="btn btn-md btn-info" style="margin-top: 35px; margin-left: -20px;"><strong>Go</strong></button>    
                                             </div>
 	                                	</div> -->
-                                        <div class="form-group">
+                                        <!-- <div class="form-group">
                                             <div class="col-md-12" style="margin-top: 5px;">
                                                 <label for="date_view" class="col-md-3 control-label" style="white-space: nowrap;"><strong>Select Date:</strong></label>
-                                                <div class="col-md-8">
-                                                    <input type="date" name="date_view" class="form-control" value="<?php if(isset($_GET['date_view'])) { echo htmlentities ($_GET['date_view']); }?>">                                                                                  
+                                                <div class="col-md-6">
+                                                    <input type="date" name="date_view" class="form-control" value="<?php if(isset($_GET['date_view'])) { echo htmlentities ($_GET['date_view']); }?>">                        
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <input type="submit" name="submit" id="submit" value="Go" class="btn btn-info" style="font-weight: bold;">
                                                 </div>
                                             </div>
-                                            <div class="col-md-1">
-                                                <input type="submit" name="submit" id="submit" value="Go" class="btn btn-primary" style="font-weight: bold; margin-top: -5px; margin-left: -20px;">
+                                        </div> -->
+                                        <div class="col-md-6" style="margin: 5px 0px 0px 0px;">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-12" style=" white-space: nowrap;">
+                                                        <label for="date_view" class="col-md-3 control-label" style="white-space: nowrap;"><strong>Select Date:</strong></label>
+                                                        <div class="col-md-7">
+                                                            <input type="date" name="date_view" class="form-control" value="<?php if(isset($_GET['date_view'])) { echo htmlentities ($_GET['date_view']); }?>">   
+                                                            <button type="submit" class="btn btn-md btn-info" style=""><strong>Go</strong></button> 
+                                                            <!-- <button class="btn btn-md btn-info" onclick="window.location.reload();"><strong><span class="fa fa-refresh fa-lg"></span></strong></button>   -->                    
+                                                        </div> 
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 	                                </div>
 	                            </header>
 	                        </form>
-                            	<div class="table-responsive filterable">
-                            		<table class="table table-striped table-bordered">
-                            			<thead>
-                            				<tr class="filterable">
-                            					<th colspan="7">
-                                                    <input type="hidden" id="hidden_stock" value="<?php echo getDieselStock($db, $search_plant); ?>">
-                            						<?php 
-	                            						$date_view = date_create($_GET['date_view']); 
-                            							$today = date('Y-m-d');
-                            							$today = date_create($today);
-                                                    ?>
-                                                    <span>Available stock as of today, <?php echo date_format($today,"F d, Y"); ?>: <span id="warning_stock"><?php echo number_format(getDieselStock($db, $search_plant)); ?> liters <span id="triangle" class="fa fa-exclamation-triangle" style="display: none;"></span></span></span><br>
-                                                    <span>Search Date: <?php echo date_format($date_view,"F d, Y"); ?><button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button></span>
-                            						
-                            					</th>
-                            				</tr>
-                            				<tr class="filters">
-												<th class="col-md-1"><input type="text" class="form-control" placeholder="Truck No." disabled></th>
-												<th class="col-md-1"><input type="text" class="form-control" placeholder="Driver / Optr." disabled></th>
-												<th class="col-md-1">Quantity (IN)</th>
-												<th class="col-md-1">Quantity (OUT)</th>
-												<th class="col-md-1">Current Stock</th>
-												<th class="col-md-1"><input type="text" class="form-control" placeholder="Address" disabled></th>
-												<th class="col-md-1">Time</th>
-											</tr>
-                            			</thead>
-                            			<tbody>
+                        	<div class="table-responsive filterable">
+                        		<table class="table table-striped table-bordered">
+                        			<thead>
+                        				<tr class="filterable">
+                        					<th colspan="7">
+                                                <input type="hidden" id="hidden_stock" value="<?php echo getDieselStock($db, $search_plant); ?>">
+                        						<?php 
+                            						$date_view = date_create($_GET['date_view']); 
+                        							$today = date('Y-m-d');
+                        							$today = date_create($today);
+                                                ?>
+                                                <span>Available stock as of today, <?php echo date_format($today,"F d, Y"); ?>: <span id="warning_stock"><?php echo number_format(getDieselStock($db, $search_plant)); ?> liters <span id="triangle" class="fa fa-exclamation-triangle" style="display: none;"></span></span></span><br>
+                                                <span>Search Date: <?php echo date_format($date_view,"F d, Y"); ?><button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button></span>
+                        						
+                        					</th>
+                        				</tr>
+                        				<tr class="filters">
+											<th class="col-md-1"><input type="text" class="form-control" placeholder="Truck No." disabled></th>
+											<th class="col-md-1"><input type="text" class="form-control" placeholder="Driver / Optr." disabled></th>
+											<th class="col-md-1">Quantity (IN)</th>
+											<th class="col-md-1">Quantity (OUT)</th>
+											<th class="col-md-1">Current Stock</th>
+											<th class="col-md-1"><input type="text" class="form-control" placeholder="Address" disabled></th>
+											<th class="col-md-1">Time</th>
+										</tr>
+                        			</thead>
+                        			<tbody>
 <?php
 
 	if($_GET['date_view'] == ''){
@@ -426,9 +440,9 @@
 <?php
 	}
 ?>
-                            			</tbody>
-                            		</table>
-                            	</div>
+                        			</tbody>
+                        		</table>
+                        	</div>
                         </section>
                     </div>
                 </div>

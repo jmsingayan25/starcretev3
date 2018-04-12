@@ -154,9 +154,9 @@
 
 </script>
 <style>
-.page_links a{
+/*.page_links a{
     color: inherit;
-}
+}*/
 </style>
 </head>
 <body>
@@ -258,9 +258,9 @@
                     <div class="col-md-12 page_links">
                         <!-- <h3 class="page-header"><i class="fa fa-home"></i> History</h3> -->
                         <ol class="breadcrumb">
-                            <li><i class="fa fa-building"></i><?php echo $plant; ?></li>
+                            <!-- <li><i class="fa fa-building"></i><?php echo $plant; ?></li> -->
                             <li><i class="icon_document"></i><a href="plant_diesel.php">Diesel</a></li>             
-                            <li><i class="icon_document"></i><a href="plant_diesel_incoming_form.php" style="color: blue;">Incoming Diesel Form</a></li>             
+                            <li><i class="icon_document"></i>Incoming Diesel Form</li>             
                         </ol>
                     </div>
                 </div>

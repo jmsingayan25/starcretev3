@@ -235,9 +235,9 @@
      text-align: left;
      font-weight: bold;
 }
-.page_links a{
+/*.page_links a{
     color: inherit;
-}
+}*/
 /*tbody:before {
     content: "-";
     display: block;
@@ -353,10 +353,10 @@
 	            <!--overview start-->
 	            <div class="row">
 	                <div class="col-lg-12 page_links">
-	                    <!-- <h3 class="page-header"><i class="icon_document"></i><a href="plant_purchase_order.php"> Purchase Order</a></h3> -->
+	                    <h3 class="page-header"><a href="plant_purchase_order.php" style="color: inherit;">Pending Purchase Order</a></h3>
 	                    <ol class="breadcrumb">
 	                        <li><i class="fa fa-building"></i>Purchase Order</li>
-	                        <li><i class="icon_document"></i><a href="plant_purchase_order.php" style="color: blue;">Pending P.O.</a></li>						  	
+	                        <li><i class="icon_document"></i>Pending P.O.</li>						  	
 	                    </ol>
 	                </div>
 	            </div>

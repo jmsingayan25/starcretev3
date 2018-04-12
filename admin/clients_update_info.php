@@ -113,9 +113,9 @@
 <script>
 </script>
 <style>
-.page_links a{
+/*.page_links a{
     color: inherit;
-}
+}*/
 </style>
 </head>
 <body>
@@ -222,8 +222,8 @@
                     <ol class="breadcrumb">
                         <!-- <li><i class="fa fa-home"></i>Home</li> -->
                         <li><i class="fa fa-address-book"></i><a href="clients.php">Clients</a></li>
-                        <li><i class="fa fa-building"></i><?php echo $client_name; ?></li>
-                        <li><i class="icon_document"></i><a href="clients_update_info.php" style="color: blue;">Update Info</a></li>
+                        <li><i class="fa fa-building"></i><a href="clients_update_info.php"><?php echo $client_name; ?></a></li>
+                        <li><i class="icon_document"></i>Update Info</li>
                         <!-- <li><i class="fa fa-file-text"></i><a href="clients_update_info.php" style="color: inherit;">Update Info</a></li>                             -->
                     </ol>
                 </div>

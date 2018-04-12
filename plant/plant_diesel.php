@@ -324,71 +324,57 @@
                     <div class="col-md-12">
                         <!-- <h3 class="page-header"><i class="fa fa-home"></i> History</h3> -->
                         <ol class="breadcrumb">
-                            <li><i class="fa fa-building"></i><?php echo $plant; ?></li>
-                            <li><i class="icon_document"></i><a href="diesel.php?office=<?php echo $search_plant; ?>" style="color: blue;">Diesel</a></li>             
+                            <!-- <li><i class="fa fa-building"></i><?php echo $plant; ?></li> -->
+                            <li><i class="icon_document"></i>Diesel</li>             
                         </ol>
                     </div>
                 </div>	
 
                 <div class="row">
-                	<!-- <div class="col-lg-2">
-                		<section class="panel">
-                			<header class="panel-heading">
-                				Diesel Stock
-                			</header>
-                			<div class="panel-body">
-                				<div class="table-responsive">
-                					<table class="table table-striped table-bordered">
-                						<thead>
-                							<tr>
-                								<th class="col-md-1">Plant</th>
-                								<th class="col-md-1">Stock</th>
-                							</tr>
-                						</thead>
-                						<tbody>
-<?php
-
-	$sql = "SELECT CONCAT(FORMAT(stock,0), ' liter') as stock, office 
-			FROM item_stock 
-			WHERE office = '$search_plant'
-			AND item_no = 'Diesel'
-			ORDER BY office ASC";
-	$result = mysqli_query($db, $sql);
-	while($row = mysqli_fetch_assoc($result)){
-?>
-							<tr align="center">
-								<td><strong><?php echo ucfirst($row['office']); ?></strong></td>
-								<td><strong><?php echo $row['stock']; ?></strong></td>
-							</tr>
-<?php
-	}
-?>
-                						</tbody>
-                					</table>
-                				</div>
-                			</div>
-                		</section>
-                	</div> -->
                     <div class="col-lg-12">
                         <section class="panel">
                         	<form action="plant_diesel.php" method="get" class="form-inline">
                                 <header class="panel-heading">
                                     <div class="row" style="margin-bottom: 5px;">
-                                        <div class="form-group">
+                                        <div class="col-md-6" style="margin: 5px 0px 0px 0px;">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-12" style=" white-space: nowrap;">
+                                                        <label for="date_view" class="col-md-3 control-label" style="white-space: nowrap;"><strong>Select Date:</strong></label>
+                                                        <div class="col-md-7">
+                                                            <input type="date" name="date_view" class="form-control" value="<?php if(isset($_GET['date_view'])) { echo htmlentities ($_GET['date_view']); }?>">   
+                                                            <button type="submit" class="btn btn-md btn-info" style=""><strong>Go</strong></button>                      
+                                                        </div> 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" style="margin: 5px 0px 0px 0px;">
+                                            <div class="row">
+                                                <div class="col-md-8 col-md-offset-4">
+                                                    <div class="form-group">
+                                                        <button type="button" class="btn btn-info btn-md" onclick="location.href='plant_diesel_incoming_form.php'"><span class="fa fa-plus"></span> <strong>Add Incoming Diesel</strong></button>
+                                                        <button type="button" class="btn btn-info btn-md" onclick="location.href='plant_diesel_form.php'"><span class="fa fa-plus"></span> <strong>Add Outgoing Diesel</strong></button>
+                                                    </div>
+                                                </div>    
+                                            </div>
+                                            
+                                        </div>
+                                        <!--<div class="form-group">
                                             <div class="col-md-12" style="margin-bottom: 5px; white-space: nowrap;">
                                                 <div class="col-md-3" style="margin: 5px 0px 5px 0px;">
                                                     Select Date:
-                                                    <input type="date" name="date_view" class="form-control" value="<?php if(isset($_GET['date_view'])) { echo htmlentities ($_GET['date_view']); }?>">
+                                                    <input type="date" name="date_view" class="form-control" value="<?php if(isset($_GET['date_view'])) { echo htmlentities ($_GET['date_view']); }?>">   
                                                 </div>
                                                 <div class="col-md-1" style="margin: 5px 0px 5px 0px;">
-                                                    <button type="submit" class="btn btn-md btn-info" style=" margin-left: 50px;"><strong>Go</strong></button>    
+                                                    <button type="submit" class="btn btn-md btn-info" style="margin-left: 50px;"><strong>Go</strong></button>    
                                                 </div>
                                                 <div class="col-md-1 col-md-offset-7" style="margin-top: 5px; margin-bottom: 5px;">
                                                     <button type="button" class="btn btn-info btn-md" onclick="location.href='plant_diesel_incoming_form.php'"><span class="fa fa-plus"></span> <strong>Add Incoming Diesel</strong></button>
                                                     <button type="button" class="btn btn-info btn-md" onclick="location.href='plant_diesel_form.php'"><span class="fa fa-plus"></span> <strong>Add Outgoing Diesel</strong></button>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </header>
                             </form>

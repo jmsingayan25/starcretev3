@@ -219,7 +219,7 @@
 	                    <!-- <h3 class="page-header">New Client</h3> -->
 	                    <ol class="breadcrumb">
 	                        <!-- <li><i class="fa fa-building"></i>Home</a></li> -->
-	                        <li><i class="fa fa-address-book"></i><a href="clients.php" style="color: inherit;">Clients</a></li>						  	
+	                        <li><i class="fa fa-address-book"></i><a href="clients.php">Clients</a></li>						  	
 	                        <li><i class="icon_document"></i>New Client</li>						  	
 	                    </ol>
 	                </div>

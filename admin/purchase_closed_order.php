@@ -238,9 +238,9 @@
      text-align: left;
      font-weight: bold;
 }
-.page_links a{
+/*.page_links a{
     color: inherit;
-}
+}*/
 .grow {
   /*padding: 5px 5px 5px 5px;*/
   /*border-radius: 10px;*/
@@ -361,11 +361,11 @@
                 <!--overview start-->
                 <div class="row">
                     <div class="col-lg-12 page_links">
-                        <h3 class="page-header"><a href="purchase_closed_order.php?office=<?php echo $search_plant; ?>"><?php echo $plant ?> Purchase Order</a></h3>
+                        <h3 class="page-header"><a href="purchase_closed_order.php?office=<?php echo $search_plant; ?>" style="color: inherit;"><?php echo $plant ?> Closed Purchase Order</a></h3>
                         <ol class="breadcrumb">
                             <li><i class="fa fa-building"></i><?php echo $plant ?></li>
                             <li><i class="icon_document"></i><a href="purchase_order.php?office=<?php echo $search_plant; ?>">Pending P.O.</a></li>
-                            <li><i class="icon_document"></i><a href="purchase_closed_order.php?office=<?php echo $search_plant; ?>" style="color: blue;">Closed P.O.</a></li>   
+                            <li><i class="icon_document"></i>Closed P.O.</li>   
 
                         </ol>
                     </div>

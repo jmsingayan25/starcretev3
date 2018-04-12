@@ -241,9 +241,9 @@
      text-align: left;
      font-weight: bold;
 }
-.page_links a{
+/*.page_links a{
     color: inherit;
-}
+}*/
 </style>
 </head>
 
@@ -351,8 +351,8 @@
                     <!-- <h3 class="page-header"><i class="fa fa-address-book"></i> <?php echo $client_name; ?> Sites</h3> -->
                     <ol class="breadcrumb">
                         <li><i class="fa fa-address-book"></i><a href="clients.php">Clients</a></li>
-                        <li><i class="fa fa-building"></i><?php echo $client_name; ?></li>    
-                        <li><i class="fa fa-address-card"></i><a href="client_sites.php" style="color: blue;">Projects</a></li>                         
+                        <li><i class="fa fa-building"></i><a href="client_sites.php"><?php echo $client_name; ?></a></li>    
+                        <li><i class="fa fa-address-card"></i>Projects</li>                         
                     </ol>
                 </div>
             </div>

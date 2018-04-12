@@ -219,9 +219,9 @@ session_start();
      text-align: left;
      font-weight: bold;
 }
-.page_links a{
+/*.page_links a{
     color: inherit;
-}
+}*/
 </style>
 </head>
 <body>
@@ -329,7 +329,7 @@ session_start();
                         <ol class="breadcrumb">
                             <li><i class="fa fa-building"></i><?php echo ucfirst($plant); ?></li>
                             <li><i class="icon_document"></i><a href="purchase_order.php?office=<?php echo $plant; ?>">Pending P.O.</a></li>                            
-                            <li><i class="icon_document"></i><a href="purchase_closed_order.php?office=<?php echo $plant; ?>">Closed P.O.</a></li>                          
+                            <li><i class="icon_document"></i>P.O. Details</li>                          
                         </ol>
                     </div>
                 </div>
@@ -354,15 +354,15 @@ session_start();
     $sql_select_result = mysqli_query($db, $sql_select);
     if(mysqli_num_rows($sql_select_result) <= 0){
         $disabled = "";
-        $info = " <span title='Button not disable. No Item(s) in ONGOING DELIVERY Status' class='fa fa-info-circle fa-lg' style='color: #d32f2f;'></span>";
+        $info = " <span data-original-title='Button not disable. No Item(s) in ONGOING DELIVERY Status' class='fa fa-info-circle fa-lg tooltips' data-placement='top' style='color: #d32f2f;'></span>";
     }else{
         $disabled = "disabled";
-        $info = " <span title='Button disable. An Item(s) is in ONGOING DELIVERY Status' class='fa fa-info-circle fa-lg' style='color: #d32f2f;'></span>";
+        $info = " <span data-original-title='Button disable. An Item(s) is in ONGOING DELIVERY Status' class='fa fa-info-circle fa-lg tooltips' data-placement='top' style='color: #d32f2f;'></span>";
     }
 ?>
 
                     <form action="purchase_order_details.php" method="post">
-                        <button type="button" class="btn btn-sm" style="background-color: #d32f2f; color: white;" data-toggle='modal' data-target='#purchaseOrderClosedRow' <?php echo $disabled; ?>><span class="fa fa-edit"></span> <strong>Click to Close P.O. No. <?php echo $purchase_order_no; ?></strong></button><?php echo $info; ?>
+                        <?php echo $info; ?> <button type="button" class="btn btn-sm" style="background-color: #d32f2f; color: white;" data-toggle='modal' data-target='#purchaseOrderClosedRow' <?php echo $disabled; ?>><span class="fa fa-edit"></span> <strong>Click to Close P.O. No. <?php echo $purchase_order_no; ?></strong></button>
 
                         <div class="modal fade" id="purchaseOrderClosedRow" role="dialog">
                             <div class="modal-dialog modal-sm">

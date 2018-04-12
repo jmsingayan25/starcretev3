@@ -145,9 +145,9 @@
 
 </script>
 <style>
-.page_links a{
+/*.page_links a{
     color: inherit;
-}
+}*/
 </style>
 </head>
 <body onload="compareValues('');">
@@ -244,7 +244,7 @@
 	                    <ol class="breadcrumb">
 	                        <li><i class="fa fa-building"></i>Delivery Order</li>
 	                        <li><i class="fa fa-truck"></i><a href="plant_delivery_order.php">Ongoing Delivery</a></li>			
-	                        <li><i class="fa fa-file"></i><a href="plant_delivery_order_update.php" style="color: blue;">Update Form</a></li>						  	
+	                        <li><i class="fa fa-file"></i>Update Form</li>						  	
 	                    </ol>
 	                </div>
 	            </div>

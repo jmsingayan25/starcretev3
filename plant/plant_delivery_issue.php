@@ -235,9 +235,9 @@
      text-align: left;
      font-weight: bold;
 }
-.page_links a{
+/*.page_links a{
     color: inherit;
-}
+}*/
 /*tbody:before {
     content: "-";
     display: block;
@@ -351,10 +351,10 @@
 	            <!--overview start-->
 	            <div class="row">
 	                <div class="col-lg-12 page_links">
-	                    <!-- <h3 class="page-header"><i class="fa fa-building"></i><a href="plant_delivery_issue.php">Existing P.O.</a></h3> -->
+	                    <h3 class="page-header"><a href="plant_delivery_issue.php" style="color: inherit;">Existing Purchase Order</a></h3>
 	                    <ol class="breadcrumb">
 	                        <li><i class="fa fa-building"></i>Delivery Order</li>
-	                        <li><i class="fa fa-exclamation-circle"></i><a href="plant_delivery_issue.php" style="color: blue;">Existing P.O. <span class='badge'><?php echo getCountPlantPo($db, $office); ?></span></a></li>						  	
+	                        <li><i class="fa fa-exclamation-circle"></i>Existing P.O. <span class='badge'><?php echo getCountPlantPo($db, $office); ?></span></li>						  	
 	                    </ol>
 	                </div>
 	            </div>

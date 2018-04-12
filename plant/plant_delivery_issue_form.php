@@ -202,9 +202,9 @@
 
 </script>
 <style>
-.page_links a{
+/*.page_links a{
     color: inherit;
-}
+}*/
 </style>
 </head>
 <body onload="compareValues('');">
@@ -302,7 +302,7 @@
 	                    <ol class="breadcrumb">
 	                        <li><i class="fa fa-building"></i>Delivery Order</li>
 	                        <li><i class="fa fa-exclamation-circle"></i><a href="plant_delivery_issue.php">Existing P.O.</a></li>	
-	                        <li><i class="fa fa-file"></i><a href="plant_delivery_issue_form.php" style="color: blue;">Issue Form</a></li>						  	
+	                        <li><i class="fa fa-file"></i>Issue Form</li>						  	
 	                    </ol>
 	                </div>
 	            </div>

@@ -158,9 +158,9 @@ session_start();
 
 </script>
 <style>
-.page_links a{
+/*.page_links a{
     color: inherit;
-}
+}*/
 </style>
 </head>
 <body>
@@ -269,8 +269,9 @@ session_start();
                         <!-- <h3 class="page-header"><i class="fa fa-building"></i> Purchase Order Update</h3> -->
                         <ol class="breadcrumb">
                             <li><i class="fa fa-building"></i><?php echo ucfirst($search_plant); ?></a></li>
-                            <li><a href="purchase_order.php"><i class="icon_document"></i>Purchase Order</a></li>
-                            <li><i class="fa fa-file-text"></i><a onclick="window.location.href=this" style="cursor: pointer; color: blue;">Update</a></li>					  	
+                            <li><i class="icon_document"></i><a href="purchase_order.php">Pending P.O.</a></li>
+                            <li><i class="icon_document"></i><a href="purchase_order_details.php">P.O. Details</a></li>
+                            <li><i class="fa fa-file-text"></i>Update</li>					  	
                         </ol>
                     </div>
                 </div>
