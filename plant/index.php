@@ -256,6 +256,12 @@
 .page_links a{
     color: inherit;
 }
+li.notif {
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+
+}
 </style>
 </head>
 
@@ -280,6 +286,72 @@
             <div class="top-nav notification-row">                
                 <!-- notificatoin dropdown start-->
                 <ul class="nav pull-right top-menu">
+
+                    <!-- alert notification start-->
+                    <li id="alert_notification_bar" class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+
+                            <i class="icon-bell-l"></i>
+<?php
+
+    $badge_count_sql = "SELECT notif_id
+                        FROM notification
+                        WHERE to_office = '$office' 
+                        AND isNotif_view = 0";
+
+    $badge_count_sql_result = mysqli_query($db, $badge_count_sql);
+    $badge_count = mysqli_num_rows($badge_count_sql_result);
+    if($badge_count > 0){
+?>
+                            <span class="badge bg-important"><?php echo $badge_count; ?></span>
+<?php
+    }
+?>
+                           
+                        </a>
+                        <ul class="dropdown-menu extended notification">
+                            <div class="notify-arrow notify-arrow-blue"></div>
+                            <li>
+                                <p class="blue">You have <?php echo $badge_count ?> new notifications</p>
+                            </li>
+<?php 
+
+    $notif_sql = "SELECT notif_id, table_name, content
+                    FROM notification 
+                    WHERE to_office = '$office'
+                    AND isNotif_view = '0'
+                    ORDER BY notif_date DESC LIMIT 0,10";
+           // echo $notif_sql;
+    $notif_sql_result = mysqli_query($db, $notif_sql);
+    if(mysqli_num_rows($notif_sql_result) > 0){
+        $notif_count = 1;
+        while ($notif_sql_row =mysqli_fetch_assoc($notif_sql_result)) {
+
+            if($notif_sql_row['table_name'] == 'Purchase Order'){
+                $link = 'plant_delivery_issue.php';
+                $detail = "New Purchase Order No. " . $notif_sql_row['content'];
+            }
+?>
+                            <li class="notif">
+                                <!-- <form action="index.php" method="post">                                 -->
+                                    <a href="index.php?table_name=<?php echo $notif_sql_row['table_name']; ?>"><?php echo $detail; ?></a>
+                                   <!-- <button type="submit" name="notif" value="<?php echo $notif_sql_row['table_name']; ?>" class="btn-link"><?php echo $detail; ?></button> -->
+                                <!-- </form> -->
+                            </li>
+<?php
+            $notif_count++;
+        }                            
+    }else{
+?>
+                            <li>
+                                <a href="#">No new notifications</a>
+                            </li>
+<?php
+    }
+?>                                
+                        </ul>
+                    </li>
+                    <!-- alert notification end-->
                     <!-- user login dropdown start-->
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
@@ -619,3 +691,21 @@
     <!-- container section start -->
 </body>
 </html>
+<?php
+
+    if(isset($_GET['table_name'])){
+
+        $table_name = $_GET['table_name'];
+
+        $update_notif = "UPDATE notification SET isNotif_view = '1'
+                            WHERE isNotif_view = 0 
+                            AND table_name = '$table_name'
+                            AND to_office = '$office'";
+
+        // echo $update_notif;
+        if(mysqli_query($db, $update_notif)){
+            header("location:plant_delivery_issue.php");
+        }
+    }
+
+?>

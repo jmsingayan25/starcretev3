@@ -196,9 +196,9 @@
     }
 </script>
 <style>
-.page_links a{
+/*.page_links a{
     color: inherit;
-}
+}*/
 </style>
 </head>
 <body onload="compareValues('');">
@@ -310,7 +310,7 @@
                         <ol class="breadcrumb">
                             <li><i class="fa fa-building"></i>Received</li>
                             <li><i class="icon_document"></i><a href="plant_received_pending.php">Pending Deliveries</a></li>            
-                            <li><i class="icon_document"></i><a href="plant_received_pending_issue.php" style="color: blue;"> Issue DR. No.</a></li>              
+                            <li><i class="icon_document"></i>Issue DR. No.</li>              
                         </ol>
                     </div>
                 </div>

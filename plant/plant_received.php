@@ -235,9 +235,9 @@
      text-align: left;
      font-weight: bold;
 }
-.page_links a{
+/*.page_links a{
     color: inherit;
-}
+}*/
 </style>
 </head>
 <body>
@@ -346,10 +346,10 @@
                 <!--overview start-->
                 <div class="row">
                     <div class="col-lg-12 page_links">
-                        <!-- <h3 class="page-header"><i class="icon_document"></i><a href="plant_purchase_order.php"> Purchase Order</a></h3> -->
+                        <h3 class="page-header"><a href="plant_received.php" style="color: inherit;"> Received Deliveries</a></h3>
                         <ol class="breadcrumb">
                             <li><i class="fa fa-building"></i>Received</li>
-                            <li><i class="icon_document"></i><a href="plant_received.php" style="color: blue;">Received Deliveries</a></li>                          
+                            <li><i class="icon_document"></i>Received Deliveries</li>                          
                         </ol>
                     </div>
                 </div>

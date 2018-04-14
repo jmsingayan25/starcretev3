@@ -407,8 +407,8 @@
         $psi = $purchase_row['psi'];
 		$quantity = str_replace( ',', '', $_POST['quantity']);
 		$site_id = $purchase_row['site_id'];
-		$contact = $purchase_row['site_contact_person_id'];
-		$contact_no = $purchase_row['contact_no'];
+		// $contact = $purchase_row['site_contact_person_id'];
+		// $contact_no = $purchase_row['site_contact_no'];
 		$gate_pass_no = mysqli_real_escape_string($db, $_POST['gate_pass_no']);
 		$po_no = $purchase_row['purchase_order_no'];
 		$unique_po_id = $purchase_row['purchase_unique_id'];
@@ -434,9 +434,13 @@
 		// echo $history_query."<br>";
 		// echo $purchase_order_update."<br>";
 
+		$insert_notif = "INSERT INTO notification (from_office, to_office, table_name, content, notif_date) 
+							VALUES ('$office','head','Ongoing Delivery','$delivery_no','$datetime')";
+
+							// echo $insert_notif."<br>";
 		if(!in_array($delivery_no, $array)){
 			// echo "NOT EXISTS";
-			if(mysqli_query($db, $delivery_insert) && mysqli_query($db, $history_query) && mysqli_query($db, $purchase_order_update)){
+			if(mysqli_query($db, $delivery_insert) && mysqli_query($db, $history_query) && mysqli_query($db, $purchase_order_update) && mysqli_query($db, $insert_notif)){
 				echo "<script> alert('DR No. $delivery_no issued successfully. Transaction can be viewed on Delivery Report Page');
 					window.location.href='plant_delivery_order.php'
 					</script>";

@@ -939,7 +939,8 @@ if(isset($_POST['delivered'])){
             $insert_delivered_po = "INSERT INTO purchase_order_deliveries (purchase_order_id, purchase_order_no, quantity, reason, date_closed) VALUES ('$row_fk_po_id','$row_po_no_delivery','$row_quantity','Delivered','$datetime')";
         }
 
-        
+        $insert_notif = "INSERT INTO notification (from_office, to_office, table_name, content, notif_date) 
+                            VALUES ('$office','head','Delivered Delivery','$row_delivery_receipt_no','$datetime')";
 
         // echo $insert_delivered_po;
 		// echo $update_delivery;
@@ -948,7 +949,7 @@ if(isset($_POST['delivered'])){
 		// echo $history_query;
 		// echo $batch_prod_stock;
 		// if($row['quantity'] < getStock($db, $row['item_no'], $office)){
-		if(mysqli_query($db, $update_delivery) && mysqli_query($db, $batch_prod_stock) && mysqli_query($db, $history_query) && mysqli_query($db, $insert_delivered_po)){
+		if(mysqli_query($db, $update_delivery) && mysqli_query($db, $batch_prod_stock) && mysqli_query($db, $history_query) && mysqli_query($db, $insert_delivered_po) && mysqli_query($db, $insert_notif)){
 			phpAlert("Item has been delivered successfully!!!");
 			echo "<meta http-equiv='refresh' content='0'>";
 		}else{
@@ -1005,6 +1006,9 @@ if(isset($_POST['delivered'])){
 		$history_query = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) 
 							VALUES('Delivery','Backloaded Order','".ucfirst($row_office)." has backload delivery of DR No. $row_delivery_receipt_no with ".number_format($row_quantity)." pcs of $row_item_no under P.O. No. $row_po_no_delivery','$datetime','$row_office')";
 
+        $insert_notif = "INSERT INTO notification (from_office, to_office, table_name, content, notif_date) 
+                            VALUES ('$office','head','Backloaded Delivery','$row_delivery_receipt_no','$datetime')";
+
 		// $sql = "SELECT * FROM purchase_order 
 		// 		WHERE purchase_order_no = '".$row['po_no_delivery']."' 
 		// 		AND purchase_id = '".$row['fk_po_id']."' 
@@ -1025,7 +1029,7 @@ if(isset($_POST['delivered'])){
 		// echo $purchase_order_update;
 		// echo $update_delivery;
 		// echo $history_query;
-		if(mysqli_query($db, $update_delivery) && mysqli_query($db, $history_query) && mysqli_query($db, $purchase_order_update)){
+		if(mysqli_query($db, $update_delivery) && mysqli_query($db, $history_query) && mysqli_query($db, $purchase_order_update) && mysqli_query($db, $insert_notif)){
 			phpAlert("Item has been backload!!!");
 			echo "<meta http-equiv='refresh' content='0'>";
 		}else{

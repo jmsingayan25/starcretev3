@@ -210,9 +210,9 @@
      text-align: left;
      font-weight: bold;
 }
-.page_links a{
+/*.page_links a{
     color: inherit;
-}
+}*/
 </style>
 </head>
 <body>
@@ -331,7 +331,7 @@
                         <ol class="breadcrumb">
                             <li><i class="fa fa-building"></i>Transmittal</li>          
                             <li><i class="fa fa-address-book"></i><a href="transmittal_transfer.php">Transferred Item</a></li>
-                            <li><i class="fa fa-address-book"></i><a href="transmittal_transfer_item.php" style="color: blue;">Items</a></li>                
+                            <li><i class="fa fa-address-book"></i>Items</li>                
                         </ol>
                     </div>
                 </div>

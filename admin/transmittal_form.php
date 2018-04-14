@@ -275,8 +275,8 @@ session_start();
                     <div class="col-md-12 page_links">
                         <!-- <h3 class="page-header"><i class="icon_document"></i> Purchase Order Form</h3> -->
                         <ol class="breadcrumb">
-                            <li><i class="fa fa-building"></i><a href="transmittal.php">Transmittal</a></li>
-                            <li><i class="icon_document"></i><a href="transmittal_form.php" style="color: blue;">Transfer Form</a></li>                           
+                            <!-- <li><i class="fa fa-building"></i><a href="transmittal.php">Transmittal</a></li> -->
+                            <li><i class="icon_document"></i>Transfer Form</li>                           
                         </ol>
                     </div>
                 </div>

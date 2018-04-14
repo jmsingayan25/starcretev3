@@ -459,7 +459,7 @@ session_start();
 									<div class="col-md-offset-8 col-md-4">
 										<input type="submit" name="submit" id="submit" value="Done" class="btn btn-primary" style="font-weight: bold;">
 										<!-- <a href="delivery_transaction.php" class="btn btn-warning">Cancel</a> -->
-										<input type="reset" name="reset" id="reset" value="Reset" onclick="window.location.reload(true);" class="btn btn-default" style="font-weight: bold;">
+										<input type="reset" name="reset" id="reset" value="Clear" onclick="window.location.reload(true);" class="btn btn-default" style="font-weight: bold;">
 									</div>
 								</div>
 							</div>
@@ -623,6 +623,16 @@ session_start();
         mysqli_query($db, $history_query);
         // echo $history_query;
 
+        // $history_max = "SELECT MAX(history_id) as history_id FROM history";
+        // $history_max_result = mysqli_query($db, $history_max);
+        // $history_max_row = mysqli_fetch_assoc($history_max_result);
+        // $max_id = $history_max_row['history_id'];
+
+        $notification_query = "INSERT INTO notification(from_office, to_office, table_name, content, notif_date) 
+                                VALUES('$office','$plant','Purchase Order','$po_no','$datetime')";
+
+        mysqli_query($db, $notification_query);                   
+        
 		if($count == count($item)){
 			phpAlert("Transaction complete. You can view the order on ".ucfirst($plant)." Purchase Order page.");
 			echo "<meta http-equiv='refresh' content='0'>";
