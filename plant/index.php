@@ -316,7 +316,7 @@ li.notif {
                             </li>
 <?php 
 
-    $notif_sql = "SELECT notif_id, table_name, content
+    $notif_sql = "SELECT notif_id, table_name, content, notif_date
                     FROM notification 
                     WHERE to_office = '$office'
                     AND isNotif_view = '0'
@@ -327,16 +327,31 @@ li.notif {
         $notif_count = 1;
         while ($notif_sql_row =mysqli_fetch_assoc($notif_sql_result)) {
 
+            $datetime1 = strtotime($notif_sql_row['notif_date']);
+            $datetime2 = strtotime(date('Y-m-d H:i:s'));
+            $interval  = abs($datetime2 - $datetime1);
+            $minutes   = round($interval / 60);
+            $hours = round($interval / 3600);
+            
+            $dStart = new DateTime();
+            $dEnd  = new DateTime($notif_sql_row['notif_date']);
+            $dDiff = $dStart->diff($dEnd);
+
+            if($minutes < 60){
+                $time_elapse = $minutes . " minute(s) ago";
+            }else if($minutes > 60 && $hours < 24){
+                $time_elapse = $hours . " hour(s) ago";
+            }else if($minutes > 60 && $hours > 24){
+                $time_elapse = $dDiff->days . " day(s) ago";
+            }
+
             if($notif_sql_row['table_name'] == 'Purchase Order'){
                 $link = 'plant_delivery_issue.php';
-                $detail = "New Purchase Order No. " . $notif_sql_row['content'];
+                $detail = "New Purchase Order No. <strong>" . $notif_sql_row['content'] . "</strong><span style='float: right;'>" . $time_elapse . "</span>";
             }
 ?>
-                            <li class="notif">
-                                <!-- <form action="index.php" method="post">                                 -->
-                                    <a href="index.php?table_name=<?php echo $notif_sql_row['table_name']; ?>"><?php echo $detail; ?></a>
-                                   <!-- <button type="submit" name="notif" value="<?php echo $notif_sql_row['table_name']; ?>" class="btn-link"><?php echo $detail; ?></button> -->
-                                <!-- </form> -->
+                            <li class="notif"> 
+                                <a href="index.php?table_name=<?php echo $notif_sql_row['table_name']; ?>"><?php echo $detail; ?></a>
                             </li>
 <?php
             $notif_count++;
@@ -421,11 +436,16 @@ li.notif {
         <section class="wrapper">            
             <!--overview start-->
             <div class="row">
-                <div class="col-lg-12 page_links">
+                <div class="col-lg-8 page_links">
                     <!-- <h3 class="page-header"><i class="fa fa-home"></i><a href="index.php">History</a></h3> -->
                     <ol class="breadcrumb">
                         <!-- <li><i class="fa fa-home"></i><a href="index.php">Home</a></li> -->
                         <li><i class="fa fa-home"></i><a href="index.php" style="color: inherit;">History</a></li>						  	
+                    </ol>
+                </div>
+                <div class="col-md-4">
+                    <ol class="breadcrumb">
+                        <li>As of <strong><?php $date = date("Y-m-d H:i:s"); $date_create = date_create($date); echo date_format($date_create, "M d, Y h:i A"); ?></strong></li>  
                     </ol>
                 </div>
             </div>

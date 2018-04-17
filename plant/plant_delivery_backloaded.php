@@ -278,6 +278,88 @@
             <div class="top-nav notification-row">                
                 <!-- notificatoin dropdown start-->
                 <ul class="nav pull-right top-menu">
+
+                    <!-- alert notification start-->
+                    <li id="alert_notification_bar" class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+
+                            <i class="icon-bell-l"></i>
+<?php
+
+    $badge_count_sql = "SELECT notif_id
+                        FROM notification
+                        WHERE to_office = '$office' 
+                        AND isNotif_view = 0
+                        ";
+
+    $badge_count_sql_result = mysqli_query($db, $badge_count_sql);
+    $badge_count = mysqli_num_rows($badge_count_sql_result);
+    if($badge_count > 0){
+?>
+                            <span class="badge bg-important"><?php echo $badge_count; ?></span>
+<?php
+    }
+?>
+                           
+                        </a>
+                        <ul class="dropdown-menu extended notification">
+                            <div class="notify-arrow notify-arrow-blue"></div>
+                            <li>
+                                <p class="blue">You have <?php echo $badge_count ?> new notifications</p>
+                            </li>
+<?php 
+
+    $notif_sql = "SELECT notif_id, table_name, content, notif_date
+                    FROM notification 
+                    WHERE to_office = '$office'
+                    AND isNotif_view = '0'
+                    ORDER BY notif_date DESC LIMIT 0,10";
+           // echo $notif_sql;
+    $notif_sql_result = mysqli_query($db, $notif_sql);
+    if(mysqli_num_rows($notif_sql_result) > 0){
+        $notif_count = 1;
+        while ($notif_sql_row =mysqli_fetch_assoc($notif_sql_result)) {
+
+            $datetime1 = strtotime($notif_sql_row['notif_date']);
+            $datetime2 = strtotime(date('Y-m-d H:i:s'));
+            $interval  = abs($datetime2 - $datetime1);
+            $minutes   = round($interval / 60);
+            $hours = round($interval / 3600);
+            
+            $dStart = new DateTime();
+            $dEnd  = new DateTime($notif_sql_row['notif_date']);
+            $dDiff = $dStart->diff($dEnd);
+
+            if($minutes < 60){
+                $time_elapse = $minutes . " minute(s) ago";
+            }else if($minutes > 60 && $hours < 24){
+                $time_elapse = $hours . " hour(s) ago";
+            }else if($minutes > 60 && $hours > 24){
+                $time_elapse = $dDiff->days . " day(s) ago";
+            }
+
+            if($notif_sql_row['table_name'] == 'Purchase Order'){
+                $link = 'plant_delivery_issue.php';
+                $detail = "New Purchase Order No. " . $notif_sql_row['content'] . "<br>" . $time_elapse;
+            }
+?>
+                            <li class="notif"> 
+                                <a href="index.php?table_name=<?php echo $notif_sql_row['table_name']; ?>"><?php echo $detail; ?></a>
+                            </li>
+<?php
+            $notif_count++;
+        }                            
+    }else{
+?>
+                            <li>
+                                <a href="#">No new notifications</a>
+                            </li>
+<?php
+    }
+?>                                
+                        </ul>
+                    </li>
+                    <!-- alert notification end-->
                     <!-- user login dropdown start-->
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
@@ -347,11 +429,20 @@
 	            <div class="row">
 	                <div class="col-lg-12 page_links">
 	                    <h3 class="page-header"><a href="plant_delivery_backloaded.php" style="color: inherit;">Backloaded Order</a></h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
 	                    <ol class="breadcrumb">
 	                        <li><i class="fa fa-building"></i>Delivery Order</li>
 	                        <li><i class="fa fa-truck"></i>Backloaded Order</li>						  	
 	                    </ol>
 	                </div>
+                    <div class="col-md-4">
+                        <ol class="breadcrumb">
+                            <li>As of <strong><?php $date = date("Y-m-d H:i:s"); $date_create = date_create($date); echo date_format($date_create, "M d, Y h:i A"); ?></strong></li>  
+                        </ol>
+                    </div>
 	            </div>
 
 	            <div class="row">

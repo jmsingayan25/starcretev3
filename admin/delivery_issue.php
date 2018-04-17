@@ -292,27 +292,26 @@ session_start();
     $badge_count_sql = "SELECT notif_id
                         FROM notification
                         WHERE to_office = '$office' 
-                        AND isNotif_view = 0
-                        ";
+                        AND isNotif_view = 0";
 
     $badge_count_sql_result = mysqli_query($db, $badge_count_sql);
     $badge_count = mysqli_num_rows($badge_count_sql_result);
     if($badge_count > 0){
 ?>
-                        <span class="badge bg-important"><?php echo $badge_count; ?></span>
+                            <span class="badge bg-important"><?php echo $badge_count; ?></span>
 <?php
     }
 ?>
                            
-                    </a>
-                    <ul class="dropdown-menu extended notification">
-                        <div class="notify-arrow notify-arrow-blue"></div>
-                        <li>
-                            <p class="blue">You have <?php echo $badge_count ?> new notifications</p>
-                        </li>
+                        </a>
+                        <ul class="dropdown-menu extended notification">
+                            <div class="notify-arrow notify-arrow-blue"></div>
+                            <li>
+                                <p class="blue">You have <?php echo $badge_count ?> new notifications</p>
+                            </li>
 <?php 
 
-    $notif_sql = "SELECT notif_id, table_name, content, from_office
+    $notif_sql = "SELECT notif_id, table_name, content, from_office, notif_date
                     FROM notification 
                     WHERE to_office = '$office'
                     AND isNotif_view = '0'
@@ -323,31 +322,50 @@ session_start();
         $notif_count = 1;
         while ($notif_sql_row =mysqli_fetch_assoc($notif_sql_result)) {
 
+            $datetime1 = strtotime($notif_sql_row['notif_date']);
+            $datetime2 = strtotime(date('Y-m-d H:i:s'));
+            $interval  = abs($datetime2 - $datetime1);
+            $minutes   = round($interval / 60);
+            $hours = round($interval / 3600);
+            
+            $dStart = new DateTime();
+            $dEnd  = new DateTime($notif_sql_row['notif_date']);
+            $dDiff = $dStart->diff($dEnd);
+
+            if($minutes < 60){
+                $time_elapse = $minutes . " minute(s) ago";
+            }else if($minutes > 60 && $hours < 24){
+                $time_elapse = $hours . " hour(s) ago";
+            }else if($minutes > 60 && $hours > 24){
+                $time_elapse = $dDiff->days . " day(s) ago";
+            }
+
+
             if($notif_sql_row['table_name'] == 'Ongoing Delivery'){
-                $detail = ucfirst($notif_sql_row['from_office']) . " issued DR No. " . $notif_sql_row['content'];
+                $detail = ucfirst($notif_sql_row['from_office']) . " issued DR No. <strong>" . $notif_sql_row['content'] . "</strong><br>" . $time_elapse;
             }else if($notif_sql_row['table_name'] == 'Delivered Delivery'){
-                $detail = ucfirst($notif_sql_row['from_office']) . " delivered DR No. " . $notif_sql_row['content'];
+                $detail = ucfirst($notif_sql_row['from_office']) . " delivered DR No. <strong>" . $notif_sql_row['content'] . "</strong><br> " . $time_elapse;
             }else if($notif_sql_row['table_name'] == 'Backloaded Delivery'){
-                $detail = ucfirst($notif_sql_row['from_office']) . " backloaded DR No. " . $notif_sql_row['content'];
+                $detail = ucfirst($notif_sql_row['from_office']) . " backloaded DR No. <strong>" . $notif_sql_row['content'] . "</strong><br> " . $time_elapse;
             }
 ?>
                             <li class="notif">
-                                <a href="delivery_backload.php?table_name=<?php echo $notif_sql_row['table_name']; ?>&from_office=<?php echo $notif_sql_row['from_office']; ?>"><?php echo $detail; ?></a>
+                                <a href="delivery_issue.php?table_name=<?php echo $notif_sql_row['table_name']; ?>&from_office=<?php echo $notif_sql_row['from_office']; ?>"><?php echo $detail; ?></a>
                             </li>
 <?php
             $notif_count++;
         }                            
     }else{
 ?>
-                        <li>
-                            <a href="#">No new notifications</a>
-                        </li>
+                            <li>
+                                <a href="#">No new notifications</a>
+                            </li>
 <?php
     }
 ?>                                
                         </ul>
                     </li>
-                    <!-- alert notification end-->  
+                    <!-- alert notification end-->
                     <!-- user login dropdown start-->
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
@@ -434,12 +452,21 @@ session_start();
                 <div class="row">
                     <div class="col-md-12 page_links">
                         <h3 class="page-header"><a href="delivery_issue.php?office=<?php echo $search_plant; ?>" style="color: inherit;"><?php echo $plant; ?> Delivery Order</a></h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
                         <ol class="breadcrumb">
                             <li><i class="fa fa-building"></i><?php echo $plant; ?></li>
                             <li><i class="icon_document"></i><a href="delivery_order.php?office=<?php echo $search_plant; ?>">Ongoing Delivery <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $search_plant); ?></span></a></li>
                             <li><i class="fa fa-info-circle"></i>Existing P.O. <span class='badge'><?php echo countPendingPo($db, $search_plant); ?></span></li>
                             <li><i class="fa fa-truck"></i><a href="delivery_success.php?office=<?php echo $search_plant; ?>">Delivered</a></li>
                             <li><i class="fa fa-reply"></i><a href="delivery_backload.php?office=<?php echo $search_plant; ?>">Backload</a></li>                          
+                        </ol>
+                    </div>
+                    <div class="col-md-4">
+                        <ol class="breadcrumb">
+                            <li>As of <strong><?php $date = date("Y-m-d H:i:s"); $date_create = date_create($date); echo date_format($date_create, "M d, Y h:i A"); ?></strong></li>  
                         </ol>
                     </div>
                 </div>
@@ -839,7 +866,8 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
         $update_notif = "UPDATE notification SET isNotif_view = '1'
                             WHERE isNotif_view = 0 
                             AND table_name = '$table_name'
-                            AND to_office = '$office'";
+                            AND to_office = '$office'
+                            AND from_office = '$from_office'";
 
         // echo $update_notif;
         if(mysqli_query($db, $update_notif)){

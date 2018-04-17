@@ -254,7 +254,6 @@
 
 </style>
 </head>
-
 <body>
 <!-- container section start -->
     <section id="container" class="">
@@ -281,8 +280,7 @@
     $badge_count_sql = "SELECT notif_id
                         FROM notification
                         WHERE to_office = '$office' 
-                        AND isNotif_view = 0
-                        ";
+                        AND isNotif_view = 0";
 
     $badge_count_sql_result = mysqli_query($db, $badge_count_sql);
     $badge_count = mysqli_num_rows($badge_count_sql_result);
@@ -301,7 +299,7 @@
                             </li>
 <?php 
 
-    $notif_sql = "SELECT notif_id, table_name, content, from_office
+    $notif_sql = "SELECT notif_id, table_name, content, from_office, notif_date
                     FROM notification 
                     WHERE to_office = '$office'
                     AND isNotif_view = '0'
@@ -312,12 +310,31 @@
         $notif_count = 1;
         while ($notif_sql_row =mysqli_fetch_assoc($notif_sql_result)) {
 
+            $datetime1 = strtotime($notif_sql_row['notif_date']);
+            $datetime2 = strtotime(date('Y-m-d H:i:s'));
+            $interval  = abs($datetime2 - $datetime1);
+            $minutes   = round($interval / 60);
+            $hours = round($interval / 3600);
+            
+            $dStart = new DateTime();
+            $dEnd  = new DateTime($notif_sql_row['notif_date']);
+            $dDiff = $dStart->diff($dEnd);
+
+            if($minutes < 60){
+                $time_elapse = $minutes . " minute(s) ago";
+            }else if($minutes > 60 && $hours < 24){
+                $time_elapse = $hours . " hour(s) ago";
+            }else if($minutes > 60 && $hours > 24){
+                $time_elapse = $dDiff->days . " day(s) ago";
+            }
+
+
             if($notif_sql_row['table_name'] == 'Ongoing Delivery'){
-                $detail = ucfirst($notif_sql_row['from_office']) . " issued DR No. " . $notif_sql_row['content'];
+                $detail = ucfirst($notif_sql_row['from_office']) . " issued DR No. <strong>" . $notif_sql_row['content'] . "</strong><span style='float: right;'>" . $time_elapse . "</span>";
             }else if($notif_sql_row['table_name'] == 'Delivered Delivery'){
-                $detail = ucfirst($notif_sql_row['from_office']) . " delivered DR No. " . $notif_sql_row['content'];
+                $detail = ucfirst($notif_sql_row['from_office']) . " delivered DR No. <strong>" . $notif_sql_row['content'] . "</strong><span style='float: right;'>" . $time_elapse . "</span>";
             }else if($notif_sql_row['table_name'] == 'Backloaded Delivery'){
-                $detail = ucfirst($notif_sql_row['from_office']) . " backloaded DR No. " . $notif_sql_row['content'];
+                $detail = ucfirst($notif_sql_row['from_office']) . " backloaded DR No. <strong>" . $notif_sql_row['content'] . "</strong><span style='float: right;'>" . $time_elapse . "</span>";
             }
 ?>
                             <li class="notif">
@@ -430,7 +447,7 @@
                     <div class="col-md-4">
                         <!-- <h3 class="page-header"><i class="fa fa-home"></i> History</h3> -->
                         <ol class="breadcrumb">
-                            <li>As of <strong><?php $date = date("Y-m-d h:i:s"); $date_create = date_create($date); echo date_format($date_create, "M d, Y h:i A"); ?></strong></li>                          
+                            <li>As of <strong><?php $date = date("Y-m-d H:i:s"); $date_create = date_create($date); echo date_format($date_create, "M d, Y h:i A"); ?></strong></li>                          
                         </ol>
                     </div>
                 </div>
@@ -740,7 +757,8 @@
         $update_notif = "UPDATE notification SET isNotif_view = '1'
                             WHERE isNotif_view = 0 
                             AND table_name = '$table_name'
-                            AND to_office = '$office'";
+                            AND to_office = '$office'
+                            AND from_office = '$from_office'";
 
         // echo $update_notif;
         if(mysqli_query($db, $update_notif)){

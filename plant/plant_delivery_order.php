@@ -347,11 +347,20 @@
 	            <div class="row">
 	                <div class="col-lg-12 page_links">
 	                    <h3 class="page-header"><a href="plant_delivery_order.php" style="color: inherit;">Ongoing Delivery</a></h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
 	                    <ol class="breadcrumb">
 	                        <li><i class="fa fa-building"></i>Delivery Order</li>
 	                        <li><i class="fa fa-truck"></i>Ongoing Delivery <span class="badge"><?php echo getDeliveryCountOnDeliveryOffice($db, $office); ?></span></li>						  	
 	                    </ol>
 	                </div>
+                    <div class="col-md-4">
+                        <ol class="breadcrumb">
+                            <li>As of <strong><?php $date = date("Y-m-d H:i:s"); $date_create = date_create($date); echo date_format($date_create, "M d, Y h:i A"); ?></strong></li>  
+                        </ol>
+                    </div>
 	            </div>
 
 	            <div class="row">
@@ -1009,6 +1018,8 @@ if(isset($_POST['delivered'])){
         $insert_notif = "INSERT INTO notification (from_office, to_office, table_name, content, notif_date) 
                             VALUES ('$office','head','Backloaded Delivery','$row_delivery_receipt_no','$datetime')";
 
+
+        $update_counter = "UPDATE setting SET rowCounter = rowCounter + 1";
 		// $sql = "SELECT * FROM purchase_order 
 		// 		WHERE purchase_order_no = '".$row['po_no_delivery']."' 
 		// 		AND purchase_id = '".$row['fk_po_id']."' 

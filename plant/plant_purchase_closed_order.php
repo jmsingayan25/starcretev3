@@ -346,9 +346,18 @@
                 <div class="row">
                     <div class="col-lg-12 page_links">
                         <h3 class="page-header"></i><a href="plant_purchase_deliver_order.php" style="color: inherit;">Closed Purchase Order</a></h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
                         <ol class="breadcrumb">
                             <li><i class="fa fa-building"></i>Purchase Order</li>
                             <li><i class="icon_document"></i>Closed P.O.</li>                           
+                        </ol>
+                    </div>
+                    <div class="col-md-4">
+                        <ol class="breadcrumb">
+                            <li>As of <strong><?php $date = date("Y-m-d H:i:s"); $date_create = date_create($date); echo date_format($date_create, "M d, Y h:i A"); ?></strong></li>  
                         </ol>
                     </div>
                 </div>
