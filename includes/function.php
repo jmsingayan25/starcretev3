@@ -3,6 +3,18 @@
 	    echo '<script type="text/javascript">alert("' . $msg . '")</script>';
 	}
 
+	function lastPurchaseOrderEntry($db, $office){
+
+		$sql = "SELECT MAX(date_purchase) as date_purchase
+				FROM purchase_order
+				WHERE office = '$office'";
+
+		$result = mysqli_query($db, $sql);
+		$row = mysqli_fetch_assoc($result);
+
+		return $row['date_purchase'];
+	}
+	
 	function getDieselStock($db, $office){
 
 		$sql = "SELECT stock

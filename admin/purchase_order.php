@@ -384,11 +384,13 @@ session_start();
                     <div class="col-md-4">
                         <ol class="breadcrumb">
                             <li>As of <strong><?php $date = date("Y-m-d H:i:s"); $date_create = date_create($date); echo date_format($date_create, "M d, Y h:i A"); ?></strong></li>  
+
+                            <!-- <li>Last Entry: <strong><?php $date = lastPurchaseOrderEntry($db, $plant); $date_create = date_create($date); echo date_format($date_create, "M d, Y h:i A"); ?></strong></li> -->
                         </ol>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-md-12">
                         <section class="panel">
                             <form action="purchase_order.php" method="get" class="form-inline">
                                 <header class="panel-heading">

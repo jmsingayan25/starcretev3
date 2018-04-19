@@ -362,8 +362,11 @@
 	                                </div>
 	                            </div>
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-9">
                                         <span>Project Address: <strong><?php echo $project_address; ?></strong></span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        As of <strong><?php $date = date("Y-m-d H:i:s"); $date_create = date_create($date); echo date_format($date_create, "M d, Y h:i A"); ?></strong>
                                     </div>
                                 </div>
 	                        </header>

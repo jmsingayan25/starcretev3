@@ -244,6 +244,91 @@ session_start();
             <div class="top-nav notification-row">                
                 <!-- notificatoin dropdown start-->
                 <ul class="nav pull-right top-menu">
+
+                    <!-- alert notification start-->
+                    <li id="alert_notificatoin_bar" class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+
+                            <i class="icon-bell-l"></i>
+<?php
+
+    $badge_count_sql = "SELECT notif_id
+                        FROM notification
+                        WHERE to_office = '$office' 
+                        AND isNotif_view = 0";
+
+    $badge_count_sql_result = mysqli_query($db, $badge_count_sql);
+    $badge_count = mysqli_num_rows($badge_count_sql_result);
+    if($badge_count > 0){
+?>
+                            <span class="badge bg-important"><?php echo $badge_count; ?></span>
+<?php
+    }
+?>
+                           
+                        </a>
+                        <ul class="dropdown-menu extended notification">
+                            <div class="notify-arrow notify-arrow-blue"></div>
+                            <li>
+                                <p class="blue">You have <?php echo $badge_count ?> new notifications</p>
+                            </li>
+<?php 
+
+    $notif_sql = "SELECT notif_id, table_name, content, from_office, notif_date
+                    FROM notification 
+                    WHERE to_office = '$office'
+                    AND isNotif_view = '0'
+                    ORDER BY notif_date DESC LIMIT 0,10";
+           // echo $notif_sql;
+    $notif_sql_result = mysqli_query($db, $notif_sql);
+    if(mysqli_num_rows($notif_sql_result) > 0){
+        $notif_count = 1;
+        while ($notif_sql_row =mysqli_fetch_assoc($notif_sql_result)) {
+
+            $datetime1 = strtotime($notif_sql_row['notif_date']);
+            $datetime2 = strtotime(date('Y-m-d H:i:s'));
+            $interval  = abs($datetime2 - $datetime1);
+            $minutes   = round($interval / 60);
+            $hours = round($interval / 3600);
+            
+            $dStart = new DateTime();
+            $dEnd  = new DateTime($notif_sql_row['notif_date']);
+            $dDiff = $dStart->diff($dEnd);
+
+            if($minutes < 60){
+                $time_elapse = $minutes . " minute(s) ago";
+            }else if($minutes > 60 && $hours < 24){
+                $time_elapse = $hours . " hour(s) ago";
+            }else if($minutes > 60 && $hours > 24){
+                $time_elapse = $dDiff->days . " day(s) ago";
+            }
+
+
+            if($notif_sql_row['table_name'] == 'Ongoing Delivery'){
+                $detail = ucfirst($notif_sql_row['from_office']) . " issued DR No. <strong>" . $notif_sql_row['content'] . "</strong><span style='float: right;'>" . $time_elapse . "</span>";
+            }else if($notif_sql_row['table_name'] == 'Delivered Delivery'){
+                $detail = ucfirst($notif_sql_row['from_office']) . " delivered DR No. <strong>" . $notif_sql_row['content'] . "</strong><span style='float: right;'>" . $time_elapse . "</span>";
+            }else if($notif_sql_row['table_name'] == 'Backloaded Delivery'){
+                $detail = ucfirst($notif_sql_row['from_office']) . " backloaded DR No. <strong>" . $notif_sql_row['content'] . "</strong><span style='float: right;'>" . $time_elapse . "</span>";
+            }
+?>
+                            <li class="notif">
+                                <a href="delivery_po_details.php?table_name=<?php echo $notif_sql_row['table_name']; ?>&from_office=<?php echo $notif_sql_row['from_office']; ?>"><?php echo $detail; ?></a>
+                            </li>
+<?php
+            $notif_count++;
+        }                            
+    }else{
+?>
+                            <li>
+                                <a href="#">No new notifications</a>
+                            </li>
+<?php
+    }
+?>                                
+                        </ul>
+                    </li>
+                    <!-- alert notification end-->
                     <!-- user login dropdown start-->
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">

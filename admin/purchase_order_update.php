@@ -289,7 +289,7 @@ session_start();
 									<div class="form-group">
 										<label for="update_po_no" class="col-md-3 control-label">P.O. No.</label>
 										<div class="col-md-6">
-											<!-- <input type="text" id="update_po_no" name="update_po_no" value="<?php echo $purchase_row['purchase_order_no']; ?>" class="form-control"> -->
+											<input type="hidden" id="update_po_no" name="update_po_no" value="<?php echo $purchase_row['purchase_order_no']; ?>" class="form-control">
                                             <p class="help-block"><?php echo $purchase_row['purchase_order_no']; ?></p>
 										</div>
 									</div>

@@ -325,11 +325,11 @@ session_start();
 
 
             if($notif_sql_row['table_name'] == 'Ongoing Delivery'){
-                $detail = ucfirst($notif_sql_row['from_office']) . " issued DR No. <strong>" . $notif_sql_row['content'] . "</strong><br>" . $time_elapse;
+                $detail = ucfirst($notif_sql_row['from_office']) . " issued DR No. <strong>" . $notif_sql_row['content'] . "</strong><span style='float: right;'>" . $time_elapse . "</span>";
             }else if($notif_sql_row['table_name'] == 'Delivered Delivery'){
-                $detail = ucfirst($notif_sql_row['from_office']) . " delivered DR No. <strong>" . $notif_sql_row['content'] . "</strong><br> " . $time_elapse;
+                $detail = ucfirst($notif_sql_row['from_office']) . " delivered DR No. <strong>" . $notif_sql_row['content'] . "</strong><span style='float: right;'>" . $time_elapse . "</span>";
             }else if($notif_sql_row['table_name'] == 'Backloaded Delivery'){
-                $detail = ucfirst($notif_sql_row['from_office']) . " backloaded DR No. <strong>" . $notif_sql_row['content'] . "</strong><br> " . $time_elapse;
+                $detail = ucfirst($notif_sql_row['from_office']) . " backloaded DR No. <strong>" . $notif_sql_row['content'] . "</strong><span style='float: right;'>" . $time_elapse . "</span>";
             }
 ?>
                             <li class="notif">
@@ -348,7 +348,7 @@ session_start();
 ?>                                
                         </ul>
                     </li>
-                    <!-- alert notification end-->   
+                    <!-- alert notification end--> 
                     <!-- user login dropdown start-->
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
