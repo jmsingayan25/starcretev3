@@ -462,7 +462,9 @@ session_start();
 			// update all fields
 			$history = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) 
 		 					VALUES('Purchase Order','Update Purchase Order','Update P.O. No. ".$purchase_row['purchase_order_no']." to $update_purchase_order_no, $item_psi_ext to $update_item_no $psi_ext and its quantity to ".number_format($update_quantity)." pcs','$datetime','".$purchase_row['office']."')";
-		}
+		}else if($update_purchase_order_no == $purchase_row['purchase_order_no'] && $update_item_no == $purchase_row['item_no'] && $update_quantity == $purchase_row['quantity']){
+            echo "<script>alert('No changes has been made.'); window.location.href='purchase_order_details.php'</script>";
+        }
 
 		// echo $sql_update."<br>";
 		// echo $update_quantity_balance."<br>";
