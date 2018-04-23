@@ -338,7 +338,7 @@
             }
 ?>
                             <li class="notif">
-                                <a href="index.php?table_name=<?php echo $notif_sql_row['table_name']; ?>&from_office=<?php echo $notif_sql_row['from_office']; ?>"><?php echo $detail; ?></a>
+                                <a href="index.php?table_name=<?php echo $notif_sql_row['table_name']; ?>&from_office=<?php echo $notif_sql_row['from_office']; ?>&post_dr_no=<?php echo $notif_sql_row['content']; ?>"><?php echo $detail; ?></a>
                             </li>
 <?php
             $notif_count++;
@@ -741,10 +741,11 @@
 </html>
 <?php
 
-    if(isset($_GET['table_name']) && isset($_GET['from_office'])){
+    if(isset($_GET['table_name']) && isset($_GET['from_office']) && isset($_GET['post_dr_no'])){
 
         $table_name = $_GET['table_name'];
         $from_office = $_GET['from_office'];
+        $post_dr_no = $_GET['post_dr_no'];
 
         if($table_name == 'Delivered Delivery'){
             $location = "delivery_success.php?office=" . $from_office;
@@ -762,7 +763,7 @@
 
         // echo $update_notif;
         if(mysqli_query($db, $update_notif)){
-            header("location:" .$location. "");
+            header("location:" .$location. "#".$post_dr_no);
         }
     }
 ?>

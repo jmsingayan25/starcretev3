@@ -351,7 +351,7 @@ li.notif {
             }
 ?>
                             <li class="notif"> 
-                                <a href="index.php?table_name=<?php echo $notif_sql_row['table_name']; ?>"><?php echo $detail; ?></a>
+                                <a href="index.php?table_name=<?php echo $notif_sql_row['table_name']; ?>&post_dr_no=<?php echo $notif_sql_row['content']; ?>"><?php echo $detail; ?></a>
                             </li>
 <?php
             $notif_count++;
@@ -713,18 +713,20 @@ li.notif {
 </html>
 <?php
 
-    if(isset($_GET['table_name'])){
+    if(isset($_GET['table_name']) && isset($_GET['post_dr_no'])){
 
         $table_name = $_GET['table_name'];
+        $post_dr_no = $_GET['post_dr_no'];
 
         $update_notif = "UPDATE notification SET isNotif_view = '1'
                             WHERE isNotif_view = 0 
                             AND table_name = '$table_name'
-                            AND to_office = '$office'";
+                            AND to_office = '$office'
+                            AND content = '$post_dr_no'";
 
         // echo $update_notif;
         if(mysqli_query($db, $update_notif)){
-            header("location:plant_delivery_issue.php");
+            header("location:plant_delivery_issue.php#".$post_dr_no);
         }
     }
 

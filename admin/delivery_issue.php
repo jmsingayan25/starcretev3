@@ -350,7 +350,7 @@ session_start();
             }
 ?>
                             <li class="notif">
-                                <a href="delivery_issue.php?table_name=<?php echo $notif_sql_row['table_name']; ?>&from_office=<?php echo $notif_sql_row['from_office']; ?>"><?php echo $detail; ?></a>
+                                <a href="delivery_issue.php?table_name=<?php echo $notif_sql_row['table_name']; ?>&from_office=<?php echo $notif_sql_row['from_office']; ?>&post_po_no=<?php echo $notif_sql_row['content']; ?>"><?php echo $detail; ?></a>
                             </li>
 <?php
             $notif_count++;
@@ -715,7 +715,7 @@ session_start();
             if(mysqli_num_rows($count) > 0){
                 if($row['balance'] <= 1350){
 ?>
-                    <td style="cursor: pointer; color: red;">
+                    <td style="cursor: pointer; color: red;" id="<?php echo $row['purchase_order_no']; ?>">
                         <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo base64_encode($row['purchase_id']); ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>&fk_unique_po_id=<?php echo base64_encode($row['purchase_unique_id']); ?>'">
                             <strong><?php echo $row['purchase_order_no']; ?></strong>
                         </div>
@@ -724,7 +724,7 @@ session_start();
 <?php
                 }else{
 ?>
-                    <td style="cursor: pointer;">
+                    <td style="cursor: pointer;" id="<?php echo $row['purchase_order_no']; ?>">
                         <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo base64_encode($row['purchase_id']); ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>&fk_unique_po_id=<?php echo base64_encode($row['purchase_unique_id']); ?>'">
                             <strong><?php echo $row['purchase_order_no']; ?></strong>
                         </div>
@@ -734,7 +734,7 @@ session_start();
                 }
             }else{
 ?>
-                <td style="cursor: pointer;">
+                <td style="cursor: pointer;" id="<?php echo $row['purchase_order_no']; ?>">
                     <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo base64_encode($row['purchase_id']); ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>&fk_unique_po_id=<?php echo base64_encode($row['purchase_unique_id']); ?>'">
                         <strong><?php echo $row['purchase_order_no']; ?></strong>
                     </div>
@@ -850,10 +850,11 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
 </html>
 <?php
 
-    if(isset($_GET['table_name']) && isset($_GET['from_office'])){
+    if(isset($_GET['table_name']) && isset($_GET['from_office']) && isset($_GET['post_po_no'])){
 
         $table_name = $_GET['table_name'];
         $from_office = $_GET['from_office'];
+        $post_po_no = $_GET['post_po_no'];
 
         if($table_name == 'Delivered Delivery'){
             $location = "delivery_success.php?office=" . $from_office;
@@ -871,7 +872,7 @@ vertical-align:middle;'><h4><p class='text-muted'>No data found</p></h4></td>
 
         // echo $update_notif;
         if(mysqli_query($db, $update_notif)){
-            header("location:" .$location. "");
+            header("location:" .$location. "#".$post_po_no);
         }
     }
 ?>

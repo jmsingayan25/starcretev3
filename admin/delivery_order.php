@@ -346,7 +346,7 @@ session_start();
             }
 ?>
                             <li class="notif">
-                                <a href="delivery_order.php?table_name=<?php echo $notif_sql_row['table_name']; ?>&from_office=<?php echo $notif_sql_row['from_office']; ?>"><?php echo $detail; ?></a>
+                                <a href="delivery_order.php?table_name=<?php echo $notif_sql_row['table_name']; ?>&from_office=<?php echo $notif_sql_row['from_office']; ?>&post_dr_no=<?php echo $notif_sql_row['content']; ?>"><?php echo $detail; ?></a>
                             </li>
 <?php
             $notif_count++;
@@ -701,7 +701,7 @@ session_start();
 ?>
             <tr>
                 <td><?php echo $hash; ?></td>
-                <td><strong><?php echo $row['delivery_receipt_no']; ?></strong></td>
+                <td id="<?php echo $row['delivery_receipt_no']; ?>"><strong><?php echo $row['delivery_receipt_no']; ?></strong></td>
                 <td style="cursor: pointer;">
                     <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['po_no_delivery'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo base64_encode($row['fk_po_id']); ?>&po_no_delivery=<?php echo $row['po_no_delivery']; ?>&office=<?php echo $search_plant; ?>&fk_unique_po_id=<?php echo base64_encode($row['fk_unique_po_id']); ?>'">
                         <strong><?php echo $row['po_no_delivery']; ?></strong>
@@ -806,10 +806,11 @@ session_start();
 </html>
 <?php
 
-    if(isset($_GET['table_name']) && isset($_GET['from_office'])){
+    if(isset($_GET['table_name']) && isset($_GET['from_office']) && isset($_GET['post_dr_no'])){
 
         $table_name = $_GET['table_name'];
         $from_office = $_GET['from_office'];
+        $post_dr_no = $_GET['post_dr_no'];
 
         if($table_name == 'Delivered Delivery'){
             $location = "delivery_success.php?office=" . $from_office;
@@ -827,7 +828,7 @@ session_start();
 
         // echo $update_notif;
         if(mysqli_query($db, $update_notif)){
-            header("location:" .$location. "");
+            header("location:" .$location. "#".$post_dr_no);
         }
     }
 ?>

@@ -358,7 +358,7 @@
                     <div class="col-md-8">
 	                    <ol class="breadcrumb">
 	                        <li><i class="fa fa-building"></i>Delivery Order</li>
-	                        <li><i class="fa fa-exclamation-circle"></i>Existing P.O. <span class='badge'><?php echo getCountPlantPo($db, $office); ?></span></li>						  	
+	                        <li><i class="fa fa-exclamation-circle"></i>Existing P.O. <span class='badge'><?php echo getCountPlantPo($db, $office); ?></span></li>					  	
 	                    </ol>
 	                </div>
                     <div class="col-md-4">
@@ -611,7 +611,7 @@
             if(mysqli_num_rows($count) > 0){
                 if($row['balance'] <= 1350){
 ?>
-                    <td style="cursor: pointer; color: red;">
+                    <td style="cursor: pointer; color: red;" id="<?php echo $row['purchase_order_no']; ?>">
                         <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo base64_encode($row['purchase_id']); ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&fk_unique_po_id=<?php echo base64_encode($row['purchase_unique_id']); ?>'">
                             <strong><?php echo $row['purchase_order_no']; ?></strong>
                         </div>
@@ -620,7 +620,7 @@
 <?php
                 }else{
 ?>
-                    <td style="cursor: pointer;">
+                    <td style="cursor: pointer;" id="<?php echo $row['purchase_order_no']; ?>">
                         <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo base64_encode($row['purchase_id']); ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&fk_unique_po_id=<?php echo base64_encode($row['purchase_unique_id']); ?>'">
                             <strong><?php echo $row['purchase_order_no']; ?></strong>
                         </div>
@@ -630,7 +630,7 @@
                 }
             }else{
 ?>
-                <td style="cursor: pointer;">
+                <td style="cursor: pointer;" id="<?php echo $row['purchase_order_no']; ?>">
                     <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo base64_encode($row['purchase_id']); ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&fk_unique_po_id=<?php echo base64_encode($row['purchase_unique_id']); ?>'">
                         <strong><?php echo $row['purchase_order_no']; ?></strong>
                     </div>
