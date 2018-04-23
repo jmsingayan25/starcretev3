@@ -599,7 +599,7 @@
 				<td><?php echo $hash; ?></td>
 				<td><strong><?php echo $row['delivery_receipt_no']; ?></strong></td>
                 <td style="cursor: pointer;">
-                    <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['po_no_delivery'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo $row['fk_po_id']; ?>&po_no_delivery=<?php echo $row['po_no_delivery']; ?>&fk_unique_po_id=<?php echo $row['fk_unique_po_id']; ?>'">
+                    <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['po_no_delivery'] ?>" data-placement="top" onclick="window.location='plant_po_details.php?fk_po_id=<?php echo base64_encode($row['fk_po_id']); ?>&po_no_delivery=<?php echo $row['po_no_delivery']; ?>&fk_unique_po_id=<?php echo base64_encode($row['fk_unique_po_id']); ?>'">
                         <strong><?php echo $row['po_no_delivery']; ?></strong>
                     </div>
                 </td>

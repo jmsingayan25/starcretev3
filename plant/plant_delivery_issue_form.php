@@ -402,6 +402,7 @@
 		// $client = getClientInfo($db, $purchase_row['site_name'], $purchase_row['address']);
 		$_POST['quantity'] = mysqli_real_escape_string($db, $_POST['quantity']);
 		$site_name = $purchase_row['site_name'];
+		$site_address = $purchase_row['site_address'];
 		$delivery_no = mysqli_real_escape_string($db, $_POST['dr_no']);
 		$item_no = $purchase_row['item_no'];
         $psi = $purchase_row['psi'];
@@ -425,7 +426,7 @@
 							VALUES('$delivery_no','$item_no', '$psi','$quantity','$site_id','$gate_pass_no','$po_no','$datetime','$office','Ongoing Delivery','$purchase_id','$unique_po_id')";
 
 		$history_query = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) 
-		 					VALUES('Delivery','Issued DR No.','Issued DR No. $delivery_no with P.O. No. $po_no and ".$_POST['quantity']." pcs of $item_no $ext and ready to deliver to $site_name','$datetime','$office')";
+		 					VALUES('Delivery','Issued DR No.','Issued DR No. $delivery_no with P.O. No. $po_no and ".$_POST['quantity']." pcs of $item_no $ext and ready to deliver to $site_name in $site_address','$datetime','$office')";
 
 		$purchase_order_update = "UPDATE purchase_order SET balance = balance - '$quantity'
 									WHERE purchase_id = '$purchase_id'";

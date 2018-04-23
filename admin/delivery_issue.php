@@ -716,7 +716,7 @@ session_start();
                 if($row['balance'] <= 1350){
 ?>
                     <td style="cursor: pointer; color: red;">
-                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>&fk_unique_po_id=<?php echo $row['purchase_unique_id']; ?>'">
+                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo base64_encode($row['purchase_id']); ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>&fk_unique_po_id=<?php echo base64_encode($row['purchase_unique_id']); ?>'">
                             <strong><?php echo $row['purchase_order_no']; ?></strong>
                         </div>
                     </td>
@@ -725,7 +725,7 @@ session_start();
                 }else{
 ?>
                     <td style="cursor: pointer;">
-                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>&fk_unique_po_id=<?php echo $row['purchase_unique_id']; ?>'">
+                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo base64_encode($row['purchase_id']); ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>&fk_unique_po_id=<?php echo base64_encode($row['purchase_unique_id']); ?>'">
                             <strong><?php echo $row['purchase_order_no']; ?></strong>
                         </div>
                     </td>
@@ -735,7 +735,7 @@ session_start();
             }else{
 ?>
                 <td style="cursor: pointer;">
-                    <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo $row['purchase_id']; ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>&fk_unique_po_id=<?php echo $row['purchase_unique_id']; ?>'">
+                    <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='delivery_po_details.php?fk_po_id=<?php echo base64_encode($row['purchase_id']); ?>&po_no_delivery=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>&fk_unique_po_id=<?php echo base64_encode($row['purchase_unique_id']); ?>'">
                         <strong><?php echo $row['purchase_order_no']; ?></strong>
                     </div>
                 </td>

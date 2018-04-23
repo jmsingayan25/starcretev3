@@ -17,9 +17,9 @@
     }
 
     if (isset($_REQUEST['fk_po_id']) && isset($_REQUEST['po_no_delivery']) && isset($_REQUEST['fk_unique_po_id'])) {
-        $_GET['fk_po_id'] = $_REQUEST['fk_po_id'];
+        $_GET['fk_po_id'] = base64_decode($_REQUEST['fk_po_id']);
         $_GET['po_no_delivery'] = $_REQUEST['po_no_delivery'];
-        $_GET['fk_unique_po_id'] = $_REQUEST['fk_unique_po_id'];
+        $_GET['fk_unique_po_id'] = base64_decode($_REQUEST['fk_unique_po_id']);
     }
 
     $fk_po_id = $_GET['fk_po_id'];

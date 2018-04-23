@@ -290,28 +290,28 @@ session_start();
 										<label for="update_po_no" class="col-md-3 control-label">P.O. No.</label>
 										<div class="col-md-6">
 											<input type="hidden" id="update_po_no" name="update_po_no" value="<?php echo $purchase_row['purchase_order_no']; ?>" class="form-control">
-                                            <p class="help-block"><?php echo $purchase_row['purchase_order_no']; ?></p>
+                                            <p class="help-block"><strong><?php echo $purchase_row['purchase_order_no']; ?></strong></p>
 										</div>
 									</div>
                                     <div class="form-group">
                                         <label for="update_address" class="col-md-3 control-label">Site Name</label>
                                         <div class="col-md-6">
                                             <input type="hidden" id="update_name" name="update_name" value="<?php echo $purchase_row['site_name']; ?>" class="form-control" readonly>
-                                            <p class="help-block"><?php echo $purchase_row['site_name']; ?></p>
+                                            <p class="help-block"><strong><?php echo $purchase_row['site_name']; ?></strong></p>
                                         </div>
                                     </div>
 									<div class="form-group">
 										<label for="update_address" class="col-md-3 control-label">Site Address</label>
 										<div class="col-md-6">
 											<input type="hidden" id="update_address" name="update_address" value="<?php echo $purchase_row['site_address']; ?>" class="form-control" readonly>
-                                            <p class="help-block"><?php echo $purchase_row['site_address']; ?></p>
+                                            <p class="help-block"><strong><?php echo $purchase_row['site_address']; ?></strong></p>
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="item_no" class="col-md-3 control-label">Current Item</label>
 										<div class="col-md-6">
 											<input type="hidden" id="item_no" name="item_no" value="<?php echo $purchase_row['item_no']; ?>" class="form-control" readonly>
-                                            <p class="help-block">
+                                            <p class="help-block"><strong>
                                                 <?php 
                                                     if($purchase_row['psi'] != ""){
                                                         echo $purchase_row['item_no'] . " (" . $purchase_row['psi'] . " PSI)"; 
@@ -319,7 +319,7 @@ session_start();
                                                         echo $purchase_row['item_no'];
                                                     }
                                                 ?>
-                                            </p>
+                                            </strong></p>
 										</div>
 									</div>
 									<div class="form-group">
@@ -341,12 +341,13 @@ session_start();
                                             <input type="text" name="update_psi" class="form-control" value="<?php echo $purchase_row['psi']; ?>">
                                         </div>
 									</div>
-									<div class="form-group">
+									<!-- <div class="form-group">
 										<label for="item_no" class="col-md-3 control-label">Quantity</label>
-										<div class="col-md-6">
-											<input type="text" id="update_quantity" name="update_quantity" class="form-control" autocomplete="off" value="<?php echo number_format($purchase_row['quantity']); ?>" required>
+										<div class="col-md-6"> -->
+											<input type="hidden" id="update_quantity" name="update_quantity" class="form-control" autocomplete="off" value="<?php echo number_format($purchase_row['quantity']); ?>" required>
+                                            <!-- <p class="help-block"><strong><?php echo number_format($purchase_row['quantity']) . " pcs"; ?></strong></p>
 										</div>
-									</div>
+									</div> -->
 									<div class="form-group">
 										<div class="col-md-offset-8 col-md-4">
 											<input type="submit" name="submit" id="submit" value="Done" class="btn btn-primary" style="font-weight: bold;">

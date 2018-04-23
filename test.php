@@ -36,20 +36,44 @@
 	// echo $elapsed;
 	// $temp_count = 0;
 
-	$sql = "SELECT * FROM history";
-	$result = mysqli_query($db, $sql);
-	$count = mysqli_num_rows($result);
+	// $sql = "SELECT * FROM history";
+	// $result = mysqli_query($db, $sql);
+	// $count = mysqli_num_rows($result);
 
-	echo "Count: " . $count . " Temp: " . $temp_count;
+	// echo "Count: " . $count . " Temp: " . $temp_count;
 
-	if($temp_count != $count){
-		echo "New update on database";
-		$temp_count += $count;
-	echo "Count: " . $count . " Temp: " . $temp_count;
+	// if($temp_count != $count){
+	// 	echo "New update on database";
+	// 	$temp_count += $count;
+	// echo "Count: " . $count . " Temp: " . $temp_count;
 		
-	}else{
-		echo "No new update on database.";
-	}
-
+	// }else{
+	// 	echo "No new update on database.";
+	// }
 
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+
+<script type="text/javascript">
+	function onSubmit(){
+		var txt;
+		if(confirm("Proceed")){
+			form.submit();
+			if(confirm("Insert Update ok. Want more?")){
+				window.location.reload();
+			}else{
+				alert("FALSE");
+			}
+		}
+	}
+</script>
+</head>
+<body>
+<form action="test.php" method="post">
+	<input type="submit" name="submit" value="Submit" onclick="onSubmit();">
+</form>
+</body>
+</html>

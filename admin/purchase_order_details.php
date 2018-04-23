@@ -13,7 +13,7 @@ session_start();
     }
 
     if (isset($_REQUEST['purchase_unique_id']) && isset($_REQUEST['purchase_order_no']) && isset($_REQUEST['office'])) {
-        $_SESSION['post_purchase_unique_id'] = $_REQUEST['purchase_unique_id'];
+        $_SESSION['post_purchase_unique_id'] = base64_decode($_REQUEST['purchase_unique_id']);
     	$_SESSION['post_purchase_order_no'] = $_REQUEST['purchase_order_no'];
         $_SESSION['post_office'] = $_REQUEST['office'];
     }
@@ -460,6 +460,7 @@ session_start();
                 <td>
 <?php
             if($row['balance'] > 0){
+                $disabled = " disabled";
 ?>
 
                     <form action="purchase_order_details.php" method="post">
@@ -707,7 +708,7 @@ session_start();
         }
 
         $history = "INSERT INTO history(table_report,transaction_type,item_no,detail,history_date,office) 
-                    VALUES('Purchase Order','Closed P.O. No.','$item_no','P.O. No. $po_no with remaining balance of $item_ext order by $client has been closed with a reason of $reason','$datetime','$plant')";
+                    VALUES('Purchase Order','Closed P.O. No.','$item_no','P.O. No. $po_no with remaining balance of $item_ext order by $client has been closed. Reason: $reason','$datetime','$plant')";
 
         // echo $history . "<br>";
 

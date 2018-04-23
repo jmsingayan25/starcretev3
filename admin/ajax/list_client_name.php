@@ -8,15 +8,22 @@
     
     //get matched data from skills table
     if($searchTerm != '' || !isset($_GET['term'])){
-        $search = " WHERE client_name LIKE '%".$searchTerm."%'";
+
+        $explode_term = explode(",", $searchTerm);
+        for($i = 0; $i < count($explode_term); $i++){
+            $search = " WHERE client_name LIKE '%".$explode_term[$i]."%' OR address LIKE '%".$explode_term[$i]."%'";
+        }
     }else{
         $search = "";
     }
 
-    $query = "SELECT client_name FROM client".$search;
+    $query = "SELECT client_name, address FROM client".$search;
     $result = mysqli_query($db, $query);
     while ($row = mysqli_fetch_assoc($result)) {
-        $data[] = $row['client_name'];
+        $client['name'][] = $row['client_name'];
+        $client['address'][] = $row['address'];
+
+        $data = array_merge($client['name'],$client['address']);
     }
     
     //return json data

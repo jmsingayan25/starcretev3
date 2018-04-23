@@ -565,6 +565,7 @@ session_start();
 		$site_id = $_POST['site_id'];
 		$site = getSiteInfo($db, $site_id);
 		$site_name = $site['site_name'];
+        $site_address = $site['site_address'];
 
 		$po_no = mysqli_real_escape_string($db, $_POST['po_no']);
 		$item = $_POST['item_no'];
@@ -618,7 +619,7 @@ session_start();
             }
 		}
 
-        $history_query = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) VALUES('Purchase Order','Issued P.O. No.','$client_name ordered $item_ext with P.O. No. $po_no to be delivered to $site_name','$datetime','$plant')";
+        $history_query = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) VALUES('Purchase Order','Issued P.O. No.','$client_name ordered $item_ext with P.O. No. $po_no to be delivered to $site_name in $site_address','$datetime','$plant')";
 
         mysqli_query($db, $history_query);
         // echo $history_query;
