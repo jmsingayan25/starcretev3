@@ -263,7 +263,7 @@
 										<label for="po_no" class="col-md-3 control-label">P.O. No.</label>
 										<div class="col-md-6">
 											<input type="hidden" name="update_delivery_receipt_no" value="<?php echo $delivery_row['po_no_delivery'] ?>" class="form-control" readonly>
-											<p class="help-block"><?php echo $delivery_row['po_no_delivery']; ?></p>
+											<p class="help-block"><strong><?php echo $delivery_row['po_no_delivery']; ?></strong></p>
 										</div>
 									</div>
 									<div class="form-group">
@@ -282,13 +282,15 @@
 										<label for="item_no" class="col-md-3 control-label">Current Item</label>
 										<div class="col-md-6">
 											<input type="hidden" name="item_no" value="<?php echo $delivery_row['item_no']; ?>">
-											<p class="help-block"><?php 
+											<p class="help-block"><strong>
+												<?php 
 													if($delivery_row['psi'] != ''){
 														echo $delivery_row['item_no'] . " (" . $delivery_row['psi'] . " PSI)";
 													}else{
 														echo $delivery_row['item_no'];
 													}
-													?></p>
+													?>
+											</strong></p>
 										</div>
 									</div>
 									<div class="form-group">
@@ -298,7 +300,7 @@
 												<option value="">Select</option>
 <?php
 	$item_sql = "SELECT item_no FROM batch_list
-			WHERE item_no != '".$row['item_no']."' ORDER BY item_no ASC";
+					WHERE item_no != '".$delivery_row['item_no']."' ORDER BY item_no ASC";
 	$result1 = mysqli_query($db, $item_sql);
 	foreach($result1 as $row1){
 									echo "<option value='" . $row1['item_no'] . "'>" . $row1['item_no'] . "</option>";
@@ -314,7 +316,9 @@
 									<div class="form-group">
 										<label for="update_quantity" class="col-md-3 control-label">Quantity</label>
 										<div class="col-md-6">
-											<input type="text" id="update_quantity" name="update_quantity" value="<?php echo number_format($delivery_row['quantity']); ?>" class="form-control" onkeyup="compareValues(this.value)" required>
+											<!-- <input type="text" id="update_quantity" name="update_quantity" value="<?php echo number_format($delivery_row['quantity']); ?>" class="form-control" onkeyup="compareValues(this.value)" required> -->
+											<input type="hidden" id="update_quantity" name="update_quantity" value="<?php echo number_format($delivery_row['quantity']); ?>">
+											<p class="help-block"><strong><?php echo number_format($delivery_row['quantity']) . " pcs"; ?></strong></p>
 										</div>
 									</div>
 									<div class="form-group">
@@ -372,6 +376,13 @@
 		}else{
 			$item_psi_ext = $delivery_row['item_no'];
 		}
+
+        if($new_item_no != $delivery_row['item_no']){
+            $change_item_insert = "INSERT INTO delivery_change_item (new_item_no, prev_item_no, delivery_id)
+                                    VALUES ('$new_item_no','".$delivery_row['item_no']."','$delivery_id')";
+
+            mysqli_query($db, $change_item_insert);
+        }
 
 		$sql = "UPDATE delivery 
 				SET item_no = '$new_item_no', delivery_receipt_no = '$new_delivery_receipt_no', quantity = '$new_quantity', gate_pass = '$new_gate_pass', psi = '$new_psi' 

@@ -516,15 +516,15 @@
         $hash = 1;
         while ($row = mysqli_fetch_assoc($result_site)) {
 
-        $sql_number = "SELECT GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name ASC SEPARATOR ', ') as site_contact_name
-                        FROM site_contact_person p, site_contact_number n
-                        WHERE p.site_contact_person_id = n.site_contact_person_id
-                        AND p.site_id = '".$row['site_id']."'";
+        // $sql_number = "SELECT GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name ASC SEPARATOR ', ') as site_contact_name
+        //                 FROM site_contact_person p, site_contact_number n
+        //                 WHERE p.site_contact_person_id = n.site_contact_person_id
+        //                 AND p.site_id = '".$row['site_id']."'";
 
-        $result_number = mysqli_query($db, $sql_number);
-        $row_number = mysqli_fetch_assoc($result_number);
+        // $result_number = mysqli_query($db, $sql_number);
+        // $row_number = mysqli_fetch_assoc($result_number);
 
-        $row['site_contact_name'] = $row_number['site_contact_name'];        
+        // $row['site_contact_name'] = $row_number['site_contact_name'];        
 ?>
                                     <tr>
                                         <td><strong><?php echo $row['site_name']; ?></strong></td>

@@ -428,11 +428,14 @@
 			}
 
 			if($count == count($array_contact_name)){
-				phpAlert("New site added successfully.");
 				// echo "<meta http-equiv='refresh' content='0'>";
-				echo "<script>window.location.href='client_sites.php'</script>";
+				echo "<script>
+				if(confirm('New project added successfully. Add another project?')){
+					window.location.href='add_site.php?post_client_id=".$client_id."';
+				}else{
+					window.location.href='client_sites.php?post_client_id=".$client_id."';
+				}</script>";
 			}
 		}
 	}
-
 ?>

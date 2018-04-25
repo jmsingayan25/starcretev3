@@ -3,6 +3,25 @@
 	    echo '<script type="text/javascript">alert("' . $msg . '")</script>';
 	}
 
+	function getChangeItem($db, $dr_id, $item_no){
+
+		$sql = "SELECT MAX(prev_item_no) as prev_item_no 
+				FROM delivery_change_item
+				WHERE delivery_id = '$dr_id'
+				AND new_item_no = '$item_no'";
+		
+		$result = mysqli_query($db, $sql);
+		if(mysqli_num_rows($result) > 0){
+			
+			$row = mysqli_fetch_assoc($result);
+
+			return $row['prev_item_no'];
+		
+		}else{
+			return 0;
+		}
+	}
+
 	function lastPurchaseOrderEntry($db, $office){
 
 		$sql = "SELECT MAX(date_purchase) as date_purchase

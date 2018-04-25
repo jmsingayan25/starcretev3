@@ -491,15 +491,15 @@
     $hash = 1;
     while ($row = mysqli_fetch_assoc($result_client)) {
         
-        $sql_contact = "SELECT p.client_contact_id, GROUP_CONCAT(DISTINCT p.client_contact_name ORDER BY p.client_contact_name ASC SEPARATOR ', ') as client_contact_name, p.client_id, n.client_contact_no 
-                        FROM client_contact_person p, client_contact_number n
-                        WHERE p.client_contact_id = n.client_contact_id
-                        AND p.client_id = '".$row['client_id']."'";
+        // $sql_contact = "SELECT p.client_contact_id, GROUP_CONCAT(DISTINCT p.client_contact_name ORDER BY p.client_contact_name ASC SEPARATOR ', ') as client_contact_name, p.client_id, n.client_contact_no 
+        //                 FROM client_contact_person p, client_contact_number n
+        //                 WHERE p.client_contact_id = n.client_contact_id
+        //                 AND p.client_id = '".$row['client_id']."'";
 
-        $result_contact = mysqli_query($db, $sql_contact);
-        $row_contact = mysqli_fetch_assoc($result_contact);
+        // $result_contact = mysqli_query($db, $sql_contact);
+        // $row_contact = mysqli_fetch_assoc($result_contact);
 
-        $row['client_contact_name'] = $row_contact['client_contact_name'];
+        // $row['client_contact_name'] = $row_contact['client_contact_name'];
 ?>
                                     <tr>
                                         <td><strong><?php echo $row['client_name']; ?></strong></td>

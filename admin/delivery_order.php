@@ -737,7 +737,7 @@ session_start();
 ?>
                     <div class="row" style="margin-bottom: 2px;">
                         <div class="col-md-12">
-                            <strong><?php echo $contact_sql_row['site_contact_name'] . "<br> (" . $contact_sql_row['site_contact_no'] . ")"; ?></strong>
+                            <strong><?php echo $contact_sql_row['site_contact_name'] . "<br> (" . $contact_sql_row['site_contact_no'] . ") <br><br>"; ?></strong>
                         </div>
                     </div>
 <?php

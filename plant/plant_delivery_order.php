@@ -179,7 +179,7 @@
             $filteredRows.hide();
             /* Prepend no-result row if all rows are filtered */
             if ($filteredRows.length === $rows.length) {
-                 $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="10" style="min-height: 100%;background: white; text-align:center; vertical-align:middle;"><h4><p class="text-muted">No data found</p></h4></td></tr>'));
+                 $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="11" style="min-height: 100%;background: white; text-align:center; vertical-align:middle;"><h4><p class="text-muted">No data found</p></h4></td></tr>'));
             }
         });
 
@@ -602,7 +602,14 @@
                         <strong><?php echo $row['po_no_delivery']; ?></strong>
                     </div>
                 </td>
-                <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
+                <td><strong><?php 
+                                echo $row['item_no'] . " " . $row['psi'] . "<br>"; 
+
+                                // if(getChangeItem($db, $row['delivery_id'], $row['item_no']) != 0){
+                                //     echo " (Prev. item: ". getChangeItem($db, $row['delivery_id'], $row['item_no']) .")";
+                                // }
+
+                            ?></strong></td>
                 <td><strong><?php echo number_format($row['quantity'])." pcs"; ?></strong></td>
                 <td><strong><?php echo $row['site_name']; ?></strong></td>
                 <td><strong><?php echo $row['site_address']; ?></strong></td>
@@ -631,7 +638,7 @@
 ?>
                     <div class="row">
                         <div class="col-md-12">
-                            <strong><?php echo $contact_sql_row['site_contact_name'] . "<br> (" . $contact_sql_row['site_contact_no'] . ")"; ?></strong>
+                            <strong><?php echo $contact_sql_row['site_contact_name'] . "<br> (" . $contact_sql_row['site_contact_no'] . ") <br><br>"; ?></strong>
                         </div>
                     </div>
 <?php

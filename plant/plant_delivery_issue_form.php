@@ -321,13 +321,13 @@
 									<div class="form-group">
 										<label for="po_no" class="col-md-3 control-label">P.O. No.</label>
 										<div class="col-md-6">
-                                            <p class="help-block"><?php echo $purchase_row['purchase_order_no']; ?> </p>
+                                            <p class="help-block"><strong><?php echo $purchase_row['purchase_order_no']; ?></strong></p>
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="item_no" class="col-md-3 control-label">Item No.</label>
 										<div class="col-md-6">
-                                            <p class="help-block">
+                                            <p class="help-block"><strong>
                                             	<?php 
                                             		if($purchase_row['psi'] != ""){
                                             			echo $purchase_row['item_no'] . " (" . $purchase_row['psi'] . " PSI)"; 
@@ -335,7 +335,7 @@
                                             			echo $purchase_row['item_no'];
                                             		}
                                             		
-                                            	?> </p>
+                                            	?></strong></p>
 										</div>
 									</div>
 									<div class="form-group">
@@ -356,7 +356,7 @@
 										<label for="dr_no" class="col-md-3 control-label">Quantity<span class="required" style="color: red;">*</span></label>
 										<div class="col-md-6">
 											<input type="text" id="quantity" name="quantity" class="class_quantity form-control" autocomplete="off" placeholder="Pieces to be delivered" onkeyup="compareValues(this.value)" required>
-											<p class="help-block">Balance: <?php echo number_format((float)$purchase_row['balance'])." pcs"; ?></p>
+											<p class="help-block">Balance: <strong><?php echo number_format((float)$purchase_row['balance'])." pcs"; ?></strong></p>
 										</div>
 									</div>
 									<div class="form-group">

@@ -129,6 +129,8 @@
             <div class="top-nav notification-row">                
                 <!-- notificatoin dropdown start-->
                 <ul class="nav pull-right top-menu">
+
+                	
                     <!-- user login dropdown start-->
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
@@ -376,17 +378,26 @@
 				$count++;
 			}
 			if($count == count($array_contact_name)){
-				phpAlert("New client added successfully.");
+
+				// phpAlert("New client added successfully.");
 				// echo "<meta http-equiv='refresh' content='0'>";
-				header("loction: clients.php");
+				// header("location: clients.php");
+				
+				$last_id_sql = "SELECT client_id, client_name FROM client
+								WHERE client_id = (SELECT MAX(client_id) as client_id FROM client)";
+				$last_id_result = mysqli_query($db, $last_id_sql);
+				$last_id_row = mysqli_fetch_assoc($last_id_result);
+				$post_client_id = $last_id_row['client_id'];
+				$post_client_name = $last_id_row['client_name'];
+
+				echo "<script>
+				if(confirm('New client added successfully. Proceed to Add Project for ".$post_client_name."?')){
+					window.location.href='add_site.php?post_client_id=".$post_client_id."';
+				}</script>";
 			}
 			
-
-
 			// $insert_contact_no = "INSERT INTO client_contact_number(client_contact_no, client_contact_id) 
 			// 					VALUES('$contact_no','$client_contact_id')";
-
-			
 		}
 		
 
