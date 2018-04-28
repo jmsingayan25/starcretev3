@@ -16,10 +16,10 @@
         $_GET['page'] = 0;
     }
 
-    if(!isset($_GET['view_count'])){
+    if(!isset($_GET['view'])){
         $limit = 25;
     }else{
-        $limit = $_GET['view_count'];
+        $limit = $_GET['view'];
     }
 
     if(!isset($_GET['search'])){
@@ -484,14 +484,14 @@ li.notif {
                                         
                                     </div>
                                     <div class="input-group col-md-2" style="white-space: nowrap; margin: 38px 0px 0px 60px;">
-                                        <label for="view_count" class="col-md-8 control-label">Number of rows:</label>
+                                        <label for="view" class="col-md-8 control-label">Number of rows:</label>
                                         <div class="form-group">
                                             <div class="col-md-12">
-                                                <select id="view_count" name="view_count" class="form-control" onchange="this.form.submit()">
-                                                    <option value="25" <?php if(isset($_GET['view_count']) && $_GET['view_count'] == "25") echo 'selected="selected"';?>>25</option>
-                                                    <option value="50"<?php if(isset($_GET['view_count']) && $_GET['view_count'] == "50") echo 'selected="selected"';?>>50</option>
-                                                    <option value="75"<?php if(isset($_GET['view_count']) && $_GET['view_count'] == "75") echo 'selected="selected"';?>>75</option>
-                                                    <option value="100"<?php if(isset($_GET['view_count']) && $_GET['view_count'] == "100") echo 'selected="selected"';?>>100</option>
+                                                <select id="view" name="view" class="form-control" onchange="this.form.submit()">
+                                                    <option value="25" <?php if(isset($_GET['view']) && $_GET['view'] == "25") echo 'selected="selected"';?>>25</option>
+                                                    <option value="50"<?php if(isset($_GET['view']) && $_GET['view'] == "50") echo 'selected="selected"';?>>50</option>
+                                                    <option value="75"<?php if(isset($_GET['view']) && $_GET['view'] == "75") echo 'selected="selected"';?>>75</option>
+                                                    <option value="100"<?php if(isset($_GET['view']) && $_GET['view'] == "100") echo 'selected="selected"';?>>100</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -583,7 +583,7 @@ li.notif {
     if($lastpage > 1){ 
         $pagination .= "<div class='pagination1'> <ul class='pagination'>";
         if ($page > $counter+1) {
-            $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$prev&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">Previous</a></li>"; 
+            $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$prev&start_date=$start_date&end_date=$end_date&search=$search_word&view=$limit\">Previous</a></li>"; 
         }
 
         if ($lastpage < 7 + ($adjacents * 2)) { 
@@ -591,7 +591,7 @@ li.notif {
                 if ($counter == $page)
                 $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
                 else
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$counter</a></li>"; 
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&start_date=$start_date&end_date=$end_date&search=$search_word&view=$limit\">$counter</a></li>"; 
             }
         }
         elseif($lastpage > 5 + ($adjacents * 2)){ //enough pages to hide some
@@ -601,44 +601,44 @@ li.notif {
                     if ($counter == $page)
                     $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
                     else
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$counter</a></li>"; 
+                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&start_date=$start_date&end_date=$end_date&search=$search_word&view=$limit\">$counter</a></li>"; 
                 }
                 $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$lpm1</a></li>";
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$lastpage</a></li>"; 
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&start_date=$start_date&end_date=$end_date&search=$search_word&view=$limit\">$lpm1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&start_date=$start_date&end_date=$end_date&search=$search_word&view=$limit\">$lastpage</a></li>"; 
             }
             //in middle; hide some front and some back
             elseif($lastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2)){
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">1</a></li>";
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">2</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&start_date=$start_date&end_date=$end_date&search=$search_word&view=$limit\">1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&start_date=$start_date&end_date=$end_date&search=$search_word&view=$limit\">2</a></li>";
                 $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
                 for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++){
                     if ($counter == $page)
                     $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
                     else
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$counter</a></li>"; 
+                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&start_date=$start_date&end_date=$end_date&search=$search_word&view=$limit\">$counter</a></li>"; 
                 }
                 $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$lpm1</a></li>";
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$lastpage</a></li>"; 
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&start_date=$start_date&end_date=$end_date&search=$search_word&view=$limit\">$lpm1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&start_date=$start_date&end_date=$end_date&search=$search_word&view=$limit\">$lastpage</a></li>"; 
             }
             //close to end; only hide early pages
             else{
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">1</a></li>";
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">2</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&start_date=$start_date&end_date=$end_date&search=$search_word&view=$limit\">1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&start_date=$start_date&end_date=$end_date&search=$search_word&view=$limit\">2</a></li>";
                 $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
                 for ($counter = $lastpage - (2 + ($adjacents * 2)); $counter <= $lastpage; $counter++){
                     if ($counter == $page)
                     $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
                     else
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">$counter</a></li>"; 
+                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&start_date=$start_date&end_date=$end_date&search=$search_word&view=$limit\">$counter</a></li>"; 
                 }
             }
         }
 
         //next button
         if ($page < $counter - 1) 
-            $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$next&start_date=$start_date&end_date=$end_date&search=$search_word&view_count=$limit\">Next</a></li>";
+            $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$next&start_date=$start_date&end_date=$end_date&search=$search_word&view=$limit\">Next</a></li>";
         else
             $pagination.= "";
         $pagination.= "</ul></div>\n"; 

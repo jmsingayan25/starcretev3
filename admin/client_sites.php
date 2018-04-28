@@ -173,7 +173,7 @@
             $filteredRows.hide();
             /* Prepend no-result row if all rows are filtered */
             if ($filteredRows.length === $rows.length) {
-                 $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="3" style="height: 100%;background: white; text-align:center; vertical-align:middle;"><h4><p class="text-muted">No data found</p></h4></td></tr>'));
+                 $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="4" style="height: 100%;background: white; text-align:center; vertical-align:middle;"><h4><p class="text-muted">No data found</p></h4></td></tr>'));
             }
         });
     });
@@ -386,21 +386,15 @@
                     	<div class="table-responsive filterable">
                             <table class="table table-striped table-bordered" id="myTable">
                                 <thead>
-                                    <!-- <tr class="filterable">
-                                        <th colspan="1">
-                                            <form action="add_site.php" method="post">
-                                                    <input type="hidden" name="post_client_id" value="<?php echo $client_id; ?>">
-                                                    <button type="submit" class="btn btn-info"><span class="fa fa-plus"></span> Add Site</button>
-                                            </form>
-                                        </th>
-                                        <th colspan="3">
+                                    <tr class="filterable">
+                                        <th colspan="4">
                                             <button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
                                         </th>
-                                    </tr> -->
+                                    </tr>
                                     <tr class="filters">
                                         <th class="col-md-4"><input type="text" class="form-control" placeholder="Project Name" disabled></th>
                                         <th class="col-md-4"><input type="text" class="form-control" placeholder="Address" disabled></th>
-                                        <th class="col-md-4">Contacts</th>
+                                        <th class="col-md-4"><input type="text" class="form-control" placeholder="Contact" disabled></th>
                                         <th class="col-md-1">Option</th>
                                     </tr>
                                 </thead>

@@ -109,9 +109,9 @@ session_start();
         // $input.on( "keyup", function( event ) {
 
 	 	var $form = $( "#form" );
-        var $input = $form.find( "#quantity" );
+        var $input = $form.find( "#quantity, #psi" );
 
-        $form.on( "keyup", "#quantity", function( event ) {
+        $form.on( "keyup", "#quantity, #psi", function( event ) {
             
             
             // When user select text in the document, also abort.
@@ -569,7 +569,7 @@ session_start();
 
 		$po_no = mysqli_real_escape_string($db, $_POST['po_no']);
 		$item = $_POST['item_no'];
-        $psi = $_POST['psi'];
+        $psi = str_replace(",", "", $_POST['psi']);
 		$quantity = str_replace( ',', '', $_POST['quantity']);
 		$datetime = date("Y/m/d H:i:s");
 		

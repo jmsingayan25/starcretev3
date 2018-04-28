@@ -289,8 +289,8 @@ session_start();
 									<div class="form-group">
 										<label for="update_po_no" class="col-md-3 control-label">P.O. No.</label>
 										<div class="col-md-6">
-											<input type="hidden" id="update_po_no" name="update_po_no" value="<?php echo $purchase_row['purchase_order_no']; ?>" class="form-control">
-                                            <p class="help-block"><strong><?php echo $purchase_row['purchase_order_no']; ?></strong></p>
+											<input type="text" id="update_po_no" name="update_po_no" value="<?php echo $purchase_row['purchase_order_no']; ?>" class="form-control">
+                                            <!-- <p class="help-block"><strong><?php echo $purchase_row['purchase_order_no']; ?></strong></p> -->
 										</div>
 									</div>
                                     <div class="form-group">
@@ -341,13 +341,13 @@ session_start();
                                             <input type="text" name="update_psi" class="form-control" value="<?php echo $purchase_row['psi']; ?>">
                                         </div>
 									</div>
-									<!-- <div class="form-group">
+									<div class="form-group">
 										<label for="item_no" class="col-md-3 control-label">Quantity</label>
-										<div class="col-md-6"> -->
-											<input type="hidden" id="update_quantity" name="update_quantity" class="form-control" autocomplete="off" value="<?php echo number_format($purchase_row['quantity']); ?>" required>
-                                            <!-- <p class="help-block"><strong><?php echo number_format($purchase_row['quantity']) . " pcs"; ?></strong></p>
+										<div class="col-md-6">
+											<input type="text" id="update_quantity" name="update_quantity" class="form-control" autocomplete="off" value="<?php echo number_format($purchase_row['quantity']); ?>" required>
+                                            <!-- <p class="help-block"><strong><?php echo number_format($purchase_row['quantity']) . " pcs"; ?></strong></p> -->
 										</div>
-									</div> -->
+									</div>
 									<div class="form-group">
 										<div class="col-md-offset-8 col-md-4">
 											<input type="submit" name="submit" id="submit" value="Done" class="btn btn-primary" style="font-weight: bold;">
@@ -410,13 +410,16 @@ session_start();
 		// $reply = array('post' => $_POST);
 		// echo json_encode($reply);
 
-		if($update_quantity < $purchase_row['balance']){
+		if($update_quantity < $purchase_row['quantity']){
 
-			$update_quantity_balance = "UPDATE purchase_order SET quantity = '$update_quantity', balance = '$update_quantity'
+			$update_quantity_balance = "UPDATE purchase_order SET quantity = '$update_quantity'
 										WHERE purchase_id = '$purchase_id'";
 		}else{
 
-			$update_quantity_balance = "UPDATE purchase_order SET quantity = '$update_quantity'
+            $new_quantity = $update_quantity - $purchase_row['quantity'];
+            $new_balance = $new_quantity + $purchase_row['balance'];
+
+			$update_quantity_balance = "UPDATE purchase_order SET quantity = '$update_quantity', balance = '$new_balance'
 										WHERE purchase_id = '$purchase_id'";
 		}
 
@@ -472,15 +475,15 @@ session_start();
 		// echo $sql_update."<br>";
 		// echo $history;
 		
-		// echo "<script> alert('Purchase Order No. succesfully updated')</script>";
+		echo "<script> alert('Purchase Order No. succesfully updated')</script>";
 		if(mysqli_query($db, $sql_po_update) && mysqli_query($db, $sql_update) && mysqli_query($db, $update_quantity_balance) && mysqli_query($db, $delivery_update)){
 			if(mysqli_query($db, $history)){
-				echo "<script>alert('P.O. No. $update_purchase_order_no details has been updated'); window.location.href='purchase_order_details.php'</script>";
+				echo "<script>alert('P.O. No. $update_purchase_order_no details has been updated'); window.location.href='purchase_order_details.php?purchase_order_no=$update_purchase_order_no&office=$search_plant&purchase_unique_id=$purchase_unique_id'</script>";
 				unset($_SESSION['post_purchase_id']);
 				// echo $history;
 			}else{
 				// echo "<script> alert('No changes has been made');window.location.href='purchase_order.php'</script>";
-                echo "<script>alert('P.O. No. $update_purchase_order_no details has been updated'); window.location.href='purchase_order_details.php'</script>";
+                echo "<script>alert('P.O. No. $update_purchase_order_no details has been updated'); window.location.href='purchase_order_details.php?purchase_order_no=$update_purchase_order_no&office=$search_plant&purchase_unique_id=$purchase_unique_id'</script>";
 				unset($_SESSION['post_purchase_id']);
 			}
 		}else{

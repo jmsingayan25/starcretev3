@@ -403,8 +403,10 @@
 
 		for ($i=0; $i < count($contact_name); $i++) { 
 			
+			$escape_contact_name = mysqli_real_escape_string($db, $contact_name[$i]);
+
 			$insert_contact_person = "INSERT INTO client_contact_person(client_contact_name, client_id)
-										VALUES('$contact_name[$i]','$client_id')";
+										VALUES('$escape_contact_name','$client_id')";
 
 			// echo $insert_contact_person."<br>";
 			if(mysqli_query($db, $insert_contact_person)){
@@ -412,16 +414,17 @@
 				for ($j=0; $j < count($explode_no); $j++) { 
 					
 					$sql = "SELECT MAX(client_contact_id) as client_contact_id FROM client_contact_person
-							WHERE client_contact_name = '$contact_name[$i]' AND client_id = '$client_id'";
+							WHERE client_contact_name = '$escape_contact_name' AND client_id = '$client_id'";
 
 					$result = mysqli_query($db, $sql);
 					$row = mysqli_fetch_assoc($result);
 					$client_contact_id = $row['client_contact_id'];
 
 					// $client_contact_id = mysqli_insert_id();
-
+					$escape_contact_no = mysqli_real_escape_string($db, $explode_no[$j]);
+					
 					$insert_contact_no = "INSERT INTO client_contact_number(client_contact_no, client_contact_id)
-											VALUES('$explode_no[$j]','$client_contact_id')";
+											VALUES('$escape_contact_no','$client_contact_id')";
 
 					// echo $insert_contact_no."<br>";
 					mysqli_query($db, $insert_contact_no);

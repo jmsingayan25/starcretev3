@@ -16,18 +16,18 @@
         $_GET['page'] = 0;
     }
 
-    if(!isset($_GET['view_count'])){
+    if(!isset($_GET['view'])){
         $limit = 25;
     }else{
-        $limit = $_GET['view_count'];
+        $limit = $_GET['view'];
     }
 
     if(!isset($_GET['search'])){
         $_GET['search'] = '';
     }
 
-    if(!isset($_GET['radioOffice'])){
-        $_GET['radioOffice'] = 'bravo';
+    if(!isset($_GET['plant'])){
+        $_GET['plant'] = 'bravo';
     }
 
     if(!isset($_GET['start_date'])){
@@ -462,10 +462,10 @@
                                             <div class="form-group">
                                                 <label for="search">Plant:</label>
                                                 <label class="radio-inline">
-                                                    <input type="radio" name="radioOffice" value="bravo" <?php if(isset($_GET['radioOffice']) && $_GET['radioOffice'] == 'bravo') { echo "checked"; }?> onchange="this.form.submit()" checked>Bravo
+                                                    <input type="radio" name="plant" value="bravo" <?php if(isset($_GET['plant']) && $_GET['plant'] == 'bravo') { echo "checked"; }?> onchange="this.form.submit()" checked><strong>Bravo</strong>
                                                 </label>
                                                 <label class="radio-inline">
-                                                    <input type="radio" name="radioOffice" value="delta" <?php if(isset($_GET['radioOffice']) && $_GET['radioOffice'] == 'delta') { echo "checked"; }?> onchange="this.form.submit()" >Delta
+                                                    <input type="radio" name="plant" value="delta" <?php if(isset($_GET['plant']) && $_GET['plant'] == 'delta') { echo "checked"; }?> onchange="this.form.submit()" ><strong>Delta</strong>
                                                 </label>
                                             </div>
                                         </div>
@@ -498,14 +498,14 @@
                                             </span>
                                         </div>
                                         <div class="input-group col-md-2" style="white-space: nowrap; margin: 38px 0px 0px 60px;">
-                                            <label for="view_count" class="col-md-8 control-label">Number of rows:</label>
+                                            <label for="view" class="col-md-8 control-label">Number of rows:</label>
                                             <div class="form-group">
                                                 <div class="col-md-12">
-                                                    <select id="view_count" name="view_count" class="form-control" onchange="this.form.submit()">
-                                                        <option value="25" <?php if(isset($_GET['view_count']) && $_GET['view_count'] == "25") echo 'selected="selected"';?>>25</option>
-                                                        <option value="50"<?php if(isset($_GET['view_count']) && $_GET['view_count'] == "50") echo 'selected="selected"';?>>50</option>
-                                                        <option value="75"<?php if(isset($_GET['view_count']) && $_GET['view_count'] == "75") echo 'selected="selected"';?>>75</option>
-                                                        <option value="100"<?php if(isset($_GET['view_count']) && $_GET['view_count'] == "100") echo 'selected="selected"';?>>100</option>
+                                                    <select id="view" name="view" class="form-control" onchange="this.form.submit()">
+                                                        <option value="25" <?php if(isset($_GET['view']) && $_GET['view'] == "25") echo 'selected="selected"';?>>25</option>
+                                                        <option value="50"<?php if(isset($_GET['view']) && $_GET['view'] == "50") echo 'selected="selected"';?>>50</option>
+                                                        <option value="75"<?php if(isset($_GET['view']) && $_GET['view'] == "75") echo 'selected="selected"';?>>75</option>
+                                                        <option value="100"<?php if(isset($_GET['view']) && $_GET['view'] == "100") echo 'selected="selected"';?>>100</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -518,7 +518,7 @@
                                     <thead>
                                         <tr class="filterable">
                                             <th colspan="3">
-                                                <p style="float: left;">Plant: <?php echo ucfirst($_GET['radioOffice']); ?></p>
+                                                <p style="float: left;">Plant: <?php echo ucfirst($_GET['plant']); ?></p>
                                                 <button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
                                             </th>
                                             <!-- <th colspan="3">
@@ -538,8 +538,8 @@
                                     <tbody>
 <?php
 
-    if(isset($_GET['radioOffice'])){
-        $search_plant = $_GET['radioOffice'];
+    if(isset($_GET['plant'])){
+        $search_plant = $_GET['plant'];
     }else{
         $search_plant = 'bravo';
     }
@@ -610,7 +610,7 @@
     if($lastpage > 1){ 
         $pagination .= "<div class='pagination1'> <ul class='pagination'>";
         if ($page > $counter+1) {
-            $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$prev&radioOffice=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view_count=$limit\">Previous</a></li>"; 
+            $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$prev&plant=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view=$limit\">Previous</a></li>"; 
         }
 
         if ($lastpage < 7 + ($adjacents * 2)) { 
@@ -618,7 +618,7 @@
                 if ($counter == $page)
                 $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
                 else
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&radioOffice=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view_count=$limit\">$counter</a></li>"; 
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&plant=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view=$limit\">$counter</a></li>"; 
             }
         }
         elseif($lastpage > 5 + ($adjacents * 2)){ //enough pages to hide some
@@ -628,44 +628,44 @@
                     if ($counter == $page)
                     $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
                     else
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&radioOffice=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view_count=$limit\">$counter</a></li>"; 
+                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&plant=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view=$limit\">$counter</a></li>"; 
                 }
                 $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&radioOffice=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view_count=$limit\">$lpm1</a></li>";
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&radioOffice=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view_count=$limit\">$lastpage</a></li>"; 
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&plant=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view=$limit\">$lpm1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&plant=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view=$limit\">$lastpage</a></li>"; 
             }
             //in middle; hide some front and some back
             elseif($lastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2)){
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&radioOffice=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view_count=$limit\">1</a></li>";
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&radioOffice=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view_count=$limit\">2</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&plant=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view=$limit\">1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&plant=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view=$limit\">2</a></li>";
                 $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
                 for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++){
                     if ($counter == $page)
                     $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
                     else
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&radioOffice=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view_count=$limit\">$counter</a></li>"; 
+                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&plant=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view=$limit\">$counter</a></li>"; 
                 }
                 $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&radioOffice=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view_count=$limit\">$lpm1</a></li>";
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&radioOffice=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view_count=$limit\">$lastpage</a></li>"; 
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lpm1&plant=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view=$limit\">$lpm1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$lastpage&plant=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view=$limit\">$lastpage</a></li>"; 
             }
             //close to end; only hide early pages
             else{
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&radioOffice=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view_count=$limit\">1</a></li>";
-                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&radioOffice=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view_count=$limit\">2</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=1&plant=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view=$limit\">1</a></li>";
+                $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=2&plant=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view=$limit\">2</a></li>";
                 $pagination.= "<li class='page-item'><a class='page-link' href='#'>...</a></li>";
                 for ($counter = $lastpage - (2 + ($adjacents * 2)); $counter <= $lastpage; $counter++){
                     if ($counter == $page)
                     $pagination.= "<li class='page-item active'><a class='page-link' href='#'>$counter</a></li>";
                     else
-                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&radioOffice=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view_count=$limit\">$counter</a></li>"; 
+                    $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$counter&plant=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view=$limit\">$counter</a></li>"; 
                 }
             }
         }
 
         //next button
         if ($page < $counter - 1) 
-            $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$next&radioOffice=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view_count=$limit\">Next</a></li>";
+            $pagination.= "<li class='page-item'><a class='page-link' href=\"$targetpage?page=$next&plant=$search_plant&search=$search_word&start_date=$start_date&end_date=$end_date&view=$limit\">Next</a></li>";
         else
             $pagination.= "";
         $pagination.= "</ul></div>\n"; 

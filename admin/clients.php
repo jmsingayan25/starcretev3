@@ -373,10 +373,15 @@
                         <div class="table-responsive filterable">
                             <table class="table table-striped table-bordered" id="myTable">
                                 <thead>
+                                    <tr class="filterable">
+                                        <th colspan="4">
+                                            <button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
+                                        </th>
+                                    </tr>
                                     <tr class="filters">
                                         <th class="col-md-4"><input type="text" class="form-control" placeholder="Client" disabled></th>
                                         <th class="col-md-4"><input type="text" class="form-control" placeholder="Address" disabled></th>
-                                        <th class="col-md-4">Contacts</th>
+                                        <th class="col-md-4"><input type="text" class="form-control" placeholder="Contact" disabled></th>
                                         <th class="col-md-1">Option</th>
                                     </tr>
                                 </thead>

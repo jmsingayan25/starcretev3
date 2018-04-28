@@ -262,8 +262,8 @@
 									<div class="form-group">
 										<label for="po_no" class="col-md-3 control-label">P.O. No.</label>
 										<div class="col-md-6">
-											<input type="hidden" name="update_delivery_receipt_no" value="<?php echo $delivery_row['po_no_delivery'] ?>" class="form-control" readonly>
-											<p class="help-block"><strong><?php echo $delivery_row['po_no_delivery']; ?></strong></p>
+											<input type="text" name="update_delivery_receipt_no" value="<?php echo $delivery_row['po_no_delivery'] ?>" class="form-control" readonly>
+											<!-- <p class="help-block"><strong><?php echo $delivery_row['po_no_delivery']; ?></strong></p> -->
 										</div>
 									</div>
 									<div class="form-group">
@@ -316,9 +316,9 @@
 									<div class="form-group">
 										<label for="update_quantity" class="col-md-3 control-label">Quantity</label>
 										<div class="col-md-6">
-											<!-- <input type="text" id="update_quantity" name="update_quantity" value="<?php echo number_format($delivery_row['quantity']); ?>" class="form-control" onkeyup="compareValues(this.value)" required> -->
-											<input type="hidden" id="update_quantity" name="update_quantity" value="<?php echo number_format($delivery_row['quantity']); ?>">
-											<p class="help-block"><strong><?php echo number_format($delivery_row['quantity']) . " pcs"; ?></strong></p>
+											<input type="text" id="update_quantity" name="update_quantity" value="<?php echo number_format($delivery_row['quantity']); ?>" class="form-control" onkeyup="compareValues(this.value)" required>
+											<!-- <input type="hidden" id="update_quantity" name="update_quantity" value="<?php echo number_format($delivery_row['quantity']); ?>">
+											<p class="help-block"><strong><?php echo number_format($delivery_row['quantity']) . " pcs"; ?></strong></p> -->
 										</div>
 									</div>
 									<div class="form-group">
@@ -381,11 +381,41 @@
             $change_item_insert = "INSERT INTO delivery_change_item (new_item_no, prev_item_no, delivery_id)
                                     VALUES ('$new_item_no','".$delivery_row['item_no']."','$delivery_id')";
 
-            mysqli_query($db, $change_item_insert);
+            // mysqli_query($db, $change_item_insert);
         }
 
+        $balance_sql = "SELECT balance FROM purchase_order WHERE purchase_id = '".$delivery_row['fk_po_id']."'";
+		$balance_sql_result = mysqli_query($db, $balance_sql);
+		$balance_sql_row = mysqli_fetch_assoc($balance_sql_result);
+
+		if($balance_sql_row['balance'] != 0){
+
+		// 	if($balance_sql_row['balance'] > $new_quantity){
+		// 		$new_balance = $balance_sql_row['balance'] - $new_quantity;
+		// 	}else{
+		// 		$new_balance =  $new_quantity - $balance_sql_row['balance'];
+		// 	}
+
+			if($new_quantity > $delivery_row['quantity']){
+				
+				$update_quantity = $new_quantity - $delivery_row['quantity'];
+	        	$update_balance = $balance_sql_row['balance'] - $update_quantity;
+				$update_po_balance = "UPDATE purchase_order SET quantity = '$new_quantity', balance = '$update_balance' WHERE purchase_id = '".$delivery_row['fk_po_id']."'";
+
+			}else{
+
+				$update_quantity = $delivery_row['quantity'] - $new_quantity;
+				$update_balance = $balance_sql_row['balance'] + $update_quantity;
+				$update_po_balance = "UPDATE purchase_order SET quantity = '$new_quantity', balance = '$update_balance'
+					WHERE purchase_id = '".$delivery_row['fk_po_id']."'";
+			}
+			echo $update_po_balance;
+			// mysqli_query($db, $update_po_balance);
+        	
+		}
+
 		$sql = "UPDATE delivery 
-				SET item_no = '$new_item_no', delivery_receipt_no = '$new_delivery_receipt_no', quantity = '$new_quantity', gate_pass = '$new_gate_pass', psi = '$new_psi' 
+				SET item_no = '$new_item_no', delivery_receipt_no = '$new_delivery_receipt_no', gate_pass = '$new_gate_pass', psi = '$new_psi' 
 				WHERE delivery_id = '$delivery_id' AND office = '$office'";
 
 		// $sql = "UPDATE delivery SET item_no = '$new_item_no' WHERE delivery_id = '$delivery_id' AND delivery_receipt_no = '$delivery_receipt_no' AND fk_po_id = '$fk_po_id' AND office = '$office'";
@@ -452,20 +482,20 @@
 
 		}
 		
-		if(mysqli_query($db, $sql)){
-			if(isset($history)){
-				// echo $history;
-				mysqli_query($db, $history);
-				echo "<script>alert('Delivery No. has been updated'); window.location.href='plant_delivery_order.php'</script>";
-				unset($_SESSION['post_delivery_id']);
-			}else{
-				echo "<script> alert('No changes has been made');window.location.href='plant_delivery_order.php'</script>";
-				unset($_SESSION['post_delivery_id']);
-			}
-		}else{
-			phpAlert('Something went wrong. Please try again.');
-			echo "<meta http-equiv='refresh' content='0'>";
-		}
+		// if(mysqli_query($db, $sql)){
+		// 	if(isset($history)){
+		// 		// echo $history;
+		// 		mysqli_query($db, $history);
+		// 		echo "<script>alert('Delivery No. has been updated'); window.location.href='plant_delivery_order.php'</script>";
+		// 		unset($_SESSION['post_delivery_id']);
+		// 	}else{
+		// 		echo "<script> alert('Delivery No. has been updated');window.location.href='plant_delivery_order.php'</script>";
+		// 		unset($_SESSION['post_delivery_id']);
+		// 	}
+		// }else{
+		// 	phpAlert('Something went wrong. Please try again.');
+		// 	echo "<meta http-equiv='refresh' content='0'>";
+		// }
 	}
 
 

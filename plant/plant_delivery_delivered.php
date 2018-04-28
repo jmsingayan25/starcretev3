@@ -589,7 +589,7 @@
 		while($row = mysqli_fetch_assoc($result)){
 
             if($row['psi'] != ""){
-                $row['psi'] = "(" . $row['psi'] . " PSI)";
+                $row['psi'] = "(" . number_format($row['psi']) . " PSI)";
             }else{
                 $row['psi'] = "";
             }

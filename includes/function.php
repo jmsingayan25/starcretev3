@@ -3,6 +3,18 @@
 	    echo '<script type="text/javascript">alert("' . $msg . '")</script>';
 	}
 
+	function getDieselLastUpdate($db, $office){
+
+		$sql = "SELECT MAX(delivery_date) as delivery_date
+				FROM diesel
+				WHERE office = '$office'";
+
+		$result = mysqli_query($db, $sql);
+		$row = mysqli_fetch_assoc($result);
+
+		return $row['delivery_date'];
+	}
+
 	function getChangeItem($db, $dr_id, $item_no){
 
 		$sql = "SELECT MAX(prev_item_no) as prev_item_no 

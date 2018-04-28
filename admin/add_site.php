@@ -380,7 +380,7 @@
 		$site_name = mysqli_real_escape_string($db, $_POST['site_name']);
 		$site_address = mysqli_real_escape_string($db, $_POST['site_address']);
 		$contact_name = $_POST['contact_name'];
-		$contact_no = str_replace("-", "", $_POST['contact_no']);
+		$contact_no = $_POST['contact_no'];
 
 		$insert_site = "INSERT INTO site(site_name, site_address, client_id) VALUES('$site_name','$site_address',$client_id)";
 
@@ -395,35 +395,41 @@
 
 			for ($i=0; $i < count($contact_name); $i++) { 
 				$array_contact_name[] = $contact_name[$i];
+				$escape_contact_name = mysqli_real_escape_string($db, $contact_name[$i]);
 
 				$insert_contact_person = "INSERT INTO site_contact_person(site_contact_name, site_id) 
-										VALUES('$contact_name[$i]','$site_id')";
+										VALUES('$escape_contact_name','$site_id')";
 
 				// echo $insert_contact_person."<br>";
 				mysqli_query($db, $insert_contact_person);						
 			}
 
 			for ($j=0; $j < count($array_contact_name); $j++) { 
+
+				$escape_array_contact_name = mysqli_real_escape_string($db, $array_contact_name[$j]);
 				
 				$sql_contact_id = "SELECT site_contact_person_id FROM site_contact_person
-									WHERE site_contact_name = '$array_contact_name[$j]'
+									WHERE site_contact_name = '$escape_array_contact_name'
 									AND site_id = $site_id";
 
 				$result_contact = mysqli_query($db, $sql_contact_id);
 				$row_contact_id = mysqli_fetch_assoc($result_contact);
 
 				$explode_no = explode(",", $contact_no[$j]);	
-				for ($k=0; $k < count($explode_no); $k++) { 
+				for($k=0; $k < count($explode_no); $k++){ 
 					
-					echo $row_contact_id['site_contact_person_id']." ".$explode_no[$k]."<br>";	
+					// echo $row_contact_id['site_contact_person_id']." ".$explode_no[$k]."<br>";	
+
+					$escape_contact_no = mysqli_real_escape_string($db, $explode_no[$k]);
 
 					$insert_contact_no = "INSERT INTO site_contact_number(site_contact_no,site_contact_person_id)
-											VALUES('$explode_no[$k]','".$row_contact_id['site_contact_person_id']."')";
+											VALUES('$escape_contact_no','".$row_contact_id['site_contact_person_id']."')";
 
 					// echo $insert_contact_no."<br>";
 					mysqli_query($db, $insert_contact_no);
 
 				}
+
 				$count++;					
 			}
 

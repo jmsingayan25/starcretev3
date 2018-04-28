@@ -13,7 +13,7 @@ session_start();
     }
 
     if (isset($_REQUEST['purchase_unique_id']) && isset($_REQUEST['purchase_order_no']) && isset($_REQUEST['office'])) {
-        $_SESSION['post_purchase_unique_id'] = base64_decode($_REQUEST['purchase_unique_id']);
+        $_SESSION['post_purchase_unique_id'] = $_REQUEST['purchase_unique_id'];
     	$_SESSION['post_purchase_order_no'] = $_REQUEST['purchase_order_no'];
         $_SESSION['post_office'] = $_REQUEST['office'];
     }

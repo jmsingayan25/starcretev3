@@ -42,7 +42,6 @@
 
     $office = $user['office'];
     $position = $user['position'];
-    // $limit = 20; //how many items to show per page
     $search_plant = $office;
 
 ?>
@@ -589,7 +588,7 @@
         while($row = mysqli_fetch_assoc($result)){
 
             if($row['psi'] != ""){
-                $row['psi'] = "(" . $row['psi'] . " PSI)";
+                $row['psi'] = "(" . number_format($row['psi']) . " PSI)";
             }else{
                 $row['psi'] = "";
             }
@@ -650,6 +649,9 @@
                 <td><strong><?php echo $row['gate_pass']; ?></strong></td>
                 <td><strong><?php echo $row['date_delivery']; ?></strong></td>
                 <td>
+<?php
+                if($position != 'warehouseman'){
+?>
                     <form action="plant_delivery_order.php" method="post">
                         <button type="button" id="update" name="update" value="<?php echo $row['delivery_id']; ?>" class="btn btn-sm btn-block" style="background-color: #ffa000; color: white; margin-bottom: 3px;" data-toggle='modal' data-target='#deliveryOrderUpdateRow<?php echo $hash; ?>'><span class="fa fa-edit"></span> <strong>Update</strong></button>
 
@@ -684,17 +686,20 @@
                             </div>
                         </div>
                     </form>
+<?php
+                }
+?>
                     <button type="submit" class='btn btn-sm btn-block' style="margin-bottom: 3px; width: 85px; background-color: #388e3c; color: white;" data-toggle='modal' data-target='#deliveryModal<?php echo $hash; ?>'><span class="fa fa-check"></span> <strong>Delivered</strong></button>
                     
-                    <form action="plant_delivery_order.php" method="post">
+                    <form action="plant_delivery_order.php" method="post" onsubmit="return confirm('Proceed?')">
                     <div class="modal fade" id="deliveryModal<?php echo $hash;?>" role="dialog">
                         <div class="modal-dialog modal-md">
 
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title"><!-- DR No. <?php echo $row['delivery_receipt_no'] ?> -->Delivery Details</h4>
-                            </div>
-                            <div class="modal-body" style="text-align: left;">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title"><!-- DR No. <?php echo $row['delivery_receipt_no'] ?> -->Delivery Details</h4>
+                                </div>
+                                <div class="modal-body" style="text-align: left;">
                                     <input type="hidden" id="hidden_id" name="hidden_id" value="<?php echo $row['delivery_id']; ?>">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -893,6 +898,7 @@ if(isset($_POST['delivered'])){
 
 		$site = getSiteInfo($db, $row_site_id);
 		$row_site_name = $site['site_name'];
+        $row_site_address = $site['site_address'];
 		// $update_stock = "UPDATE item_stock SET stock = stock - '$row_quantity', last_update = '$datetime' 
 		// 					WHERE item_no = '$row_item_no' AND office = '$row_office'";
 
@@ -905,7 +911,7 @@ if(isset($_POST['delivered'])){
 		// mysqli_query($db, $purchase_order_count_update);
 		
 		$history_query = "INSERT INTO history(table_report,transaction_type,item_no,detail,history_date,office)
-							VALUES('Delivery','Delivered Order','$row_item_no','Delivered DR No. $row_delivery_receipt_no with P.O. No. $row_po_no_delivery and ".number_format($row_quantity)." pcs of $row_item_no $row_psi to $row_site_name dated $selected_date','$today','$row_office')";
+							VALUES('Delivery','Delivered Order','$row_item_no','Delivered DR No. $row_delivery_receipt_no with P.O. No. $row_po_no_delivery and ".number_format($row_quantity)." pcs of $row_item_no $row_psi to $row_site_name in $row_site_address dated $selected_date','$today','$row_office')";
 
 		$batch_prod_stock = "INSERT INTO batch_prod_stock(item_no, delivered, office, date_production)
 								VALUES('$row_item_no','$row_quantity','$row_office','$datetime')";
@@ -956,7 +962,7 @@ if(isset($_POST['delivered'])){
         }
 
         $insert_notif = "INSERT INTO notification (from_office, to_office, table_name, content, notif_date) 
-                            VALUES ('$office','head','Delivered Delivery','$row_delivery_receipt_no','$datetime')";
+                            VALUES ('$office','head','Delivered Delivery','$row_delivery_receipt_no',NOW())";
 
         // echo $insert_delivered_po;
 		// echo $update_delivery;
@@ -1014,8 +1020,7 @@ if(isset($_POST['delivered'])){
 									WHERE purchase_order_no = '$row_po_no_delivery' 
 									AND purchase_id = '$row_fk_po_id'
 									AND office = '$row_office'";
-		// echo $purchase_order_update;
-		// mysqli_query($db, $purchase_order_update);
+
 		// $update_stock = "UPDATE item_stock SET stock = stock + '$row_quantity', last_update = '$datetime' 
 		// 				WHERE item_no = '$row_item_no' AND office = '$row_office'";
 

@@ -215,10 +215,6 @@
      font-weight: bold;
 }
 
-.page_links a{
-    color: inherit;
-}
-
 </style>
 </head>
 <body onload="warningStock();">
@@ -308,7 +304,6 @@
                         </a>
                         <ul class="sub">
                             <li><a class="" href="purchase_order_form.php">Add New P.O.</a></li>
-                            <!-- <li><a class="" href="purchase_aggregates_order_form.php">P.O. Aggregates Form</a></li>                           -->
                         </ul>
                     </li>
                 </ul>
@@ -325,7 +320,7 @@
                         <!-- <h3 class="page-header"><i class="fa fa-home"></i> History</h3> -->
                         <ol class="breadcrumb">
                             <li><i class="fa fa-building"></i><?php echo $plant; ?></li>
-                            <li><i class="icon_document"></i><a href="diesel.php?office=<?php echo $search_plant; ?>" style="color: blue;">Diesel</a></li>             
+                            <li><i class="icon_document"></i><a href="diesel.php?office=<?php echo $search_plant; ?>">Diesel</a></li>             
                         </ol>
                     </div>
                 </div>	
@@ -385,8 +380,13 @@
                         							$today = date_create($today);
                                                 ?>
                                                 <span>Available stock as of today, <?php echo date_format($today,"F d, Y"); ?>: <span id="warning_stock"><?php echo number_format(getDieselStock($db, $search_plant)); ?> liters <span id="triangle" class="fa fa-exclamation-triangle" style="display: none;"></span></span></span><br>
+                                                <span>Last Delivery: 
+                                                    <?php
+                                                        $last_update = date_create(getDieselLastUpdate($db, $search_plant));
+                                                        echo date_format($last_update,"F d, Y h:i A"); 
+                                                    ?>
+                                                </span><br>
                                                 <span>Search Date: <?php echo date_format($date_view,"F d, Y"); ?><button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button></span>
-                        						
                         					</th>
                         				</tr>
                         				<tr class="filters">

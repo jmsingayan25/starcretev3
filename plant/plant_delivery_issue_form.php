@@ -200,6 +200,10 @@
 		}
 	}
 
+	function displayBalance(){
+
+	}
+
 </script>
 <style>
 /*.page_links a{
@@ -330,7 +334,7 @@
                                             <p class="help-block"><strong>
                                             	<?php 
                                             		if($purchase_row['psi'] != ""){
-                                            			echo $purchase_row['item_no'] . " (" . $purchase_row['psi'] . " PSI)"; 
+                                            			echo $purchase_row['item_no'] . " (" . number_format($purchase_row['psi']) . " PSI)"; 
                                             		}else{
                                             			echo $purchase_row['item_no'];
                                             		}

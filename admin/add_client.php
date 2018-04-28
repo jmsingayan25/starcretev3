@@ -332,7 +332,7 @@
 		$client_name = mysqli_real_escape_string($db, $_POST['client_name']);
 		$address = mysqli_real_escape_string($db, $_POST['client_address']);
 		$contact_name = $_POST['contact_name'];
-		$contact_no = str_replace("-", "", $_POST['contact_no']);
+		$contact_no = $_POST['contact_no'];
 
 		$insert_client = "INSERT INTO client(client_name, address) VALUES('$client_name','$address')";
 
@@ -346,9 +346,10 @@
 
 			for($i = 0; $i < count($contact_name); $i++){
 				$array_contact_name[] = $contact_name[$i];
+				$escape_contact_name = mysqli_real_escape_string($db, $contact_name[$i]);
 
 				$insert_contact_person = "INSERT INTO client_contact_person(client_contact_name, client_id) 
-									VALUES('$contact_name[$i]','$client')";
+									VALUES('$escape_contact_name','$client')";
 
 				// echo $insert_contact_person."<br>";
 				mysqli_query($db, $insert_contact_person);
@@ -357,26 +358,32 @@
 			for ($j=0; $j < count($array_contact_name); $j++) { 
 				
 				// echo $array_contact_name[$j]." ".$contact_no[$j]."<br>";
-				$sql_contact_id = "SELECT client_contact_id FROM client_contact_person
-						WHERE client_contact_name = '$array_contact_name[$j]'
-						AND client_id = '$client'";
+				$escape_array_contact_name = mysqli_real_escape_string($db, $array_contact_name[$j]);
 
+				$sql_contact_id = "SELECT client_contact_id FROM client_contact_person
+						WHERE client_contact_name = '$escape_array_contact_name'
+						AND client_id = '$client'";
+				// echo $sql_contact_id;
 				$result_contact_id = mysqli_query($db, $sql_contact_id);
 				$row_id = mysqli_fetch_assoc($result_contact_id);
 
 				$explode_no = explode(",", $contact_no[$j]);
 				for ($k=0; $k < count($explode_no); $k++) { 
+
+					$escape_contact_no = mysqli_real_escape_string($db, $explode_no[$k]);
 					
 					// echo $row_id['client_contact_id']." ".$explode_no[$k]."<br>";
 
 					$insert_contact_number = "INSERT INTO client_contact_number(client_contact_no, client_contact_id) 
-												VALUES('$explode_no[$k]','".$row_id['client_contact_id']."')";
+												VALUES('$escape_contact_no','".$row_id['client_contact_id']."')";
 
 					mysqli_query($db, $insert_contact_number);
 				}
 
 				$count++;
 			}
+
+
 			if($count == count($array_contact_name)){
 
 				// phpAlert("New client added successfully.");
@@ -385,10 +392,12 @@
 				
 				$last_id_sql = "SELECT client_id, client_name FROM client
 								WHERE client_id = (SELECT MAX(client_id) as client_id FROM client)";
+
+				// echo $last_id_sql;
 				$last_id_result = mysqli_query($db, $last_id_sql);
 				$last_id_row = mysqli_fetch_assoc($last_id_result);
 				$post_client_id = $last_id_row['client_id'];
-				$post_client_name = $last_id_row['client_name'];
+				$post_client_name = mysqli_real_escape_string($db, $last_id_row['client_name']);
 
 				echo "<script>
 				if(confirm('New client added successfully. Proceed to Add Project for ".$post_client_name."?')){
