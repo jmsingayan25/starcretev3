@@ -430,8 +430,7 @@
                                             <th class="col-md-1">#</th>
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="P.O. No." disabled></th>
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="Item" disabled></th>
-                                            <th class="col-md-1">Quantity</th>
-                                            <th class="col-md-1">Balance</th>
+                                            <th class="col-md-2">Ordered / Remaining</th>
                                             <th class="col-md-2"><input type="text" class="form-control" placeholder="Project Name" disabled></th>
                                             <th class="col-md-2"><input type="text" class="form-control" placeholder="Address" disabled></th>
                                             <th class="col-md-1"><input type="text" class="form-control" placeholder="Contact" disabled></th>
@@ -621,18 +620,23 @@
                           <td><strong>" . $row['item_no'] . " " . $row['psi'] . "</strong></td>";
             }
 ?>
-                <td><strong><?php echo number_format((float)$row['quantity'])." pcs"; ?></strong></td>
-<?php
-            if(mysqli_num_rows($count) > 0){
-                if($row['balance'] <= 1350){
-                    echo "<td style='color: red;'><strong>" . number_format((float)$row['balance']) . " pcs </strong></td>";
-                }else{
-                    echo "<td><strong>" . number_format((float)$row['balance']) . " pcs </strong></td>";
-                }
-            }else{
-                echo "<td><strong>" . number_format((float)$row['balance']) . " pcs </strong></td>";
-            }
+                <td>
+                    <strong>
+<?php 
+                     if(mysqli_num_rows($count) > 0){
+                        if($row['balance'] <= 1350){
+                            $balance_ext = "<span style='color: red;'>" . number_format((float)$row['balance']) . " pcs</span>";
+                        }else{
+                            $balance_ext = "<span>" . number_format((float)$row['balance']) . " pcs</span>";
+                        }
+                    }else{
+                        $balance_ext = "<span>" . number_format((float)$row['balance']) . " pcs</span>";
+                    }
+
+                    echo number_format((float)$row['quantity'])." pcs / " . $balance_ext;
 ?>
+                    </strong>
+                </td>
                 <td><strong><?php echo $row['site_name']; ?></strong></td>
                 <td><strong><?php echo $row['site_address']; ?></strong></td>
                 <td>

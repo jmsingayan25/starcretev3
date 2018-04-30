@@ -30,6 +30,10 @@
 	$search_result = mysqli_query($db, $search_sql);
 	$delivery_row = mysqli_fetch_assoc($search_result);
 
+	$purchase_order = getPurchaseOrderDetails($db, $delivery_row['fk_po_id'], $delivery_row['po_no_delivery']);
+	$purchase_order_balance = $purchase_order['balance'];
+	$purchase_order_quantity = $purchase_order['quantity'];
+
 ?>
 <html lang="en">
 <head>
@@ -143,6 +147,42 @@
         } );      
     });
 
+    function displayQuantityError(val){
+
+    	var balance = document.getElementById('hidden_balance').value;
+    	var quantity = document.getElementById('hidden_quantity').value;
+		var button = document.getElementById('submit');
+    	var div = document.getElementById('error');
+    	var input = document.getElementById('update_quantity');
+
+        balance = balance.replace(",","");
+        balance = Number(balance);
+        val = val.replace(",","");
+        val = Number(val);
+    	quantity = quantity.replace(",","");
+    	quantity = Number(quantity);
+
+    	new_quantity = val - quantity;
+    	new_value = balance - new_quantity;
+    	
+       	if(new_value < 0){
+            div.style.display = 'block';
+            button.disabled = 'true';
+            input.style.borderColor = 'red';
+        }else if(val == ''){
+        	button.disabled = 'true';
+        	input.style.borderColor = 'red';
+        }else{
+            div.style.display = 'none';
+            button.disabled = '';
+            input.style.borderColor = '';
+        }
+
+        string_new_value = new_value.toLocaleString('en') + " pcs";
+        document.getElementById('balance').innerHTML = "Remaining Balance: " + string_new_value.bold();
+
+    }
+
 </script>
 <style>
 /*.page_links a{
@@ -150,7 +190,7 @@
 }*/
 </style>
 </head>
-<body onload="compareValues('');">
+<body onload="displayQuantityError('<?php echo $delivery_row['quantity']; ?>');">
 <!-- container section start -->
     <section id="container" class="">
         <header class="header dark-bg">
@@ -259,6 +299,9 @@
 							</header>
 							<div class="panel-body">
 								<form class="form-horizontal" role="form" id="form" action="plant_delivery_order_update.php" method="post" onsubmit="return confirm('Proceed?');">
+
+									<input type="hidden" name="hidden_balance" id="hidden_balance" value="<?php echo $purchase_order_balance; ?>">
+									<input type="hidden" name="hidden_quantity" id="hidden_quantity" value="<?php echo $delivery_row['quantity']; ?>">
 									<div class="form-group">
 										<label for="po_no" class="col-md-3 control-label">P.O. No.</label>
 										<div class="col-md-6">
@@ -285,7 +328,7 @@
 											<p class="help-block"><strong>
 												<?php 
 													if($delivery_row['psi'] != ''){
-														echo $delivery_row['item_no'] . " (" . $delivery_row['psi'] . " PSI)";
+														echo $delivery_row['item_no'] . " (" . number_format($delivery_row['psi']) . " PSI)";
 													}else{
 														echo $delivery_row['item_no'];
 													}
@@ -315,8 +358,24 @@
 									</div>
 									<div class="form-group">
 										<label for="update_quantity" class="col-md-3 control-label">Quantity</label>
-										<div class="col-md-6">
-											<input type="text" id="update_quantity" name="update_quantity" value="<?php echo number_format($delivery_row['quantity']); ?>" class="form-control" onkeyup="compareValues(this.value)" required>
+										<div class="col-md-8">
+											<div class="row">
+												<div class="col-md-5">
+													<input type="text" id="update_quantity" name="update_quantity" value="<?php echo number_format($delivery_row['quantity']); ?>" class="form-control" onkeyup="displayQuantityError(this.value)" autocomplete="off" required>
+												</div>
+												<div class="col-md-7">
+													<div id="error" style="display: none;">							
+														<p class="help-block" style="color: red;">Warning! Remaining Balance is below 0</p>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-12">
+													<p class="help-block" id="balance"></p>	
+												</div>
+											</div>
+											
+											
 											<!-- <input type="hidden" id="update_quantity" name="update_quantity" value="<?php echo number_format($delivery_row['quantity']); ?>">
 											<p class="help-block"><strong><?php echo number_format($delivery_row['quantity']) . " pcs"; ?></strong></p> -->
 										</div>
@@ -389,33 +448,16 @@
 		$balance_sql_row = mysqli_fetch_assoc($balance_sql_result);
 
 		if($balance_sql_row['balance'] != 0){
-
-		// 	if($balance_sql_row['balance'] > $new_quantity){
-		// 		$new_balance = $balance_sql_row['balance'] - $new_quantity;
-		// 	}else{
-		// 		$new_balance =  $new_quantity - $balance_sql_row['balance'];
-		// 	}
-
-			if($new_quantity > $delivery_row['quantity']){
 				
-				$update_quantity = $new_quantity - $delivery_row['quantity'];
-	        	$update_balance = $balance_sql_row['balance'] - $update_quantity;
-				$update_po_balance = "UPDATE purchase_order SET quantity = '$new_quantity', balance = '$update_balance' WHERE purchase_id = '".$delivery_row['fk_po_id']."'";
+			$deducted_quantity = $new_quantity - $delivery_row['quantity'];
+        	$update_balance = $balance_sql_row['balance'] - $deducted_quantity;
+			$update_po_balance = "UPDATE purchase_order SET quantity = '$new_quantity', balance = '$update_balance' WHERE purchase_id = '".$delivery_row['fk_po_id']."'";
 
-			}else{
-
-				$update_quantity = $delivery_row['quantity'] - $new_quantity;
-				$update_balance = $balance_sql_row['balance'] + $update_quantity;
-				$update_po_balance = "UPDATE purchase_order SET quantity = '$new_quantity', balance = '$update_balance'
-					WHERE purchase_id = '".$delivery_row['fk_po_id']."'";
-			}
-			echo $update_po_balance;
-			// mysqli_query($db, $update_po_balance);
-        	
+			mysqli_query($db, $update_po_balance);
 		}
 
 		$sql = "UPDATE delivery 
-				SET item_no = '$new_item_no', delivery_receipt_no = '$new_delivery_receipt_no', gate_pass = '$new_gate_pass', psi = '$new_psi' 
+				SET item_no = '$new_item_no', delivery_receipt_no = '$new_delivery_receipt_no', gate_pass = '$new_gate_pass', psi = '$new_psi', quantity = '$new_quantity'
 				WHERE delivery_id = '$delivery_id' AND office = '$office'";
 
 		// $sql = "UPDATE delivery SET item_no = '$new_item_no' WHERE delivery_id = '$delivery_id' AND delivery_receipt_no = '$delivery_receipt_no' AND fk_po_id = '$fk_po_id' AND office = '$office'";
@@ -482,20 +524,20 @@
 
 		}
 		
-		// if(mysqli_query($db, $sql)){
-		// 	if(isset($history)){
-		// 		// echo $history;
-		// 		mysqli_query($db, $history);
-		// 		echo "<script>alert('Delivery No. has been updated'); window.location.href='plant_delivery_order.php'</script>";
-		// 		unset($_SESSION['post_delivery_id']);
-		// 	}else{
-		// 		echo "<script> alert('Delivery No. has been updated');window.location.href='plant_delivery_order.php'</script>";
-		// 		unset($_SESSION['post_delivery_id']);
-		// 	}
-		// }else{
-		// 	phpAlert('Something went wrong. Please try again.');
-		// 	echo "<meta http-equiv='refresh' content='0'>";
-		// }
+		if(mysqli_query($db, $sql)){
+			if(isset($history)){
+				// echo $history;
+				mysqli_query($db, $history);
+				echo "<script>alert('Delivery No. has been updated'); window.location.href='plant_delivery_order.php'</script>";
+				unset($_SESSION['post_delivery_id']);
+			}else{
+				echo "<script> alert('Delivery No. has been updated');window.location.href='plant_delivery_order.php'</script>";
+				unset($_SESSION['post_delivery_id']);
+			}
+		}else{
+			phpAlert('Something went wrong. Please try again.');
+			echo "<meta http-equiv='refresh' content='0'>";
+		}
 	}
 
 

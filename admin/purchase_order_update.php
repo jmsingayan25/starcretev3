@@ -416,14 +416,13 @@ session_start();
 										WHERE purchase_id = '$purchase_id'";
 		}else{
 
-            $new_quantity = $update_quantity - $purchase_row['quantity'];
-            $new_balance = $new_quantity + $purchase_row['balance'];
+            $deducted_quantity = $update_quantity - $purchase_row['quantity'];
+            $new_balance = $deducted_quantity + $purchase_row['balance'];
 
 			$update_quantity_balance = "UPDATE purchase_order SET quantity = '$update_quantity', balance = '$new_balance'
 										WHERE purchase_id = '$purchase_id'";
-		}
+		} 
 
-		// $address_update = "UPDATE site SET site_address = '$update_address' WHERE site_id = '$site_id'";
         $sql_po_update = "UPDATE purchase_order SET purchase_order_no = '$update_purchase_order_no' 
                             WHERE purchase_unique_id = '$purchase_unique_id'";
 
@@ -455,7 +454,7 @@ session_start();
 		}else if($update_purchase_order_no != $purchase_row['purchase_order_no'] && $update_item_no == $purchase_row['item_no'] && $update_quantity != $purchase_row['quantity']){
 			// update po no and quantity only
 			$history = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) 
-		 					VALUES('Purchase Order','Update Purchase Order','Update P.O. No. ".$purchase_row['purchase_order_no']." to $update_purchase_order_no and its quantity to ".number_format($update_quantity)." pcs','$datetime','".$purchase_row['office']."')";
+		 					VALUES('Purchase Order','Update Purchase Order','Update P.O. No. ".$purchase_row['purchase_order_no']." to $update_purchase_order_no and quantity for ".$purchase_row['item_no']." to ".number_format($update_quantity)." pcs','$datetime','".$purchase_row['office']."')";
 
 		}else if($update_purchase_order_no == $purchase_row['purchase_order_no'] && $update_item_no != $purchase_row['item_no'] && $update_quantity != $purchase_row['quantity']){
 			// update item and quantity only

@@ -419,8 +419,7 @@ session_start();
                                                 <tr class="filters">
                                                     <th class="col-md-1">#</th>
                                                     <th class="col-md-1"><input type="text" class="form-control" placeholder="Item" disabled></th>
-                                                    <th class="col-md-1">Quantity</th>
-                                                    <th class="col-md-1">Balance</th>
+                                                    <th class="col-md-2">Ordered / Remaining</th>
                                                     <th class="col-md-2"><input type="text" class="form-control" placeholder="Project Name" disabled></th>
                                                     <th class="col-md-2"><input type="text" class="form-control" placeholder="Address" disabled></th>
                                                     <th class="col-md-1">Date Order</th>
@@ -443,6 +442,12 @@ session_start();
         $hash = 1;
         while ($row = mysqli_fetch_assoc($result)) {
 
+            $sql_delivery = "SELECT * FROM delivery
+                                WHERE fk_po_id = '".$row['purchase_id']."'
+                                AND remarks = 'Delivered'";
+
+            $count = mysqli_query($db, $sql_delivery);
+
             if($row['psi'] != ""){
                 $row['psi'] = "(" . $row['psi'] . " PSI)";
             }else{
@@ -452,8 +457,23 @@ session_start();
             <tr>
                 <td><?php echo $hash; ?></td>
                 <td><strong><?php echo $row['item_no'] . " " . $row['psi']; ?></strong></td>
-                <td><strong><?php echo number_format($row['quantity']); ?></strong></td>
-                <td><strong><?php echo number_format($row['balance']); ?></strong></td>
+                <td>
+                    <strong>
+<?php 
+                     if(mysqli_num_rows($count) > 0){
+                        if($row['balance'] <= 1350){
+                            $balance_ext = "<span style='color: red;'>" . number_format((float)$row['balance']) . " pcs</span>";
+                        }else{
+                            $balance_ext = "<span>" . number_format((float)$row['balance']) . " pcs</span>";
+                        }
+                    }else{
+                        $balance_ext = "<span>" . number_format((float)$row['balance']) . " pcs</span>";
+                    }
+
+                    echo number_format((float)$row['quantity'])." pcs / " . $balance_ext;
+?>
+                    </strong>
+                </td>
                 <td><strong><?php echo $row['site_name']; ?></strong></td>
                 <td><strong><?php echo $row['site_address']; ?></strong></td>
                 <td><strong><?php echo $row['date_purchase']; ?></strong></td>

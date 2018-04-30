@@ -385,7 +385,7 @@
 	                                		<th class="col-md-1">#</th>
 	                                		<th class="col-md-1"><input class="form-control" placeholder="P.O. No." disabled></th>
 	                                		<th class="col-md-1"><input class="form-control" placeholder="Item" disabled></th>
-                                            <th class="col-md-1">Quantity</th>
+                                            <th class="col-md-1">Ordered</th>
 	                                		<th class="col-md-1">Plant</th>
 	                                		<th class="col-md-1">Date Order</th>
 	                                		<th class="col-md-1">Date Close</th>

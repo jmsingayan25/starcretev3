@@ -3,6 +3,18 @@
 	    echo '<script type="text/javascript">alert("' . $msg . '")</script>';
 	}
 
+	function getQuantityOrdered($db, $office, $purchase_id){
+
+		$sql = "SELECT quantity FROM purchase_order
+				WHERE purchase_id = '$purchase_id'
+				AND office = '$office'";
+
+		$result = mysqli_query($db, $sql);
+		$row = mysqli_fetch_assoc($result);
+
+		return $row['quantity'];
+	}
+
 	function getDieselLastUpdate($db, $office){
 
 		$sql = "SELECT MAX(delivery_date) as delivery_date
@@ -197,6 +209,8 @@
 		$row = mysqli_fetch_assoc($result);
 
 		$po['purchase_order_no'] = $row['purchase_order_no'];		
+		$po['quantity'] = $row['quantity'];
+		$po['balance'] = $row['balance'];
 
 		return $po;
 	}

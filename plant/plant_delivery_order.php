@@ -1006,6 +1006,12 @@ if(isset($_POST['delivered'])){
 		$row_quantity = $order['quantity'];
 		$row_item_no = $order['item_no'];
 
+        if($row['psi'] != ''){
+            $row_psi = "(" . $order['psi'] . " PSI)";
+        }else{
+            $row_psi = '';
+        }
+
 		$update_delivery = "UPDATE delivery SET remarks = 'Backload', date_delivery = '$datetime'
 							WHERE delivery_id = '$dr_id' 
 							AND delivery_receipt_no = '$row_delivery_receipt_no' 
@@ -1025,7 +1031,7 @@ if(isset($_POST['delivered'])){
 		// 				WHERE item_no = '$row_item_no' AND office = '$row_office'";
 
 		$history_query = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) 
-							VALUES('Delivery','Backloaded Order','".ucfirst($row_office)." has backload delivery of DR No. $row_delivery_receipt_no with ".number_format($row_quantity)." pcs of $row_item_no under P.O. No. $row_po_no_delivery','$datetime','$row_office')";
+							VALUES('Delivery','Backloaded Order','".ucfirst($row_office)." has backload delivery of DR No. $row_delivery_receipt_no with ".number_format($row_quantity)." pcs of $row_item_no $row_psi under P.O. No. $row_po_no_delivery','$datetime','$row_office')";
 
         $insert_notif = "INSERT INTO notification (from_office, to_office, table_name, content, notif_date) 
                             VALUES ('$office','head','Backloaded Delivery','$row_delivery_receipt_no','$datetime')";

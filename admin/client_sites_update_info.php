@@ -452,8 +452,9 @@
                     $site_contact_id = $contact_decode->contact[$i]->site->site_contact_id;
                     $site_contact_no_id = $contact_decode->contact[$i]->site->contact_no_id;
 
+                    $escape_update_contact_no = mysqli_real_escape_string($db, $update_contact_no[$i]);
                     $update_contact_info = "UPDATE site_contact_number 
-                                            SET site_contact_no = '$update_contact_no[$i]' 
+                                            SET site_contact_no = '$escape_update_contact_no' 
                                             WHERE site_contact_person_id = '$site_contact_id'
                                             AND site_contact_no_id = '$site_contact_no_id'";
 
@@ -464,8 +465,9 @@
 
                 for ($j=0; $j < count($contact_person_id); $j++) { 
                         
+                    $escape_update_contact_name = mysqli_real_escape_string($db, $update_contact_name[$j]);
                     $update_name = "UPDATE site_contact_person 
-                                    SET site_contact_name = '$update_contact_name[$j]'
+                                    SET site_contact_name = '$escape_update_contact_name'
                                     WHERE site_contact_person_id = '$contact_person_id[$j]'";
 
                     // echo $update_name."<br>";
@@ -475,19 +477,19 @@
                 if($count == count($contact_decode->contact)){
                     echo "<script> 
                             alert('Data updated successfully...');
-                            window.location.href='clients_sites.php' 
+                            window.location.href='client_sites.php' 
                         </script>";
                 }
             }else{
                 echo "<script> 
                         alert('Data updated successfully...');
-                        window.location.href='clients_sites.php'
+                        window.location.href='client_sites.php'
                     </script>";
             }
         }else{
             echo "<script> 
                     alert('Data updated successfully...');
-                    window.location.href='clients_sites.php'
+                    window.location.href='client_sites.php'
                 </script>";
         }
     }else if(isset($_POST['delete_id'])) {
