@@ -511,6 +511,8 @@
                                         <td><strong><?php echo $row['address']; ?></strong></td>
                                         <!-- <td><strong><?php echo $row['client_contact_name']; ?></strong></td> -->
                                         <td>
+                                            <div class="form-group">
+                                                
                                             
 <?php
 
@@ -520,17 +522,7 @@
 
     $name_sql_result = mysqli_query($db, $name_sql);
     while ($row_name_sql = mysqli_fetch_assoc($name_sql_result)) {
-        
-        $no_sql = "SELECT GROUP_CONCAT(DISTINCT client_contact_no SEPARATOR ' ') as client_contact_no
-                    FROM client_contact_number
-                    WHERE client_contact_id = '".$row_name_sql['client_contact_id']."'";
-
-        $no_sql_result = mysqli_query($db, $no_sql);
-        while ($row_no_sql = mysqli_fetch_assoc($no_sql_result)) {
-            
-            $row_name_sql['client_contact_no'] = $row_no_sql['client_contact_no'];
 ?>
-                                            <div class="form-group">
                                                 <div class="row" style="margin-bottom: 2px;">
                                                     <div class="col-md-6">
                                                         <strong>
@@ -540,18 +532,33 @@
                                                     <div class="col-md-1">
                                                         <strong>-</strong>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-5">
+<?php
+        $no_sql = "SELECT DISTINCT client_contact_no
+                    FROM client_contact_number
+                    WHERE client_contact_id = '".$row_name_sql['client_contact_id']."'";
+
+        $no_sql_result = mysqli_query($db, $no_sql);
+        while ($row_no_sql = mysqli_fetch_assoc($no_sql_result)) {
+            
+            $row_name_sql['client_contact_no'] = $row_no_sql['client_contact_no'];
+?>                                            
                                                         <strong>
-                                                            <?php echo $row_name_sql['client_contact_no']; ?>
+                                                            <?php echo $row_name_sql['client_contact_no']; ?><br>
                                                         </strong>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                    
+                                                
 <?php
         }
+?>
+                                                    </div>
+                                                </div>
+                                                <br>
+<?php
     }
-
 ?>                       
+                                               
+                                            </div>
                                         </td>
                                         <td>
                                             <div class="row" style="margin-bottom: 2px;">

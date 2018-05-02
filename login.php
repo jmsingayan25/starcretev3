@@ -26,6 +26,9 @@
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- bootstrap theme -->
     <link href="css/bootstrap-theme.css" rel="stylesheet">
     <!--external css-->
@@ -48,6 +51,9 @@
         <form class="login-form" action="login.php" method="post">        
             <div class="login-wrap">
                 <p class="login-img"><i class="icon_lock_alt"></i></p>
+                    <div class="alert alert-danger" id="error_msg" style="display: none;">
+                        <span class="glyphicon glyphicon-remove"></span> Your Username or Password is invalid.
+                    </div>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="icon_profile"></i></span>
                         <input type="text" name="username" class="form-control" placeholder="Username" value="<?php if(isset($_COOKIE["username"])) { echo $_COOKIE["username"]; } ?>" required autofocus>
@@ -125,7 +131,15 @@ if(isset($_POST['login-submit'])){
             header("location: login.php");
         }
     }else{
-        phpAlert("Your Username or Password is invalid");
+        // phpAlert("Your Username or Password is invalid");
+        echo "<script> 
+
+            $(document).ready(function(){
+                $('#error_msg').fadeTo(2000, 500).slideUp(500, function(){
+                    $('#error_msg').slideUp(500);
+                });
+            });
+        </script>";
     }
 }   
 

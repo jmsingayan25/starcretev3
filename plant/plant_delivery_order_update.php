@@ -302,6 +302,7 @@
 
 									<input type="hidden" name="hidden_balance" id="hidden_balance" value="<?php echo $purchase_order_balance; ?>">
 									<input type="hidden" name="hidden_quantity" id="hidden_quantity" value="<?php echo $delivery_row['quantity']; ?>">
+									
 									<div class="form-group">
 										<label for="po_no" class="col-md-3 control-label">P.O. No.</label>
 										<div class="col-md-6">
@@ -425,13 +426,13 @@
 		}
 
 		if($_POST['update_psi'] != ''){
-			$new_psi_ext = "(" . $new_psi . " PSI)";
+			$new_psi_ext = "(" . number_format($new_psi) . " PSI)";
 		}else{
 			$new_psi_ext = '';
 		}
 
 		if($delivery_row['psi'] != ''){
-			$item_psi_ext = $delivery_row['item_no'] . " (" . $delivery_row['psi'] . " PSI)";
+			$item_psi_ext = $delivery_row['item_no'] . " (" . number_format($delivery_row['psi']) . " PSI)";
 		}else{
 			$item_psi_ext = $delivery_row['item_no'];
 		}
@@ -451,7 +452,7 @@
 				
 			$deducted_quantity = $new_quantity - $delivery_row['quantity'];
         	$update_balance = $balance_sql_row['balance'] - $deducted_quantity;
-			$update_po_balance = "UPDATE purchase_order SET quantity = '$new_quantity', balance = '$update_balance' WHERE purchase_id = '".$delivery_row['fk_po_id']."'";
+			$update_po_balance = "UPDATE purchase_order SET balance = '$update_balance' WHERE purchase_id = '".$delivery_row['fk_po_id']."'";
 
 			mysqli_query($db, $update_po_balance);
 		}

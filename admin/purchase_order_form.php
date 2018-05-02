@@ -394,6 +394,15 @@ session_start();
                     </ol>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-lg-8 col-md-offset-2">
+                    <!-- <div class="alert alert-success" id="success_msg" style="display: none;"></div> -->
+                    <div class="alert alert-success alert-dismissible" id="success_msg" style="display: none;">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close" onclick="window.location.href='purchase_order_form.php';">&times;</a>
+                        <strong><div id="msg"></div></strong>
+                    </div>
+                </div>
+            </div>
             <!-- Basic Forms & Horizontal Forms-->
             <form class="form-horizontal" role="form" action="purchase_order_form.php" id="form" method="post" onsubmit="return confirm('Proceed?');">
 				<div class="row">
@@ -583,7 +592,7 @@ session_start();
 			if($item[$i] != "" && $quantity[$i] != ""){
 
                 if($psi[$i] != ""){
-                    $psi_ext = "(" . $psi[$i] . " PSI)";
+                    $psi_ext = "(" . number_format($psi[$i]) . " PSI)";
                 }else{
                     $psi_ext = '';
                 }
@@ -635,8 +644,14 @@ session_start();
         mysqli_query($db, $notification_query);                   
         
 		if($count == count($item)){
-			phpAlert("Transaction complete. You can view the order on ".ucfirst($plant)." Purchase Order page.");
-			echo "<meta http-equiv='refresh' content='0'>";
+			// phpAlert("Transaction complete. You can view the order on ".ucfirst($plant)." Purchase Order page.");
+			// echo "<meta http-equiv='refresh' content='0'>";
+            echo "<script> 
+                    $(document).ready(function(){
+                        document.getElementById('msg').innerHTML = 'Transaction complete. You can view the order on ".ucfirst($plant)." Purchase Order page.'
+                        $('#success_msg').show();
+                    });
+                    </script>";
 		}else{
 			phpAlert('Something went wrong. Please try again.');
 		}

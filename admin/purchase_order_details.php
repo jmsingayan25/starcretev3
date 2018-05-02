@@ -361,7 +361,7 @@ session_start();
     }
 ?>
 
-                    <form action="purchase_order_details.php" method="post">
+                    <form action="purchase_order_details.php" method="post" onsubmit="return confirm('Proceed?');">
                         <?php echo $info; ?> <button type="button" class="btn btn-sm" style="background-color: #d32f2f; color: white;" data-toggle='modal' data-target='#purchaseOrderClosedRow' <?php echo $disabled; ?>><span class="fa fa-edit"></span> <strong>Click to Close P.O. No. <?php echo $purchase_order_no; ?></strong></button>
 
                         <div class="modal fade" id="purchaseOrderClosedRow" role="dialog">
@@ -420,8 +420,8 @@ session_start();
                                                     <th class="col-md-1">#</th>
                                                     <th class="col-md-1"><input type="text" class="form-control" placeholder="Item" disabled></th>
                                                     <th class="col-md-2">Ordered / Remaining</th>
-                                                    <th class="col-md-2"><input type="text" class="form-control" placeholder="Project Name" disabled></th>
-                                                    <th class="col-md-2"><input type="text" class="form-control" placeholder="Address" disabled></th>
+                                                    <th class="col-md-2">Project Name</th>
+                                                    <th class="col-md-2">Address</th>
                                                     <th class="col-md-1">Date Order</th>
                                                     <th class="col-md-1">Action</th>
                                                 </tr>
@@ -635,14 +635,14 @@ session_start();
             // echo $purchase_id;
             // echo json_encode($_SESSION);
         }else{
-            phpAlert("Invalid username or password of Admin");
+            phpAlert("Wrong password");
             echo "<meta http-equiv='refresh' content='0'>";
         }
     }else if(isset($_POST['closed'])){
 
         // echo $purchase_order_no;
         $datetime = date("Y-m-d H:i:s");
-        $reason = $_POST['reason'];
+        $reason = mysqli_real_escape_string($db, $_POST['reason']);
         $item_array = array();
 
         $sql = "SELECT *, s.site_name, c.client_name 
@@ -666,7 +666,7 @@ session_start();
             $balance = $row['balance'];
 
             if($row['psi'] != ""){
-                $psi = "(" . $row['psi'] . " PSI)";
+                $psi = "(" . number_format($row['psi']) . " PSI)";
             }else{
                 $psi = "";
             }
@@ -711,7 +711,7 @@ session_start();
             $psi_obj = $item_decode[$i]->psi;
 
             if($psi_obj != ""){
-                $psi_ext = "(" . $psi_obj . " PSI)";
+                $psi_ext = "(" . number_format($psi_obj) . " PSI)";
             }else{
                 $psi_ext = "";
             }

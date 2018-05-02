@@ -295,14 +295,14 @@ session_start();
 									</div>
                                     <div class="form-group">
                                         <label for="update_address" class="col-md-3 control-label">Site Name</label>
-                                        <div class="col-md-6">
+                                        <div class="col-md-8">
                                             <input type="hidden" id="update_name" name="update_name" value="<?php echo $purchase_row['site_name']; ?>" class="form-control" readonly>
                                             <p class="help-block"><strong><?php echo $purchase_row['site_name']; ?></strong></p>
                                         </div>
                                     </div>
 									<div class="form-group">
 										<label for="update_address" class="col-md-3 control-label">Site Address</label>
-										<div class="col-md-6">
+										<div class="col-md-8">
 											<input type="hidden" id="update_address" name="update_address" value="<?php echo $purchase_row['site_address']; ?>" class="form-control" readonly>
                                             <p class="help-block"><strong><?php echo $purchase_row['site_address']; ?></strong></p>
 										</div>

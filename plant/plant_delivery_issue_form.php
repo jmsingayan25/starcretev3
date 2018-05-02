@@ -356,7 +356,14 @@
 										<label for="dr_no" class="col-md-3 control-label">Quantity<span class="required" style="color: red;">*</span></label>
 										<div class="col-md-6">
 											<input type="text" id="quantity" name="quantity" class="class_quantity form-control" autocomplete="off" placeholder="Pieces to be delivered" onkeyup="compareValues(this.value)" required>
-											<p class="help-block">Remaining: <strong><?php echo number_format((float)$purchase_row['balance'])." pcs"; ?></strong></p>
+<?php
+
+	if($purchase_row['balance'] < $purchase_row['quantity']){
+
+		echo "<p class='help-block'>Remaining: <strong>" . number_format((float)$purchase_row['balance'])." pcs</strong>";
+	}
+?>
+<!-- 											<p class="help-block">Remaining: <strong><?php echo number_format((float)$purchase_row['balance'])." pcs"; ?></strong></p> -->
 											<p class="help-block">Ordered: <strong><?php echo number_format((float)$purchase_row['quantity']) . " pcs"; ?> </strong></p>
 										</div>
 									</div>
@@ -418,7 +425,7 @@
 		$plant = ucfirst($purchase_row['office']);
 
 		if($psi != ""){
-			$ext = "($psi PSI)";
+			$ext = "(".number_format($psi)." PSI)";
 		}else{
 			$ext = "";
 		}
