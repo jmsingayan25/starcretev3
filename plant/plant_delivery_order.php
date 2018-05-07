@@ -886,19 +886,19 @@ if(isset($_POST['delivered'])){
 		$row_po_no_delivery = $order['po_no_delivery'];
 		$row_fk_po_id = $order['fk_po_id'];
 		$row_delivery_receipt_no = $order['delivery_receipt_no'];
-		$row_quantity = $order['quantity'];
-		$row_item_no = $order['item_no'];
+		$row_quantity = mysqli_real_escape_string($db, $order['quantity']);
+		$row_item_no = mysqli_real_escape_string($db, $order['item_no']);
 		$row_site_id = $order['site_id'];
         $row_unique_po_id = $order['fk_unique_po_id'];
         if($order['psi'] != ''){
-            $row_psi = "(" . $order['psi'] . " PSI)";
+            $row_psi = "(" . number_format($order['psi']) . " PSI)";
         }else{
             $row_psi = '';
         }
 
 		$site = getSiteInfo($db, $row_site_id);
-		$row_site_name = $site['site_name'];
-        $row_site_address = $site['site_address'];
+		$row_site_name = mysqli_real_escape_string($db, $site['site_name']);
+        $row_site_address = mysqli_real_escape_string($db, $site['site_address']);
 		// $update_stock = "UPDATE item_stock SET stock = stock - '$row_quantity', last_update = '$datetime' 
 		// 					WHERE item_no = '$row_item_no' AND office = '$row_office'";
 
@@ -1007,7 +1007,7 @@ if(isset($_POST['delivered'])){
 		$row_item_no = $order['item_no'];
 
         if($row['psi'] != ''){
-            $row_psi = "(" . $order['psi'] . " PSI)";
+            $row_psi = "(" . number_format($order['psi']) . " PSI)";
         }else{
             $row_psi = '';
         }

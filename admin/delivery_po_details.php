@@ -568,6 +568,7 @@ session_start();
                             <div class="col-md-12">
                                 <header class="panel-heading">
                                     Delivery Details for P.O. No. <strong><?php echo $po_no_delivery; ?></strong>
+
                                 </header>
                                 <section class="panel">
                                     <div class="table-responsive filterable">
@@ -610,7 +611,7 @@ session_start();
         while ($row = mysqli_fetch_assoc($result)) {
 
             if($row['psi'] != ""){
-                $row['psi'] = "(" . $row['psi'] . " PSI)";
+                $row['psi'] = "(" . number_format($row['psi']) . " PSI)";
             }else{
                 $row['psi'] = "";
             }

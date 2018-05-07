@@ -189,19 +189,6 @@ session_start();
         });
     });
 
-    function disableTextArea(value){
-        // alert(value);
-        var textareafield = document.getElementsByClassName("inputArea");
-        // alert(textareafield.length)
-        for(var i=0; i<textareafield.length; i++){
-            if(value == "closed_only"){
-                textareafield[i].disabled = false;
-            }else{
-                textareafield[i].disabled = true;
-            }    
-        }
-    }
-
 </script>
 <style>
 /*table {
@@ -499,9 +486,8 @@ session_start();
         $string_date = "AND DATE_FORMAT(date_purchase,'%Y-%m-%d') BETWEEN '$start_date' AND '$end_date'";
     }
 
-    $string = " WHERE office = '$search_plant'";
-
-    $sql = "SELECT * FROM purchase_order o, site s, site_contact_person p, purchase_order_contact c ".$string." 
+    $sql = "SELECT * FROM purchase_order o, site s, site_contact_person p, purchase_order_contact c 
+            WHERE o.office = '$search_plant' 
             AND o.site_id = s.site_id 
             AND o.purchase_id = c.purchase_id
             AND c.site_contact_id = p.site_contact_person_id
@@ -599,11 +585,11 @@ session_start();
                 
     $query = "SELECT o.purchase_id, o.purchase_order_no, o.item_no, o.quantity, o.delivered, o.backload, o.balance, o.office, o.remarks, l.unit, s.site_name, s.site_address, GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name ASC SEPARATOR ', ') as site_contact_name, DATE_FORMAT(o.date_purchase,'%m/%d/%y') as date_purchase, o.psi, o.purchase_unique_id
                 FROM purchase_order o, purchase_order_contact c, batch_list l, site_contact_person p, site s
-                ".$string." ".$string_date."
+                WHERE o.office = '$search_plant' 
                 AND o.site_id = s.site_id
                 AND o.purchase_id = c.purchase_id
                 AND c.site_contact_id = p.site_contact_person_id
-                AND o.item_no = l.item_no ".$string_ext."
+                AND o.item_no = l.item_no ".$string_ext." ".$string_date."
                 AND o.balance != 0  
                 AND DATE_FORMAT(date_purchase,'%Y-%m-%d') != ''
                 GROUP BY o.purchase_id
@@ -630,26 +616,15 @@ session_start();
             <tr>
                 <td><?php echo $hash; ?></td>
 <?php
-            if(mysqli_num_rows($count) > 0){
-                if($row['balance'] <= 1350){
+            if(mysqli_num_rows($count) > 0 && $row['balance'] <= 1350){
 ?>
-                    <td style="cursor: pointer; color: red;">
-                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='purchase_order_details.php?purchase_order_no=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>&purchase_unique_id=<?php echo $row['purchase_unique_id']; ?>'">
-                            <strong><?php echo $row['purchase_order_no']; ?></strong>
-                        </div>
-                    </td>
-                    <td style="color: red;"><strong><?php echo $row['item_no'] . " " . $row['psi']?></strong></td>
+                <td style="cursor: pointer; color: red;">
+                    <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='purchase_order_details.php?purchase_order_no=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>&purchase_unique_id=<?php echo $row['purchase_unique_id']; ?>'">
+                        <strong><?php echo $row['purchase_order_no']; ?></strong>
+                    </div>
+                </td>
+                <td style="color: red;"><strong><?php echo $row['item_no'] . " " . $row['psi']?></strong></td>
 <?php
-                }else{
-?>
-                    <td style="cursor: pointer;">
-                        <div class="tooltips" data-original-title="Click for more details about P.O. No. <?php echo $row['purchase_order_no'] ?>" data-placement="top" onclick="window.location='purchase_order_details.php?purchase_order_no=<?php echo $row['purchase_order_no']; ?>&office=<?php echo $search_plant; ?>&purchase_unique_id=<?php echo $row['purchase_unique_id']; ?>'">
-                            <strong><?php echo $row['purchase_order_no']; ?></strong>
-                        </div>
-                    </td>
-                    <td><strong><?php echo $row['item_no'] . " " . $row['psi']?></strong></td>
-<?php
-                }
             }else{
 ?>
                 <td style="cursor: pointer;">
@@ -664,12 +639,8 @@ session_start();
                 <td>
                     <strong>
 <?php 
-                     if(mysqli_num_rows($count) > 0){
-                        if($row['balance'] <= 1350){
-                            $balance_ext = "<span style='color: red;'>" . number_format((float)$row['balance']) . " pcs </span>";
-                        }else{
-                            $balance_ext = "<span>" . number_format((float)$row['balance']) . " pcs </span>";
-                        }
+                     if(mysqli_num_rows($count) > 0 && $row['balance'] <= 1350){
+                        $balance_ext = "<span style='color: red;'>" . number_format((float)$row['balance']) . " pcs </span>";
                     }else{
                         $balance_ext = "<span>" . number_format((float)$row['balance']) . " pcs </span>";
                     }

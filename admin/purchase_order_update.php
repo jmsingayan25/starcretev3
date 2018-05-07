@@ -413,8 +413,10 @@ session_start();
 <?php
     $sql = "SELECT item_no 
             FROM batch_list
-            WHERE item_no != '".$purchase_row['item_no']."'
+            WHERE item_no NOT IN (SELECT item_no FROM purchase_order 
+                                WHERE purchase_unique_id = '$purchase_unique_id')
             ORDER BY item_no ASC";
+            echo $sql;
     $result = mysqli_query($db, $sql);
     foreach($result as $row){
                                     echo "<option value='" . $row['item_no'] . "'>" . $row['item_no'] . "</option>";
@@ -437,7 +439,7 @@ session_start();
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="balance" class="col-md-4 control-label">Remaining Balance</label>
+                                        <label for="balance" class="col-md-4 control-label">New Remaining Balance</label>
                                         <div class="col-md-6">
                                             <!-- <p class="help-block"><strong><?php echo number_format($purchase_row['balance']) . " pcs" ?></strong></p> -->
                                             <p class="help-block" id="balance"></p> 

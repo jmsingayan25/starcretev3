@@ -563,9 +563,8 @@ session_start();
         $string_date = "AND DATE_FORMAT(date_delivery,'%Y-%m-%d') BETWEEN '$start_date' AND '$end_date'";
     }
 
-    $string = " WHERE office = '$search_plant'";
-
-    $sql = "SELECT * FROM delivery d, site s, site_contact_person p, purchase_order_contact poc ".$string." 
+    $sql = "SELECT * FROM delivery d, site s, site_contact_person p, purchase_order_contact poc
+            WHERE d.office = '$search_plant'
             AND d.fk_po_id = poc.purchase_id
             AND poc.site_contact_id = p.site_contact_person_id
             AND d.site_id = s.site_id 
@@ -662,11 +661,11 @@ session_start();
 
     $query = "SELECT d.delivery_id, d.delivery_receipt_no, d.item_no, d.quantity, d.gate_pass, d.po_no_delivery, DATE_FORMAT(d.date_delivery,'%m/%d/%y') as date_delivery , d.office, d.remarks, d.fk_po_id, s.site_name, s.site_address, p.site_contact_name, c.client_name, GROUP_CONCAT(DISTINCT p.site_contact_name ORDER BY p.site_contact_name SEPARATOR ', ') as site_contact_name, d.psi, d.fk_unique_po_id
                 FROM delivery d, site s, site_contact_person p, client c, site_contact_number sc, purchase_order_contact poc
-                ".$string." ".$string_date."
+                WHERE d.office = '$search_plant' 
                 AND s.client_id = c.client_id
                 AND d.fk_po_id = poc.purchase_id
                 AND poc.site_contact_id = p.site_contact_person_id
-                AND d.site_id = s.site_id ".$string_ext."
+                AND d.site_id = s.site_id ".$string_ext." ".$string_date."
                 AND remarks = 'Backload' 
                 GROUP BY delivery_id 
                 ORDER BY delivery_id DESC
@@ -678,7 +677,7 @@ session_start();
         while($row = mysqli_fetch_assoc($result)){
 
             if($row['psi'] != ""){
-                $row['psi'] = "(" . $row['psi'] . " PSI)";
+                $row['psi'] = "(" . number_format($row['psi']) . " PSI)";
             }else{
                 $row['psi'] = "";
             }

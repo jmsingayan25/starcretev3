@@ -651,13 +651,15 @@ session_start();
         if($count == count($item)){
             // phpAlert("Transaction complete. You can view the order on ".ucfirst($plant)." Purchase Order page.");
             // echo "<meta http-equiv='refresh' content='0'>";
-
-            echo "<script> 
-                    $(document).ready(function(){
-                        document.getElementById('msg').innerHTML = 'Transaction complete. You can view the order on ".ucfirst($plant)." Purchase Order page.'
-                        $('#success_msg').show();
-                    });
-                    </script>";
+?>
+            <script> 
+                $(document).ready(function(){
+                    document.getElementById('msg').innerHTML = "Transaction complete. You can view the order on <a href='purchase_order.php?office=<?php echo $plant ?>'><?php echo ucfirst($plant); ?> Purchase Order </a> page."
+                    $('#success_msg').show();
+                });
+            </script>
+ 
+<?php                   
         }else{
             phpAlert(mysqli_error($db));
         }
