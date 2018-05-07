@@ -51,8 +51,27 @@
 	// 	echo "No new update on database.";
 	// }
 
+	$firstname = mysqli_real_escape_string($db, "Mary Rose");
+	$lastname = mysqli_real_escape_string($db, "michael");
+	$username = mysqli_real_escape_string($db, "Maro");
+	$password = mysqli_real_escape_string($db, "maroheadoffice1010");
+	$position = mysqli_real_escape_string($db, "admin");
+	$office = mysqli_real_escape_string($db, "head");
+
+	$password_crpyt_md5 = mysqli_real_escape_string($db, crypt($password,'$1$'.$password));
+
+	$sql = "INSERT INTO users(firstname, lastname, username, password, position, office)
+			VALUES('$firstname','$lastname','$username','$password_crpyt_md5','$position','$office')";
+
+	echo $sql;
+	// if(mysqli_query($db, $sql)){
+	// 	echo mysqli_info($db);
+	// }else{
+	// 	echo mysqli_error($db);
+	// }
+
 ?>
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
 	<title></title>
@@ -76,4 +95,4 @@
 	<input type="submit" name="submit" value="Submit" onclick="onSubmit();">
 </form>
 </body>
-</html>
+</html> -->

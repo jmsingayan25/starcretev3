@@ -666,12 +666,12 @@ session_start();
 <?php 
                      if(mysqli_num_rows($count) > 0){
                         if($row['balance'] <= 1350){
-                            $balance_ext = "<span style='color: red;'><strong>" . number_format((float)$row['balance']) . " pcs </strong></span>";
+                            $balance_ext = "<span style='color: red;'>" . number_format((float)$row['balance']) . " pcs </span>";
                         }else{
-                            $balance_ext = "<span><strong>" . number_format((float)$row['balance']) . " pcs </strong></span>";
+                            $balance_ext = "<span>" . number_format((float)$row['balance']) . " pcs </span>";
                         }
                     }else{
-                        $balance_ext = "<span><strong>" . number_format((float)$row['balance']) . " pcs </strong></span>";
+                        $balance_ext = "<span>" . number_format((float)$row['balance']) . " pcs </span>";
                     }
 
                     echo number_format((float)$row['quantity'])." pcs / " . $balance_ext;

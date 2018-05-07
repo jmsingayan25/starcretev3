@@ -392,7 +392,7 @@
                                         </th>
                                     </tr>
                                     <tr class="filters">
-                                        <th class="col-md-4"><input type="text" class="form-control" placeholder="Project Name" disabled></th>
+                                        <th class="col-md-3"><input type="text" class="form-control" placeholder="Project Name" disabled></th>
                                         <th class="col-md-4"><input type="text" class="form-control" placeholder="Address" disabled></th>
                                         <th class="col-md-4"><input type="text" class="form-control" placeholder="Contact" disabled></th>
                                         <th class="col-md-1">Option</th>
@@ -419,7 +419,7 @@
     $total = mysqli_num_rows($result);
 
     $adjacents = 3;
-    $targetpage = "clients_sites.php"; //your file name
+    $targetpage = "client_sites.php"; //your file name
     $page = $_GET['page'];
 
     if($page){ 

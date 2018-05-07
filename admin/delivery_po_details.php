@@ -567,7 +567,7 @@ session_start();
                         <div class="row">
                             <div class="col-md-12">
                                 <header class="panel-heading">
-                                    Order Details of P.O. No. <strong><?php echo $po_no_delivery; ?></strong>
+                                    Delivery Details for P.O. No. <strong><?php echo $po_no_delivery; ?></strong>
                                 </header>
                                 <section class="panel">
                                     <div class="table-responsive filterable">
@@ -584,8 +584,8 @@ session_start();
                                                     <th class="col-md-1"><input type="text" class="form-control" placeholder="DR No." disabled></th>
                                                     <th class="col-md-1"><input type="text" class="form-control" placeholder="Item" disabled></th>
                                                     <th class="col-md-1">Quantity</th>
-                                                    <th class="col-md-2"><input type="text" class="form-control" placeholder="Project Name" disabled></th>
-                                                    <th class="col-md-2"><input type="text" class="form-control" placeholder="Address" disabled></th>
+                                                    <th class="col-md-2">Project Name</th>
+                                                    <th class="col-md-2">Address</th>
                                                     <!-- <th class="col-md-1">Contact</th> -->
                                                     <th class="col-md-1">Date Transaction</th>
                                                     <th class="col-md-1">Status</th>

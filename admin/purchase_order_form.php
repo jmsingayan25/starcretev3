@@ -554,54 +554,57 @@ session_start();
 </body>
 </html>
 <?php
-	if(isset($_POST['submit'])){
+    if(isset($_POST['submit'])){
 
-		$max = "SELECT MAX(purchase_unique_id) as id
-				FROM purchase_order";
+        $max = "SELECT MAX(purchase_unique_id) as id
+                FROM purchase_order";
 
-		$max_result = mysqli_query($db, $max);
-		if(mysqli_num_rows($max_result) > 0){
-			$row = mysqli_fetch_assoc($max_result);
-			$purchase_unique_id = $row['id'] + 1;
-		}else{
-			$purchase_unique_id = 1;
-		}
+        $max_result = mysqli_query($db, $max);
+        if(mysqli_num_rows($max_result) > 0){
+            $row = mysqli_fetch_assoc($max_result);
+            $purchase_unique_id = $row['id'] + 1;
+        }else{
+            $purchase_unique_id = 1;
+        }
 
-		$client_id = $_POST['client'];
-		$client = getClientInfo($db, $client_id);
-		$client_name = $client['client_name'];
+        $client_id = $_POST['client'];
+        $client = getClientInfo($db, $client_id);
+        $client_name = mysqli_real_escape_string($db, $client['client_name']);
 
-		$site_id = $_POST['site_id'];
-		$site = getSiteInfo($db, $site_id);
-		$site_name = $site['site_name'];
-        $site_address = $site['site_address'];
+        $site_id = $_POST['site_id'];
+        $site = getSiteInfo($db, $site_id);
+        $site_name = mysqli_real_escape_string($db, $site['site_name']);
 
-		$po_no = mysqli_real_escape_string($db, $_POST['po_no']);
-		$item = $_POST['item_no'];
+        $po_no = mysqli_real_escape_string($db, $_POST['po_no']);
+        $item = $_POST['item_no'];
         $psi = str_replace(",", "", $_POST['psi']);
-		$quantity = str_replace( ',', '', $_POST['quantity']);
-		$datetime = date("Y/m/d H:i:s");
-		
-		$contact_person = $_POST['contact_name'];
-		// $contact_no = mysqli_real_escape_string($db, $_POST['contact_number']);
-		$plant = $_POST['plant'];
+        $quantity = str_replace( ',', '', $_POST['quantity']);
+        $datetime = date("Y/m/d H:i:s");
+        
+        $contact_person = $_POST['contact_name'];
+        // $contact_no = mysqli_real_escape_string($db, $_POST['contact_number']);
+        $plant = $_POST['plant'];
 
 
-		$count = 0;
-		for($i = 0; $i < count($item); $i++){
-			if($item[$i] != "" && $quantity[$i] != ""){
+        $count = 0;
+        for($i = 0; $i < count($item); $i++){
+            if($item[$i] != "" && $quantity[$i] != ""){
+
+                $escape_psi = mysqli_real_escape_string($db, $psi[$i]);
+                $escape_quantity = mysqli_real_escape_string($db, $quantity[$i]);
+                $escape_item = mysqli_real_escape_string($db, $item[$i]);
 
                 if($psi[$i] != ""){
-                    $psi_ext = "(" . number_format($psi[$i]) . " PSI)";
+                    $psi_ext = "(" . number_format($escape_psi) . " PSI)";
                 }else{
                     $psi_ext = '';
                 }
 
-				$insert_purchase_order = "INSERT INTO purchase_order(purchase_unique_id, purchase_order_no, site_id, item_no, psi, quantity, balance, date_purchase, office, remarks) VALUES('$purchase_unique_id','$po_no','$site_id','$item[$i]', '$psi[$i]','$quantity[$i]','$quantity[$i]','$datetime','$plant','Pending')";
+                $insert_purchase_order = "INSERT INTO purchase_order(purchase_unique_id, purchase_order_no, site_id, item_no, psi, quantity, balance, date_purchase, office, remarks) VALUES('$purchase_unique_id','$po_no','$site_id','$escape_item', '$escape_psi','$escape_quantity','$escape_quantity','$datetime','$plant','Pending')";
 
-				// echo $insert_purchase_order."<br>";
+                // echo $insert_purchase_order."<br>";
 
-				if(mysqli_query($db, $insert_purchase_order)){
+                if(mysqli_query($db, $insert_purchase_order)){
 
                     $sql = "SELECT MAX(purchase_id) as purchase_id FROM purchase_order";
                     $result = mysqli_query($db, $sql);
@@ -610,25 +613,27 @@ session_start();
 
                     for ($j=0; $j < count($contact_person); $j++) { 
                         
+                        $escape_contact_person = mysqli_real_escape_string($db, $contact_person[$j]);
+
                         $insert_contact_po = "INSERT INTO purchase_order_contact(purchase_id, site_contact_id)
-                                                VALUES('$latest_po_id','$contact_person[$j]')";
+                                                VALUES('$latest_po_id','$escape_contact_person')";
                         // echo $insert_contact_po."<br>";
                         mysqli_query($db, $insert_contact_po);
                     }
-					$count++;
-				}
-			}
+                    $count++;
+                }
+            }
 
             if($i == 0){
-                $item_ext = number_format($quantity[$i])." pcs of $item[$i] $psi_ext";
+                $item_ext = number_format($escape_quantity)." pcs of $escape_item $psi_ext";
             }else if($i == (count($item) - 1)){
-                $item_ext .= " and ".number_format($quantity[$i])." pcs of $item[$i] $psi_ext";
+                $item_ext .= " and ".number_format($escape_quantity)." pcs of $escape_item $psi_ext";
             }else{
-                $item_ext .= ", ".number_format($quantity[$i])." pcs of $item[$i] $psi_ext";
+                $item_ext .= ", ".number_format($escape_quantity)." pcs of $escape_item $psi_ext";
             }
-		}
+        }
 
-        $history_query = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) VALUES('Purchase Order','Issued P.O. No.','$client_name ordered $item_ext with P.O. No. $po_no to be delivered to $site_name in $site_address','$datetime','$plant')";
+        $history_query = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) VALUES('Purchase Order','Issued P.O. No.','$client_name ordered $item_ext with P.O. No. $po_no to be delivered to $site_name','$datetime','$plant')";
 
         mysqli_query($db, $history_query);
         // echo $history_query;
@@ -643,17 +648,18 @@ session_start();
 
         mysqli_query($db, $notification_query);                   
         
-		if($count == count($item)){
-			// phpAlert("Transaction complete. You can view the order on ".ucfirst($plant)." Purchase Order page.");
-			// echo "<meta http-equiv='refresh' content='0'>";
+        if($count == count($item)){
+            // phpAlert("Transaction complete. You can view the order on ".ucfirst($plant)." Purchase Order page.");
+            // echo "<meta http-equiv='refresh' content='0'>";
+
             echo "<script> 
                     $(document).ready(function(){
                         document.getElementById('msg').innerHTML = 'Transaction complete. You can view the order on ".ucfirst($plant)." Purchase Order page.'
                         $('#success_msg').show();
                     });
                     </script>";
-		}else{
-			phpAlert('Something went wrong. Please try again.');
-		}
-	}
+        }else{
+            phpAlert(mysqli_error($db));
+        }
+    }
 ?>

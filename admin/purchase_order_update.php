@@ -29,7 +29,6 @@ session_start();
 
 	$purchase_id = $_SESSION['purchase_id'];
     $purchase_unique_id = $_SESSION['purchase_unique_id'];
-    
 
 	$search_sql = "SELECT *, s.site_id, s.site_address FROM purchase_order p, site s 
 					WHERE p.site_id = s.site_id
@@ -37,6 +36,7 @@ session_start();
 	$search_result = mysqli_query($db, $search_sql);
 	$purchase_row = mysqli_fetch_assoc($search_result);
     $search_plant = $purchase_row['office'];
+
 ?>
 <html lang="en">
 <head>
@@ -153,17 +153,74 @@ session_start();
                     $this.val( function() {
                         return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
                     } );
-        } );      
+        } );    
     });
 
+    // $(document).ready(function() {
+        
+    //     var button = document.getElementById('submit');
+    //     var po_no = document.getElementById('update_po_no').value;
+    //     var item_no = document.getElementById('update_item_no').value;
+    //     var psi = document.getElementById('update_psi').value;
+    //     var quantity = document.getElementById('update_quantity').value;
+    //     alert(po_no + " " + item_no + " " + psi + " " + quantity);
+    //     if(po_no == '' && item_no == '' && psi == '' && quantity == ''){
+    //         button.disabled = 'true';
+    //     }else{
+    //         button.disabled = '';
+    //     }
+        
+    // });
+
+    function checkBalance(val){
+
+        var balance = document.getElementById('hidden_balance').value;
+        var quantity = document.getElementById('hidden_update_quantity').value;
+        var button = document.getElementById('submit');
+        var input = document.getElementById('update_quantity');
+        var remaining = document.getElementById('balance');
+
+        val = val.replace(",","");
+        val = Number(val);
+
+        quantity = quantity.replace(",","");
+        quantity = Number(quantity);
+
+        balance = balance.replace(",","");
+        balance = Number(balance);
+
+        new_quantity = quantity - val;
+        new_value = balance - new_quantity;
+
+        if(val == ''){
+            new_value = balance;
+        }
+
+        if(new_value < 0 && val != ''){
+            button.disabled = 'true';
+            input.style.borderColor = 'red';
+        }else if(new_value < 0 && val == ''){
+            button.disabled = 'false';
+            input.style.borderColor = '';
+        }else{
+            button.disabled = '';
+            input.style.borderColor = '';
+        }
+
+        string_new_value = new_value.toLocaleString('en') + " pcs";
+        if(new_value < 1350){
+            remaining.innerHTML = string_new_value.bold().fontcolor("red");
+                    
+        }else{
+            remaining.innerHTML = string_new_value.bold();
+        }
+
+
+    }
+
 </script>
-<style>
-/*.page_links a{
-    color: inherit;
-}*/
-</style>
 </head>
-<body>
+<body onload="checkBalance('<?php echo $purchase_row['quantity']; ?>');">
 <!-- container section start -->
     <section id="container" class="">
         <header class="header dark-bg">
@@ -279,42 +336,38 @@ session_start();
                 <!-- Basic Forms & Horizontal Forms-->
               
 				<div class="row">
-					<div class="col-md-6 col-md-offset-3">
+					<div class="col-md-6">
 						<section class="panel">
 							<header class="panel-heading">
-							Update Form
+							Purchase Order Details
 							</header>
 							<div class="panel-body">
-								<form class="form-horizontal" role="form" id="form" action="purchase_order_update.php" method="post" onsubmit="return confirm('Proceed?');">
+								<form class="form-horizontal" role="form">
 									<div class="form-group">
 										<label for="update_po_no" class="col-md-3 control-label">P.O. No.</label>
 										<div class="col-md-6">
-											<input type="text" id="update_po_no" name="update_po_no" value="<?php echo $purchase_row['purchase_order_no']; ?>" class="form-control">
-                                            <!-- <p class="help-block"><strong><?php echo $purchase_row['purchase_order_no']; ?></strong></p> -->
+                                            <p class="help-block"><strong><?php echo $purchase_row['purchase_order_no']; ?></strong></p>
 										</div>
 									</div>
                                     <div class="form-group">
                                         <label for="update_address" class="col-md-3 control-label">Site Name</label>
                                         <div class="col-md-8">
-                                            <input type="hidden" id="update_name" name="update_name" value="<?php echo $purchase_row['site_name']; ?>" class="form-control" readonly>
                                             <p class="help-block"><strong><?php echo $purchase_row['site_name']; ?></strong></p>
                                         </div>
                                     </div>
 									<div class="form-group">
 										<label for="update_address" class="col-md-3 control-label">Site Address</label>
 										<div class="col-md-8">
-											<input type="hidden" id="update_address" name="update_address" value="<?php echo $purchase_row['site_address']; ?>" class="form-control" readonly>
                                             <p class="help-block"><strong><?php echo $purchase_row['site_address']; ?></strong></p>
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="item_no" class="col-md-3 control-label">Current Item</label>
 										<div class="col-md-6">
-											<input type="hidden" id="item_no" name="item_no" value="<?php echo $purchase_row['item_no']; ?>" class="form-control" readonly>
                                             <p class="help-block"><strong>
                                                 <?php 
                                                     if($purchase_row['psi'] != ""){
-                                                        echo $purchase_row['item_no'] . " (" . $purchase_row['psi'] . " PSI)"; 
+                                                        echo $purchase_row['item_no'] . " (" . number_format($purchase_row['psi']) . " PSI)"; 
                                                     }else{
                                                         echo $purchase_row['item_no'];
                                                     }
@@ -323,41 +376,88 @@ session_start();
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="update_item_no" class="col-md-3 control-label">New Item</label>
-										<div class="col-md-2">
-											<select id="update_item_no" name="update_item_no" class="form-control" style="width: 150px;">
-												<option value="">Select</option>
-<?php
-	$sql = "SELECT item_no FROM batch_list ORDER BY item_no ASC";
-	$result = mysqli_query($db, $sql);
-	foreach($result as $row){
-									echo "<option value='" . $row['item_no'] . "'>" . $row['item_no'] . "</option>";
-	}
-?>							
-											</select>
-										</div>
-                                        <label for="update_item_no" class="col-md-3 control-label">PSI</label>
-                                        <div class="col-md-3">
-                                            <input type="text" name="update_psi" class="form-control" value="<?php echo $purchase_row['psi']; ?>">
-                                        </div>
-									</div>
-									<div class="form-group">
-										<label for="item_no" class="col-md-3 control-label">Quantity</label>
+										<label for="quantity" class="col-md-3 control-label">Ordered Quantity</label>
 										<div class="col-md-6">
-											<input type="text" id="update_quantity" name="update_quantity" class="form-control" autocomplete="off" value="<?php echo number_format($purchase_row['quantity']); ?>" required>
-                                            <!-- <p class="help-block"><strong><?php echo number_format($purchase_row['quantity']) . " pcs"; ?></strong></p> -->
-										</div>
-									</div>
-									<div class="form-group">
-										<div class="col-md-offset-8 col-md-4">
-											<input type="submit" name="submit" id="submit" value="Done" class="btn btn-primary" style="font-weight: bold;">
-											<a href="purchase_order_details.php" class="btn btn-default"><strong>Cancel</strong></a>
+                                            <p class="help-block"><strong><?php echo number_format($purchase_row['quantity']) . " pcs"; ?></strong></p>
 										</div>
 									</div>
 								</form>
 							</div>
 						</section>
 					</div>
+                    <div class="col-md-6">
+                        <section class="panel">
+                            <header class="panel-heading">
+                                Update
+                            </header>
+                            <form class="form-horizontal" role="form" id="form" action="purchase_order_update.php" method="post" onsubmit="return confirm('Proceed?');">
+                                <div class="panel-body">
+
+                                    <input type="hidden" id="hidden_po_no" name="hidden_po_no" value="<?php echo $purchase_row['purchase_order_no']; ?>">
+                                    <input type="hidden" id="hidden_item_no" name="hidden_item_no" value="<?php echo $purchase_row['item_no']; ?>">
+                                    <input type="hidden" id="hidden_psi" name="hidden_psi" value="<?php echo $purchase_row['psi']; ?>" >
+                                    <input type="hidden" id="hidden_update_quantity" name="hidden_update_quantity" value="<?php echo number_format($purchase_row['quantity']); ?>">
+                                    <input type="hidden" id="hidden_balance" name="hidden_balance" value="<?php echo number_format($purchase_row['balance']); ?>">
+
+                                    <div class="form-group">
+                                        <label for="update_po_no" class="col-md-4 control-label">New P.O. No.</label>
+                                        <div class="col-md-4">
+                                            <input type="text" id="update_po_no" name="update_po_no" class="form-control" value="" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="update_item_no" class="col-md-4 control-label">New Item</label>
+                                        <div class="col-md-4">
+                                            <select id="update_item_no" name="update_item_no" class="form-control" style="width: 150px;">
+                                                <option value="">Select</option>
+<?php
+    $sql = "SELECT item_no 
+            FROM batch_list
+            WHERE item_no != '".$purchase_row['item_no']."'
+            ORDER BY item_no ASC";
+    $result = mysqli_query($db, $sql);
+    foreach($result as $row){
+                                    echo "<option value='" . $row['item_no'] . "'>" . $row['item_no'] . "</option>";
+    }
+?>                          
+                                            </select>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="update_item_no" class="col-md-4 control-label">New PSI<span class="required" style="color: red;">*</span></label>
+                                        <div class="col-md-4">
+                                            <input type="text" id="update_psi" name="update_psi" class="form-control" value="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="update_quantity" class="col-md-4 control-label">New Ordered Quantity</label>
+                                        <div class="col-md-4">
+                                            <input type="text" id="update_quantity" name="update_quantity" class="form-control" autocomplete="off" onkeyup="checkBalance(this.value);">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="balance" class="col-md-4 control-label">Remaining Balance</label>
+                                        <div class="col-md-6">
+                                            <!-- <p class="help-block"><strong><?php echo number_format($purchase_row['balance']) . " pcs" ?></strong></p> -->
+                                            <p class="help-block" id="balance"></p> 
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-offset-8 col-md-4">
+                                            <input type="submit" name="submit" id="submit" value="Done" class="btn btn-primary" style="font-weight: bold;">
+                                            <a href="purchase_order_details.php" class="btn btn-default"><strong>Cancel</strong></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <footer class="panel-footer">
+                                Note: Leave input field blank if no changes.<br>
+                                <span class="required" style="color: red;">*</span> - Put number '0' on PSI field to remove PSI value 
+                            </footer>
+                        </section>
+                    </div>
 				</div>
 				<div class="text-right">
 		            <div class="credits">
@@ -380,46 +480,78 @@ session_start();
 	if(isset($_POST['submit'])){
 
 		$site_id = $purchase_row['site_id'];
-        $update_psi = mysqli_real_escape_string($db, $_POST['update_psi']);
-		$update_purchase_order_no = mysqli_real_escape_string($db, $_POST['update_po_no']);
-		$_POST['update_quantity'] = mysqli_real_escape_string($db, $_POST['update_quantity']);
-		$update_quantity = str_replace(",", "", $_POST['update_quantity']);
-		// $update_address = mysqli_real_escape_string($db, $_POST['update_address']);
+        $datetime = date("Y/m/d H:i:s");
+        $plant = ucfirst($purchase_row['office']);
 
-		if(isset($_POST['update_item_no']) && $_POST['update_item_no'] != ''){
+        if($_POST['update_po_no'] != ''){
+            $update_purchase_order_no = mysqli_real_escape_string($db, $_POST['update_po_no']);
+        }else{
+            $update_purchase_order_no = mysqli_real_escape_string($db, $_POST['hidden_po_no']);
+        }
+
+        if($_POST['update_psi'] != ''){
+            if($_POST['update_psi'] == "0"){
+                $update_psi = '';
+            }else{
+                $update_psi = mysqli_real_escape_string($db, $_POST['update_psi']);
+
+            }
+        }else{
+            $update_psi = mysqli_real_escape_string($db, $_POST['hidden_psi']); 
+        }
+
+        if($_POST['update_quantity'] != ''){
+            $_POST['update_quantity'] = mysqli_real_escape_string($db, $_POST['update_quantity']);
+            $update_quantity = str_replace(",", "", $_POST['update_quantity']);
+        }else{
+            $_POST['hidden_update_quantity'] = mysqli_real_escape_string($db, $_POST['hidden_update_quantity']);
+            $update_quantity = str_replace(",", "", $_POST['hidden_update_quantity']);
+        }
+
+		if($_POST['update_item_no'] != ''){
 			$update_item_no = mysqli_real_escape_string($db, $_POST['update_item_no']);
 		}else{
-			$update_item_no = mysqli_real_escape_string($db, $_POST['item_no']);
+			$update_item_no = mysqli_real_escape_string($db, $_POST['hidden_item_no']);
 		}
 
         if($update_psi != ''){
-            $psi_ext = "(".$update_psi." PSI)";
+            if($_POST['update_psi'] != "0"){
+                $psi_ext = "(".number_format($update_psi)." PSI)";
+            }else{
+                $psi_ext = "";
+            }
         }else{
             $psi_ext = "";
         }
 
         if($purchase_row['psi'] != ''){
-            $item_psi_ext = $purchase_row['item_no'] . " (" . $purchase_row['psi'] . ")";
+            $item_psi_ext = $purchase_row['item_no'] . " (" . number_format($purchase_row['psi']) . " PSI)";
         }else{
             $item_psi_ext = $purchase_row['item_no'];
         }
 
-		$datetime = date("Y/m/d H:i:s");
-		$plant = ucfirst($purchase_row['office']);
-
-		// $reply = array('post' => $_POST);
-		// echo json_encode($reply);
-
 		if($update_quantity < $purchase_row['quantity']){
 
-			$update_quantity_balance = "UPDATE purchase_order SET quantity = '$update_quantity'
-										WHERE purchase_id = '$purchase_id'";
+            if($update_quantity < $purchase_row['balance']){
+
+                $update_quantity_balance = "UPDATE purchase_order 
+                                            SET quantity = '$update_quantity', balance = '$update_quantity'
+                                            WHERE purchase_id = '$purchase_id'";
+            }else{
+
+                $deducted_quantity = $purchase_row['quantity'] - $update_quantity;
+                $new_balance = $purchase_row['balance'] - $deducted_quantity;
+                $update_quantity_balance = "UPDATE purchase_order 
+                                            SET quantity = '$update_quantity', balance = '$new_balance'
+                                            WHERE purchase_id = '$purchase_id'";
+            }
 		}else{
 
             $deducted_quantity = $update_quantity - $purchase_row['quantity'];
             $new_balance = $deducted_quantity + $purchase_row['balance'];
 
-			$update_quantity_balance = "UPDATE purchase_order SET quantity = '$update_quantity', balance = '$new_balance'
+			$update_quantity_balance = "UPDATE purchase_order 
+                                        SET quantity = '$update_quantity', balance = '$new_balance'
 										WHERE purchase_id = '$purchase_id'";
 		} 
 
@@ -434,65 +566,70 @@ session_start();
 		if($update_purchase_order_no != $purchase_row['purchase_order_no'] && $update_item_no == $purchase_row['item_no'] && $update_quantity == $purchase_row['quantity']){
 			// update po no only
 			$history = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) 
-		 					VALUES('Purchase Order','Update Purchase Order','Update P.O. No. ".$purchase_row['purchase_order_no']." to $update_purchase_order_no','$datetime','".$purchase_row['office']."')";
+		 				VALUES('Purchase Order','Update Purchase Order','Update P.O. No. ".$purchase_row['purchase_order_no']." to $update_purchase_order_no','$datetime','".$purchase_row['office']."')";
 
 		}else if($update_purchase_order_no == $purchase_row['purchase_order_no'] && $update_item_no != $purchase_row['item_no'] && $update_quantity == $purchase_row['quantity']){
 			// update item only
 			$history = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) 
-		 					VALUES('Purchase Order','Update Purchase Order','Update $item_psi_ext to $update_item_no $psi_ext under P.O. No. ".$purchase_row['purchase_order_no']."','$datetime','".$purchase_row['office']."')";
+		 				VALUES('Purchase Order','Update Purchase Order','Update $item_psi_ext to $update_item_no $psi_ext under P.O. No. ".$purchase_row['purchase_order_no']."','$datetime','".$purchase_row['office']."')";
 
 		}else if($update_purchase_order_no == $purchase_row['purchase_order_no'] && $update_item_no == $purchase_row['item_no'] && $update_quantity != $purchase_row['quantity']){
 			// update quantity only
 			$history = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) 
-		 					VALUES('Purchase Order','Update Purchase Order','Update $item_psi_ext pcs from ".number_format($purchase_row['quantity'])." pcs to ".number_format($update_quantity)." pcs under P.O. No. ".$purchase_row['purchase_order_no']."','$datetime','".$purchase_row['office']."')";
+		 				VALUES('Purchase Order','Update Purchase Order','Update $item_psi_ext quantity from ".number_format($purchase_row['quantity'])." pcs to ".number_format($update_quantity)." pcs under P.O. No. ".$purchase_row['purchase_order_no']."','$datetime','".$purchase_row['office']."')";
 
 		}else if($update_purchase_order_no != $purchase_row['purchase_order_no'] && $update_item_no != $purchase_row['item_no'] && $update_quantity == $purchase_row['quantity']){
 			// update po no and item only
 			$history = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) 
-		 					VALUES('Purchase Order','Update Purchase Order','Update P.O. No. ".$purchase_row['purchase_order_no']." to $update_purchase_order_no and item $item_psi_ext to $update_item_no $psi_ext','$datetime','".$purchase_row['office']."')";
+		 				VALUES('Purchase Order','Update Purchase Order','Update P.O. No. ".$purchase_row['purchase_order_no']." to $update_purchase_order_no and item $item_psi_ext to $update_item_no $psi_ext','$datetime','".$purchase_row['office']."')";
 
 		}else if($update_purchase_order_no != $purchase_row['purchase_order_no'] && $update_item_no == $purchase_row['item_no'] && $update_quantity != $purchase_row['quantity']){
 			// update po no and quantity only
 			$history = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) 
-		 					VALUES('Purchase Order','Update Purchase Order','Update P.O. No. ".$purchase_row['purchase_order_no']." to $update_purchase_order_no and quantity for ".$purchase_row['item_no']." to ".number_format($update_quantity)." pcs','$datetime','".$purchase_row['office']."')";
+		 				VALUES('Purchase Order','Update Purchase Order','Update P.O. No. ".$purchase_row['purchase_order_no']." to $update_purchase_order_no and quantity for ".$purchase_row['item_no']." to ".number_format($update_quantity)." pcs','$datetime','".$purchase_row['office']."')";
 
 		}else if($update_purchase_order_no == $purchase_row['purchase_order_no'] && $update_item_no != $purchase_row['item_no'] && $update_quantity != $purchase_row['quantity']){
 			// update item and quantity only
 			$history = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) 
-		 					VALUES('Purchase Order','Update Purchase Order','Update $item_psi_ext to $update_item_no $psi_ext and its quantity to ".number_format($update_quantity)." pcs under P.O. No. ".$purchase_row['purchase_order_no']."','$datetime','".$purchase_row['office']."')";
+		 				VALUES('Purchase Order','Update Purchase Order','Update $item_psi_ext to $update_item_no $psi_ext and its quantity from ".number_format($purchase_row['quantity'])." pcs to ".number_format($update_quantity)." pcs under P.O. No. ".$purchase_row['purchase_order_no']."','$datetime','".$purchase_row['office']."')";
 
 		}else if($update_purchase_order_no != $purchase_row['purchase_order_no'] && $update_item_no != $purchase_row['item_no'] && $update_quantity != $purchase_row['quantity']){
 			// update all fields
 			$history = "INSERT INTO history(table_report, transaction_type, detail, history_date, office) 
-		 					VALUES('Purchase Order','Update Purchase Order','Update P.O. No. ".$purchase_row['purchase_order_no']." to $update_purchase_order_no, $item_psi_ext to $update_item_no $psi_ext and its quantity to ".number_format($update_quantity)." pcs','$datetime','".$purchase_row['office']."')";
-		}else if($update_purchase_order_no == $purchase_row['purchase_order_no'] && $update_item_no == $purchase_row['item_no'] && $update_quantity == $purchase_row['quantity']){
-            echo "<script>alert('No changes has been made.'); window.location.href='purchase_order_details.php'</script>";
-        }
+		 				VALUES('Purchase Order','Update Purchase Order','Update P.O. No. ".$purchase_row['purchase_order_no']." to $update_purchase_order_no, $item_psi_ext to $update_item_no $psi_ext and its quantity from ".number_format($purchase_row['quantity'])." pcs to ".number_format($update_quantity)." pcs','$datetime','".$purchase_row['office']."')";
+
+		}
+        // else if($update_purchase_order_no == $purchase_row['purchase_order_no'] && $update_item_no == $purchase_row['item_no'] && $update_quantity == $purchase_row['quantity'] && $update_psi == $purchase_row['psi']){
+        //     echo "<script>alert('No changes has been made.'); window.location.href='purchase_order_details.php'</script>";
+        // }
 
 		// echo $sql_update."<br>";
 		// echo $update_quantity_balance."<br>";
-		// echo $sql_update."<br>";
 		// echo $history;
-		
-		echo "<script> alert('Purchase Order No. succesfully updated')</script>";
-		if(mysqli_query($db, $sql_po_update) && mysqli_query($db, $sql_update) && mysqli_query($db, $update_quantity_balance) && mysqli_query($db, $delivery_update)){
-			if(mysqli_query($db, $history)){
-				echo "<script>alert('P.O. No. $update_purchase_order_no details has been updated'); window.location.href='purchase_order_details.php?purchase_order_no=$update_purchase_order_no&office=$search_plant&purchase_unique_id=$purchase_unique_id'</script>";
-				unset($_SESSION['post_purchase_id']);
-				// echo $history;
-			}else{
-				// echo "<script> alert('No changes has been made');window.location.href='purchase_order.php'</script>";
-                echo "<script>alert('P.O. No. $update_purchase_order_no details has been updated'); window.location.href='purchase_order_details.php?purchase_order_no=$update_purchase_order_no&office=$search_plant&purchase_unique_id=$purchase_unique_id'</script>";
-				unset($_SESSION['post_purchase_id']);
-			}
-		}else{
-			phpAlert('Something went wrong. Please try again.');
-			// phpAlert("Error description: " . mysqli_error($db));
-			echo "<meta http-equiv='refresh' content='0'>";
-		}
+		if($_POST['update_po_no'] == '' && $_POST['update_item_no'] == '' && $_POST['update_psi'] == '' && $_POST['update_quantity'] == ''){
+            
+            echo "<script> alert('No changes has been made'); window.location.href='purchase_order_details.php?purchase_order_no=$update_purchase_order_no&office=$search_plant&purchase_unique_id=$purchase_unique_id'</script>";
 
-		// $reply = array('post' => $_POST);
-		// echo json_encode($reply);
+        }else{
+
+            if(mysqli_query($db, $sql_po_update) && mysqli_query($db, $sql_update) && mysqli_query($db, $update_quantity_balance) && mysqli_query($db, $delivery_update)){
+
+                if(isset($history)){
+
+                    mysqli_query($db, $history);
+                    echo "<script>alert('P.O. No. $update_purchase_order_no details has been updated'); window.location.href='purchase_order_details.php?purchase_order_no=$update_purchase_order_no&office=$search_plant&purchase_unique_id=$purchase_unique_id'</script>";
+                    unset($_SESSION['post_purchase_id']);
+                }else{
+                    // echo "<script> alert('No changes has been made');window.location.href='purchase_order.php'</script>";
+                    echo "<script>alert('P.O. No. $update_purchase_order_no details has been updated'); window.location.href='purchase_order_details.php?purchase_order_no=$update_purchase_order_no&office=$search_plant&purchase_unique_id=$purchase_unique_id'</script>";
+                    unset($_SESSION['post_purchase_id']);
+                }
+            }else{
+                phpAlert('Something went wrong. Please try again.');
+                // phpAlert("Error description: " . mysqli_error($db));
+                echo "<meta http-equiv='refresh' content='0'>";
+            }
+        }
 	}
 
 ?>

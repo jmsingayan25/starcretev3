@@ -464,7 +464,7 @@
                             <div class="col-md-12">
                                 <section class="panel">
                                 <header class="panel-heading">
-                                    Order Details of P.O. No. <strong><?php echo $po_no_delivery; ?></strong>
+                                    Delivery Details for P.O. No. <strong><?php echo $po_no_delivery; ?></strong>
                                 </header>
                                 <div class="table-responsive filterable">
                                     <table class="table table-striped table-bordered">

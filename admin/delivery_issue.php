@@ -581,13 +581,12 @@ session_start();
         $string_date = "AND DATE_FORMAT(date_purchase,'%Y-%m-%d') BETWEEN '$start_date' AND '$end_date'";
     }
 
-    $string = " AND office = '$search_plant'";
-
     $sql = "SELECT * FROM purchase_order p, site s, site_contact_person c, purchase_order_contact poc
             WHERE p.site_id = s.site_id 
             AND p.purchase_id = poc.purchase_id
             AND poc.site_contact_id = c.site_contact_person_id
-            AND s.site_id = c.site_id ".$string." ".$string_ext." ".$string_date." 
+            AND s.site_id = c.site_id 
+            AND p.office = '$search_plant' ".$string_ext." ".$string_date." 
             AND balance != 0
             GROUP BY p.purchase_id";
 
@@ -686,7 +685,7 @@ session_start();
                 AND poc.site_contact_id = c.site_contact_person_id
                 AND p.site_id = s.site_id
                 AND p.balance != 0
-                ".$string." ".$string_date." ".$string_ext."
+                AND p.office = '$search_plant' ".$string_date." ".$string_ext."
                 GROUP BY purchase_id
                 ORDER BY purchase_id DESC
                 LIMIT $start, $limit";

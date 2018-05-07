@@ -228,9 +228,7 @@ session_start();
      text-align: left;
      font-weight: bold;
 }
-/*.page_links a{
-    color: inherit;
-}*/
+
 .grow {
   /*padding: 5px 5px 5px 5px;*/
   /*border-radius: 10px;*/
