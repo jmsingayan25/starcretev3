@@ -190,7 +190,6 @@
         }else{
             remaining.innerHTML = string_new_value.bold();
         }
-
     }
 
 </script>
@@ -554,6 +553,9 @@
 
                 $update_balance = "UPDATE purchase_order SET balance = '$new_balance'
                                     WHERE purchase_id = '".$delivery_row['fk_po_id']."'";
+
+                mysqli_query($db, $update_balance);
+
             }else{
 
                 $deducted_quantity = $new_quantity - $delivery_row['quantity'];
@@ -561,7 +563,11 @@
 
                 $update_balance = "UPDATE purchase_order SET balance = '$new_balance'
                                     WHERE purchase_id = '".$delivery_row['fk_po_id']."'";
+
+                mysqli_query($db, $update_balance);
             }
+
+            mysqli_query($db, $update_dr_quantity);
         }
 
 		$sql = "UPDATE delivery 
@@ -641,7 +647,7 @@
         // echo $history . "<br>";
         // echo $update_dr_quantity . "<br>";
         // echo $update_balance;
-		if(mysqli_query($db, $sql) && mysqli_query($db, $update_balance) && mysqli_query($db, $update_dr_quantity)){
+		if(mysqli_query($db, $sql)){
 			if(isset($history)){
 				// echo $history;
 				mysqli_query($db, $history);
@@ -652,8 +658,8 @@
 				unset($_SESSION['post_delivery_id']);
 			}
 		}else{
-			phpAlert('Something went wrong. Please try again.');
-			echo "<meta http-equiv='refresh' content='0'>";
+			phpAlert(mysqli_error($db));
+			// echo "<meta http-equiv='refresh' content='0'>";
 		}
 	}
 

@@ -36,6 +36,13 @@
     $position = $user['position'];
     $limit = 20; //how many items to show per page
 
+    $client_po = getPurchaseOrderDetails($db, $fk_po_id, $po_no_delivery);
+    $site_id = $client_po['site_id'];
+
+    $client = getClientInfoBySiteId($db, $site_id);
+    $client_name = $client['client_name'];
+    $client_address = $client['address'];
+
 ?>
 <html lang="en">
 <head>
@@ -462,10 +469,24 @@
                         </div>  --> 
                         <div class="row">
                             <div class="col-md-12">
-                                <section class="panel">
                                 <header class="panel-heading">
-                                    Delivery Details for P.O. No. <strong><?php echo $po_no_delivery; ?></strong>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            Delivery Details for P.O. No. <strong><?php echo $po_no_delivery; ?></strong>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            Client Name: <strong><?php echo $client_name; ?></strong>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            Client Address: <strong><?php echo $client_address; ?></strong>
+                                        </div>
+                                    </div>
                                 </header>
+                                <section class="panel">
                                 <div class="table-responsive filterable">
                                     <table class="table table-striped table-bordered">
                                         <thead>
@@ -560,14 +581,9 @@
                             </div>
                         </div>
                     </div>
-<!--                     <div class="col-md-9">
-                        
-                    </div> -->
+
                     <div class="col-md-3">
                         <section class="panel">
-                            <!-- <header class="panel-heading">
-                                Contact Details
-                            </header> -->
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered">
                                     <thead>

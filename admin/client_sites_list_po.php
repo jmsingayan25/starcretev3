@@ -52,7 +52,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>List of P.O. No.</title>
+    <title>List of P.O. No. - <?php echo $project_name; ?></title>
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -362,11 +362,8 @@
 	                                </div>
 	                            </div>
                                 <div class="row">
-                                    <div class="col-md-9">
+                                    <div class="col-md-12">
                                         <span>Project Address: <strong><?php echo $project_address; ?></strong></span>
-                                    </div>
-                                    <div class="col-md-3">
-                                        As of <strong><?php $date = date("Y-m-d H:i:s"); $date_create = date_create($date); echo date_format($date_create, "M d, Y h:i A"); ?></strong>
                                     </div>
                                 </div>
 	                        </header>
@@ -378,6 +375,9 @@
                                             <th colspan="8">
                                                 <!-- <span>Project Name: <strong><?php echo $project_name; ?></strong></span><br>
                                                 <span>Project Address: <strong><?php echo $project_address; ?></strong></span> -->
+                                                <span style="float: left;">
+                                                    As of <strong><?php $date = date("Y-m-d H:i:s"); $date_create = date_create($date); echo date_format($date_create, "M d, Y h:i A"); ?></strong>
+                                                </span>
                                                 <button class="btn btn-default btn-xs btn-filter" style="float: right;"><span class="fa fa-filter"></span> Filter</button>
                                             </th>
                                         </tr>
@@ -570,19 +570,21 @@
 ?>
 			<tr>
 				<td><strong><?php echo $sql_contact_row['site_contact_name']; ?></strong></td>
+                <td>
 <?php
 	
-			$sql_contact_no = "SELECT *, GROUP_CONCAT(site_contact_no SEPARATOR ', ') as site_contact_no  
+			$sql_contact_no = "SELECT site_contact_no  
 								FROM site_contact_number
 								WHERE site_contact_person_id = '".$sql_contact_row['site_contact_person_id']."'";
 								// echo $sql_contact_no;
 			$sql_contact_no_result = mysqli_query($db, $sql_contact_no);
 			while ($sql_contact_no_row = mysqli_fetch_assoc($sql_contact_no_result)) {
 ?>
-				<td><strong><?php echo $sql_contact_no_row['site_contact_no']; ?></strong></td>
+				<strong><?php echo $sql_contact_no_row['site_contact_no']; ?><br></strong>
 <?php
 			}
 ?>
+                </td>
 			</tr>
 <?php
 		}

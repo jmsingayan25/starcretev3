@@ -204,13 +204,14 @@
 		$sql = "SELECT * FROM purchase_order
 				WHERE purchase_order_no = '$po_no_delivery'
 				AND purchase_id = '$fk_po_id'";
-
+		
 		$result = mysqli_query($db, $sql);
 		$row = mysqli_fetch_assoc($result);
 
 		$po['purchase_order_no'] = $row['purchase_order_no'];		
 		$po['quantity'] = $row['quantity'];
 		$po['balance'] = $row['balance'];
+		$po['site_id'] = $row['site_id'];
 
 		return $po;
 	}

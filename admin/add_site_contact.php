@@ -42,7 +42,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>New Contact Person - Project</title>
+    <title>New Contact Person - <?php echo $site_address; ?></title>
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -291,8 +291,17 @@
     if(mysqli_num_rows($name_sql_result) > 0){
 
 	    while ($row_name_sql = mysqli_fetch_assoc($name_sql_result)) {
+?>
+											<div class="form-group">
+                                                <div class="row" style="margin-bottom: 2px;">
+                                                    <div class="col-md-6 col-md-offset-1">
+                                                        <strong><?php echo $row_name_sql['site_contact_name']; ?></strong>
+                                                    </div>
+                                                    <div class="col-md-5">
+
+<?php
 	        
-	        $no_sql = "SELECT GROUP_CONCAT(DISTINCT site_contact_no SEPARATOR ', ') as site_contact_no
+	        $no_sql = "SELECT site_contact_no
 	                    FROM site_contact_number
 	                    WHERE site_contact_person_id = '".$row_name_sql['site_contact_person_id']."'";
 
@@ -301,18 +310,15 @@
 	            
 	            $row_name_sql['site_contact_no'] = $row_no_sql['site_contact_no'];
 ?>
-											<div class="form-group">
-                                                <div class="row" style="margin-bottom: 2px;">
-                                                    <div class="col-md-6 col-md-offset-1">
-                                                        <strong><?php echo $row_name_sql['site_contact_name']; ?></strong>
-                                                    </div>
-                                                    <div class="col-md-5">
-                                                    	<strong><?php echo $row_name_sql['site_contact_no']; ?></strong>
-                                                    </div>
+											
+                                                    	<strong><?php echo $row_name_sql['site_contact_no']; ?></strong><br>
+<?php
+	        }
+?>
+													</div>
                                                 </div>
                                             </div>
 <?php
-	        }
 	    }
     }else{
 ?>

@@ -40,7 +40,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>New Contact Person - Clients</title>
+    <title>New Contact Person - <?php echo $client_name; ?></title>
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -281,8 +281,16 @@
     $name_sql_result = mysqli_query($db, $name_sql);
     if(mysqli_num_rows($name_sql_result) > 0){
 	    while ($row_name_sql = mysqli_fetch_assoc($name_sql_result)) {
+?>
+											<div class="form-group">
+                                                <div class="row" style="margin-bottom: 2px;">
+                                                    <div class="col-md-6 col-md-offset-1">
+                                                        <strong><?php echo $row_name_sql['client_contact_name']; ?></strong>
+                                                    </div>
+                                                    <div class="col-md-5">
+<?php
 	        
-	        $no_sql = "SELECT GROUP_CONCAT(DISTINCT client_contact_no SEPARATOR ', ') as client_contact_no
+	        $no_sql = "SELECT client_contact_no
 	                    FROM client_contact_number
 	                    WHERE client_contact_id = '".$row_name_sql['client_contact_id']."'";
 
@@ -296,26 +304,23 @@
                                                         <strong><?php echo $row_name_sql['client_contact_name'] . "<br> (" . $row_name_sql['client_contact_no'] . ")"; ?></strong>
                                                     </td>
                                                 </tr> -->
-                                                <div class="form-group">
-	                                                <div class="row" style="margin-bottom: 2px;">
-	                                                    <div class="col-md-6 col-md-offset-1">
-	                                                        <strong><?php echo $row_name_sql['client_contact_name']; ?></strong>
-	                                                    </div>
-	                                                    <div class="col-md-5">
-	                                                    	<strong><?php echo $row_name_sql['client_contact_no']; ?></strong>
-	                                                    </div>
-	                                                </div>
-                                                </div>
+                                                
+	                                                    	<strong><?php echo $row_name_sql['client_contact_no']; ?></strong><br>
 <?php
 	        }
+?>
+													</div>
+                                                </div>
+                                            </div>
+<?php
 	    }
 	}else{
 ?>
-												<div class="form-group">
-													<div class="row" style="text-align: center;">
-														<strong><h4><p class='text-muted'>No data found</p></h4></strong>
-													</div>
+											<div class="form-group">
+												<div class="row" style="text-align: center;">
+													<strong><h4><p class='text-muted'>No data found</p></h4></strong>
 												</div>
+											</div>
 
 <?php
 	}

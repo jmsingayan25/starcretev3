@@ -355,27 +355,29 @@
 				mysqli_query($db, $insert_contact_person);
 			}
 
-			for ($j=0; $j < count($array_contact_name); $j++) { 
+			for ($j = 0; $j < count($array_contact_name); $j++) { 
 				
 				// echo $array_contact_name[$j]." ".$contact_no[$j]."<br>";
 				$escape_array_contact_name = mysqli_real_escape_string($db, $array_contact_name[$j]);
 
-				$sql_contact_id = "SELECT client_contact_id FROM client_contact_person
-						WHERE client_contact_name = '$escape_array_contact_name'
-						AND client_id = '$client'";
+				$sql_contact_id = "SELECT client_contact_id 
+									FROM client_contact_person
+									WHERE client_contact_name = '$escape_array_contact_name'
+									AND client_id = '$client'";
 				// echo $sql_contact_id;
 				$result_contact_id = mysqli_query($db, $sql_contact_id);
 				$row_id = mysqli_fetch_assoc($result_contact_id);
+				$client_contact_id = $row_id['client_contact_id'];
 
 				$explode_no = explode(",", $contact_no[$j]);
-				for ($k=0; $k < count($explode_no); $k++) { 
+				for ($k = 0; $k < count($explode_no); $k++) { 
 
 					$escape_contact_no = mysqli_real_escape_string($db, $explode_no[$k]);
 					
 					// echo $row_id['client_contact_id']." ".$explode_no[$k]."<br>";
 
 					$insert_contact_number = "INSERT INTO client_contact_number(client_contact_no, client_contact_id) 
-												VALUES('$escape_contact_no','".$row_id['client_contact_id']."')";
+												VALUES('$escape_contact_no','$client_contact_id')";
 
 					mysqli_query($db, $insert_contact_number);
 				}

@@ -31,8 +31,16 @@ session_start();
 	$office = $user['office'];
 	$position = $user['position'];
 
-	// $po = getPurchaseOrderDetails($db, $purchase_unique_id);
-	// $po_no = $po['purchase_order_no'];
+	$site_sql = "SELECT * FROM purchase_order
+                    WHERE purchase_unique_id = '$purchase_unique_id'";
+
+    $site_sql_result = mysqli_query($db, $site_sql);
+    $site = mysqli_fetch_assoc($site_sql_result);
+
+    $client = getClientInfoBySiteID($db, $site['site_id']);
+    $client_name = $client['client_name'];
+    $client_address = $client['address'];
+
 
 ?>
 <html lang="en">
@@ -325,7 +333,7 @@ session_start();
             <section class="wrapper">            
                 <!--overview start-->
                 <div class="row">
-                    <div class="col-lg-12 page_links">
+                    <div class="col-md-12 page_links">
                         <ol class="breadcrumb">
                             <li><i class="fa fa-building"></i><?php echo ucfirst($plant); ?></li>
                             <li><i class="icon_document"></i><a href="purchase_order.php?office=<?php echo $plant; ?>">Pending P.O.</a></li>                            
@@ -333,17 +341,23 @@ session_start();
                         </ol>
                     </div>
                 </div>
-                 <div class="row">
+                <div class="row">
                     <div class="col-md-9">
                          <div class="row">
                             <div class="col-md-12">
                                 <header class="panel-heading">
                                     <div class="row">
                                         <div class="col-md-6" style="text-align: left;">
-                                            <span>Order Details of P.O. No. <strong><?php echo $purchase_order_no; ?></strong></span>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <span>Order Details of P.O. No. <strong><?php echo $purchase_order_no; ?></strong></span>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-md-6" style="text-align: right;">
-                                            <span>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <span>
 <?php
 
     $sql_select = "SELECT * FROM delivery
@@ -403,7 +417,19 @@ session_start();
                         </div>
                     </form>
 
-                                            </span>     
+                                                    </span> 
+                                                </div>
+                                            </div>
+                                        </div>    
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            Client Name: <strong><?php echo $client_name; ?></strong>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            Client Address: <strong><?php echo $client_address; ?></strong>
                                         </div>
                                     </div>
                                 </header>
@@ -570,21 +596,25 @@ session_start();
                                             <td>
                                                 <strong><?php echo $contact_sql_row['site_contact_name']; ?></strong>
                                             </td>
+                                            <td>
 <?php
     
-                $no_sql = "SELECT GROUP_CONCAT(site_contact_no SEPARATOR ', ') as site_contact_no 
+                $no_sql = "SELECT site_contact_no 
                             FROM site_contact_number
                             WHERE site_contact_person_id = '".$contact_sql_row['site_contact_id']."'";
 
                 $no_sql_result = mysqli_query($db, $no_sql);
                 while ($no_sql_row = mysqli_fetch_assoc($no_sql_result)) {
 ?> 
-                                            <td>
-                                                <strong><?php echo $no_sql_row['site_contact_no']; ?></strong>
+                                            
+                                                <strong><?php echo $no_sql_row['site_contact_no']; ?></strong><br>
+                                            
+<?php
+            }
+?>
                                             </td>
                                         </tr>
 <?php
-            }
         }
     }else{
 ?>
